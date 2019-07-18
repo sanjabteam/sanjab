@@ -1,0 +1,59 @@
+{
+    "name": "sanjabteam/sanjab",
+    "description": "Laravel package to create admin panel.",
+    "keywords": [
+        "sanjab",
+        "laravel"
+    ],
+    "homepage": "https://github.com/sanjab/sanjab",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "amir alizadeh",
+            "email": "amiralizadeh9480@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "5.8.*",
+        "intervention/image": "^2.5",
+        "google/recaptcha": "^1.2",
+        "silber/bouncer": "v1.0.0-rc.5",
+        "astrotomic/laravel-translatable": "^11.1"
+    },
+    "require-dev": {
+        "orchestra/testbench": "3.8.*",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sanjab\\": "src"
+        },
+        "files": [
+            "./src/Helpers/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sanjab\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sanjab\\SanjabServiceProvider"
+            ],
+            "aliases": {
+                "Sanjab": "Sanjab\\SanjabFacade"
+            }
+        }
+    }
+}
