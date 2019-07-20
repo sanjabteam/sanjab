@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div id="sanjab_app">
                 <material-card title="{{ $properties->titles }}" description="{{ $properties->description }}">
-                    <widgets-list :widgets='@json($widgets)' :actions='@json($actions)' :properties='@json($properties)' />
+                    <widgets-list :widgets='@json($widgets)' :cards='@json($cards)' :actions='@json($actions)' :properties='@json($properties)' />
                 </material-card>
             </div>
         </div>

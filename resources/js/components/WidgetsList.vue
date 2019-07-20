@@ -1,5 +1,10 @@
 <template>
     <div>
+        <b-row>
+            <b-col v-for="(card, index) in cards" :key="index" :cols="card.cols">
+                <component :is="card.tag" :data="typeof cardsData[index] != 'undefined' ? cardsData[index] : null" v-bind="card" />
+            </b-col>
+        </b-row>
         <b-row ref="beforeTable">
             <b-col md="6" class="my-1">
                 <b-button v-for="(action, index) in generalActions" @click="onActionClick(action)" :variant="action.variant" :href="action.url ? action.url : 'javascript:void(0);'" :key="index" :title="action.title" v-b-tooltip><i class="material-icons">{{ action.icon }}</i>{{ action.title }}</b-button>
@@ -86,6 +91,10 @@
                 type: Array,
                 default:() => []
             },
+            cards: {
+                type: Array,
+                default:() => []
+            },
             properties: {
                 type: Object,
                 default:() => {}
@@ -102,7 +111,8 @@
                 actionItem: null,
                 actionItems: null,
                 selectedBulk: [],
-                bulkActionsVisible: false
+                bulkActionsVisible: false,
+                cardsData: []
             };
         },
         methods: {
@@ -113,8 +123,9 @@
                     params: info
                 })
                 .then(function (response) {
-                    self.total = response.data.total;
-                    return response.data.data;
+                    self.cardsData = response.data.cardsData;
+                    self.total = response.data.items.total;
+                    return response.data.items.data;
                 })
                 .catch(function (error) {
                     console.error(error);
@@ -239,11 +250,8 @@
             }
         },
         watch: {
-            requestData: {
-                deep: true,
-                handler: function (newValue, oldValue) {
-                    $(this.$refs.beforeTable)[0].scrollIntoView();
-                }
+            page: function () {
+                $(this.$refs.beforeTable)[0].scrollIntoView();
             },
             selectedBulk: {
                 deep: true,

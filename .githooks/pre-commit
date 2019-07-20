@@ -5,6 +5,9 @@ if (! is_dir("node_modules")) {
 	echo shell_exec("npm install");
 }
 
+echo shell_exec("git reset HEAD -- resources/assets/mix-manifest.json");
+echo shell_exec("git reset HEAD -- resources/assets/css/sanjab.css");
+echo shell_exec("git reset HEAD -- resources/assets/js/sanjab.js");
 echo shell_exec("npm run prod");
 echo shell_exec("git add resources/assets/mix-manifest.json --force");
 echo shell_exec("git add resources/assets/css/sanjab.css --force");

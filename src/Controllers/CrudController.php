@@ -28,6 +28,13 @@ abstract class CrudController extends SanjabController
     protected $actions = [];
 
     /**
+     * Array of cards.
+     *
+     * @var \Sanjab\Cards\Card[]
+     */
+    protected $cards = [];
+
+    /**
      * Display a listing of the resource.
      *
      * @param \Illuminate\Http\Request  $request
@@ -82,13 +89,20 @@ abstract class CrudController extends SanjabController
             foreach ($items as $key => $value) {
                 $items[$key] = $this->itemResponse($value);
             }
-            return $items;
+
+            $cardsData = [];
+            foreach ($this->cards as $key => $card) {
+                $cardsData[$key] = new stdClass;
+                $card->doModifyResponse($cardsData[$key]);
+            }
+            return compact("items", "cardsData");
         }
         return view(
             'sanjab::crud.list',
             [
                 'widgets' => $this->widgets,
                 'actions' => $this->actions,
+                'cards' => $this->cards,
                 'properties' => $this->properties()
             ]
         );
