@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method $this title (string $value)                  title of button.
  * @method $this icon (string $value)                   icon of button.
  * @method $this perItem (string $value)                button that just working with items.
+ * @method $this bulk (string $value)                   can be used with multiple.
  * @method $this variant (string $value)                variant of button, bootstrap classes like : "success", "primary", ...
  * @method $this tag (string $value)                    tag to show inside modal.
  * @method $this tagContent (string $value)             modal content inside tag.
@@ -32,6 +33,7 @@ class Action extends PropertiesHolder
         'title' => 'TITLE HERE',
         'variant' => 'default',
         'perItem' => false,
+        'bulk' => true,
         'tagContent' => '',
         'tagAttributes' => [],
         'modalSize' => 'md',

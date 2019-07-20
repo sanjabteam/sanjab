@@ -21,9 +21,10 @@ use stdClass;
  * @method $this    max(integer $val)                       max count of images
  * @method $this    maxSize(integer $val)                   max file upload size
  * @method $this    filename(callable $val)                 function to generate random file name; parameters ()
- * @method $this    fileStoreCallBack(callable $val)        function to store image and return address; parameters ($fileContent, $folder, $filename, $disk)
+ * @method $this    fileStoreCallBack(callable $val)        function to store image and return address; parameters ($fileContent, $directory, $filename, $disk)
  * @method $this    width(integer $val)                     width image to resize
  * @method $this    height(integer $val)                    width image to resize
+ * @method $this    directory(string $val)                  directory to save.
  */
 class DropzoneWidget extends Widget
 {
@@ -31,19 +32,20 @@ class DropzoneWidget extends Widget
     {
         $this->onIndex(false)->sortable(false)->searchable(false)->all(false)->disk("public")->maxSize(4096)->max(10);
         $this->tag("dropzone-widget")->viewTag('dropzone-view');
+        $this->directory(now()->year.'/'.now()->month);
         $this->extensions(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']);
         $this->filename(function () {
             return Str::random(40);
         });
-        $this->fileStoreCallBack(function ($fileContent, $folder, $filename, $disk) {
+        $this->fileStoreCallBack(function ($fileContent, $directory, $filename, $disk) {
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
             if (in_array(mb_strtolower($extension), ['jpg', 'jpeg', 'png', 'bmp'])) {
                 $filename = pathinfo($filename, PATHINFO_DIRNAME)."/".pathinfo($filename, PATHINFO_FILENAME);
                 if ($this->extension) {
                     $extension = $this->extension;
                 }
-                if (empty($folder) == false) {
-                    $filename = $folder . "/" . $filename;
+                if (empty($directory) == false) {
+                    $filename = $directory . "/" . $filename;
                 }
                 $filename = $filename.'.'.$extension;
                 $image = Image::make($fileContent)->limitColors(127);
@@ -74,7 +76,7 @@ class DropzoneWidget extends Widget
                 if (Storage::disk($this->property("disk"))->exists($file)) {
                     foreach ($oldValue as $vkey => $valueFile) {
                         if (is_array($valueFile)) {
-                            if (count($value) == 0) {
+                            if (count($valueFile) == 0) {
                                 continue;
                             }
                             $valueFile = array_first($valueFile);
@@ -86,7 +88,7 @@ class DropzoneWidget extends Widget
                     }
                 } else {
                     if (Storage::disk("local")->exists($file)) {
-                        $result[] = ($this->property("fileStoreCallBack"))(Storage::disk("local")->get($file), $this->property("folder"), $filename, $this->property("disk"));
+                        $result[] = ($this->property("fileStoreCallBack"))(Storage::disk("local")->get($file), $this->property("directory"), $filename, $this->property("disk"));
                         Storage::disk("local")->delete($file);
                     }
                 }

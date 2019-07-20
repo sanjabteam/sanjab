@@ -11,6 +11,16 @@
                 <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
             </b-col>
         </b-row>
+        <b-collapse id="bulk_actions_collapse" v-model="bulkActionsVisible">
+             <b-button-group>
+                <div v-for="(action) in bulkActions" :key="action.index">
+                    <b-button :disabled="selectedBulk.filter((bulkItem) => bulkItem.__can[action.index]).length != selectedBulk.length" @click="onActionClick(action, selectedBulk)" :variant="action.variant" href="javascript:void(0);" :title="action.title" v-b-tooltip>
+                        <i class="material-icons">{{ action.icon }}</i>
+                        {{ action.title }}
+                    </b-button>
+                </div>
+            </b-button-group>
+        </b-collapse>
         <b-table
             ref="table"
             :items="items"
@@ -32,7 +42,10 @@
             <template slot="emptyfiltered">
                 <center>{{ sanjabTrans('no_records_found') }}</center>
             </template>
-            <div slot="actions" class="text-center text-danger my-2" slot-scope="row">
+            <div slot="bulk" slot-scope="row">
+                <b-form-checkbox :id="'bulk_select_'+ row.index" v-model="selectedBulk" :value="row.item" />
+            </div>
+            <div slot="actions" slot-scope="row">
                 <b-button-group>
                     <div v-for="(action) in perItemActions" :key="action.index">
                         <b-button v-if="row.item.__can[action.index] == true" @click="onActionClick(action, row.item)" :variant="action.variant" :href="row.item.__action_url[action.index] ? row.item.__action_url[action.index] : 'javascript:void(0);'" size="sm" :title="action.title" v-b-tooltip>
@@ -87,7 +100,9 @@
                 filterTimer: null,
                 currentAction: {},
                 actionItem: null,
-                actionItems: null
+                actionItems: null,
+                selectedBulk: [],
+                bulkActionsVisible: false
             };
         },
         methods: {
@@ -130,7 +145,7 @@
                     this.currentAction = action;
                     this.$refs.actionModal.show();
                 } else if (action.action) {
-                    if (item && !(typeof item instanceof Array)) {
+                    if (item && !(item instanceof Array)) {
                         item = [item];
                     }
                     Swal.fire({
@@ -160,15 +175,19 @@
                                 title: result.value.message ? result.value.message : sanjabTrans('success'),
                                 confirmButtonText: action.confirmOk,
                             });
+                            self.selectedBulk = [];
                             self.$refs.table.refresh();
                         }
-                    });
+                    })
                 }
             }
         },
         computed: {
             fields() {
                 var out = [];
+                if (this.bulkActions.length > 0) {
+                    out = out.concat({label: '✅', key: 'bulk', sortable:false});
+                }
                 for (var i in this.widgets) {
                     out = out.concat(this.widgets[i].tableColumns);
                 }
@@ -200,6 +219,14 @@
                     return value.perItem == true;
                 });
             },
+            bulkActions() {
+                if (this.properties.bulk) {
+                    return this.perItemActions.filter(function (value) {
+                        return value.bulk == true && value.action;
+                    });
+                }
+                return [];
+            },
             tableColumns() {
                 var columns = [];
                 for (var i in this.widgets) {
@@ -217,7 +244,17 @@
                 handler: function (newValue, oldValue) {
                     $(this.$refs.beforeTable)[0].scrollIntoView();
                 }
-            }
+            },
+            selectedBulk: {
+                deep: true,
+                handler: function (newValue, oldValue) {
+                    if (newValue.length > 0) {
+                        this.bulkActionsVisible = true;
+                    } else {
+                        this.bulkActionsVisible = false;
+                    }
+                }
+            },
         },
   }
 </script>

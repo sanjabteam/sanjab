@@ -22,6 +22,7 @@ use Illuminate\Support\Str;
  * @method $this defaultOrder (string $val)          Default column order.
  * @method $this defaultOrderDirection (string $val) Default column order direction.
  * @method $this permissionsKey (string $val)        Permission key if you use more than one crud controller for one model.
+ * @method $this bulk (bool $val)                    Is bulk actions allowed or not.
  */
 class CrudProperties extends PropertiesHolder
 {
@@ -37,6 +38,7 @@ class CrudProperties extends PropertiesHolder
         $this->showable(true);
         $this->editable(true);
         $this->deletable(true);
+        $this->bulk(true);
         $this->defaultOrder('id');
         $this->defaultOrderDirection('desc');
         $this->permissionsKey('');
