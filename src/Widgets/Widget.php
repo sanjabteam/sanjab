@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method $this    tag(string $val)                            field tag.
  * @method $this    groupTag(string $val)                       field group tag.
  * @method $this    class(string $val)                          class of input field.
+ * @method $this    cols(string $val)                           bootstrap based column width.
  */
 abstract class Widget extends PropertiesHolder
 {
@@ -45,7 +46,7 @@ abstract class Widget extends PropertiesHolder
         $this->onCreate(true)->onEdit(true)->onIndex(true)->onStore(true)
             ->onView(true)->col(12)->searchable(true)->sortable(true)
             ->indexTag('simple-view')->viewTag('simple-view')->viewGroupTag('simple-view-group')->translation(false)
-            ->groupTag("simple-group")->tag("input");
+            ->groupTag("simple-group")->tag("input")->cols(12);
         parent::__construct($properties);
         $this->init();
     }
@@ -319,7 +320,7 @@ abstract class Widget extends PropertiesHolder
      *
      * @return array
      */
-    public function validationAttributes()
+    public function validationAttributes(): array
     {
         return [
             $this->name         => $this->title,
@@ -333,7 +334,7 @@ abstract class Widget extends PropertiesHolder
      * @property string $type 'create' or 'edit'.
      * @return array
      */
-    public function validationRules($type)
+    public function validationRules($type): array
     {
         return [
             $this->name => $this->property('rules.'.$type, []),
@@ -345,7 +346,7 @@ abstract class Widget extends PropertiesHolder
      *
      * @return array
      */
-    public function validationMessages()
+    public function validationMessages(): array
     {
         return [];
     }
@@ -551,6 +552,17 @@ abstract class Widget extends PropertiesHolder
     public function required()
     {
         $this->rules('required');
+        return $this;
+    }
+
+    /**
+     * Add nullable validation.
+     *
+     * @return $this
+     */
+    public function nullable()
+    {
+        $this->rules('nullable');
         return $this;
     }
 }

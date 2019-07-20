@@ -6,5 +6,6 @@ if (! is_dir("node_modules")) {
 }
 
 echo shell_exec("npm run prod");
+echo shell_exec("git add resources/assets/mix-manifest.json --force");
 echo shell_exec("git add resources/assets/css/sanjab.css --force");
 echo shell_exec("git add resources/assets/js/sanjab.js --force");

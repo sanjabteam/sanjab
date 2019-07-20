@@ -4,27 +4,33 @@
             {{ Object.values(error)[0] }}
         </b-alert>
         <b-form @submit.prevent="onSubmit">
-            <div v-for="(widget, index) in nonTranslatableWidgets" :key="index">
-                <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="item == null ? 'create' : 'edit'" v-model="form[widget.name]" :data="form" />
-            </div>
+            <b-row>
+                <b-col v-for="(widget, index) in nonTranslatableWidgets" :key="index" :cols="widget.cols">
+                    <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="item == null ? 'create' : 'edit'" v-model="form[widget.name]" :data="form" />
+                </b-col>
+            </b-row>
 
             <b-card v-if="translatableWidgets.length > 0" no-body>
                 <b-row>
                     <b-col v-if="!readonly">
                         <b-tabs fill small card pills>
                             <b-tab @click="onShowTranslationButton" :title="mainLocale.name">
-                                <div v-for="(widget, index) in translatableWidgets" :key="'tr' + mainLocale.locale + '_' + index">
-                                    <component v-if="showWidget(widget)" :is="widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="item == null ? 'create' : 'edit'" :field-locale="mainLocale.locale" v-model="form.sanjab_translations[mainLocale.locale][widget.name]" />
-                                </div>
+                                <b-row>
+                                    <b-col v-for="(widget, index) in translatableWidgets" :key="'tr' + mainLocale.locale + '_' + index" :cols="widget.cols">
+                                        <component v-if="showWidget(widget)" :is="widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="item == null ? 'create' : 'edit'" :field-locale="mainLocale.locale" v-model="form.sanjab_translations[mainLocale.locale][widget.name]" />
+                                    </b-col>
+                                </b-row>
                             </b-tab>
                         </b-tabs>
                     </b-col>
                     <b-col id="translations_tab" v-show="readonly">
                         <b-tabs v-model="currentLocaleTab" fill small card pills>
                             <b-tab v-for="(localeName, locale) in locales" :key="locale" :title="localeName">
-                                <div v-for="(widget, index) in translatableWidgets" :key="'tr' + locale + '_' + index">
-                                    <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="item == null ? 'create' : 'edit'" :field-locale="locale" v-model="form.sanjab_translations[locale][widget.name]" :data="form.sanjab_translations[locale]" />
-                                </div>
+                                <b-row>
+                                    <b-col v-for="(widget, index) in translatableWidgets" :key="'tr' + locale + '_' + index" :cols="widget.cols">
+                                        <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="item == null ? 'create' : 'edit'" :field-locale="locale" v-model="form.sanjab_translations[locale][widget.name]" :data="form.sanjab_translations[locale]" />
+                                    </b-col>
+                                </b-row>
                             </b-tab>
                         </b-tabs>
                     </b-col>

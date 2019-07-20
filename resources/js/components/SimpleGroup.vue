@@ -9,7 +9,7 @@
             <small v-else tabindex="-1" class="form-text text-muted">{{ widget.description }}</small>
         </div>
         <b-form-group v-else :label="widget.title" :label-for="widget.name" :description="widget.description" :state="fieldError && fieldError.length > 0 ? false : true" :invalid-feedback="fieldError">
-            <component :is="widget.tag" v-model="mutableValue" v-bind="widget">{{ widget.content ? widget.content : '' }}</component>
+            <component :is="widget.tag" :errors.sync="errors" v-model="mutableValue" v-bind="widget">{{ widget.content ? widget.content : '' }}</component>
         </b-form-group>
     </div>
 </template>
@@ -38,6 +38,11 @@
             fieldLocale: {
                 type: String,
                 default: null
+            }
+        },
+        mounted () {
+            if (this.value) {
+                this.mutableValue = this.value;
             }
         },
         watch: {

@@ -2,8 +2,6 @@
 
 namespace Sanjab\Widgets;
 
-use Illuminate\Http\Request;
-
 /**
  * Input list of items
  *
@@ -22,17 +20,16 @@ class TextListWidget extends Widget
         $this->viewTag("text-list-view");
         $this->inputOptions(["type" => "text"]);
         $this->unique(true);
-        $this->rules('array');
     }
 
-    public function validationRules($type)
+    public function validationRules($type): array
     {
         $rules = is_string($this->property('itemRules')) ? explode('|', $this->property('itemRules')) : $this->property('itemRules', []);
         if ($this->property('unique')) {
             $rules = array_merge(['distinct'], $rules);
         }
         return [
-            $this->name      => $this->property('rules.'.$type, []),
+            $this->name      => array_merge($this->property('rules.'.$type, []), ['array']),
             $this->name.'.*' => $rules,
         ];
     }

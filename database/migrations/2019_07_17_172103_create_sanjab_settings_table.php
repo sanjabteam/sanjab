@@ -25,7 +25,7 @@ class CreateSanjabSettingsTable extends Migration
         });
         Schema::create('sanjab_setting_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('translated_value')->nullable();
+            $table->text('translated_value')->nullable();
 
             $table->unsignedInteger('setting_id');
             $table->string('locale')->index();
