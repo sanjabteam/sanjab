@@ -11,11 +11,13 @@ use Illuminate\Support\Str;
  * @method $this title (string $val)                 Title of setting.
  * @method $this description (string $val)           short description about setting.
  * @method $this icon (string $val)                  Icon of setting.
+ * @method $this globalSearch (bool $val)            Should be present in global search or not.
  */
 class SettingProperties extends PropertiesHolder
 {
     protected $properties = [
-        'icon' => 'settings'
+        'icon' => 'settings',
+        'globalSearch' => true
     ];
 
     /**

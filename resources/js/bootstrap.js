@@ -24,7 +24,6 @@ Vue.use(require('./plugin').default);
 require('./material-dashboard');
 require('./scripts');
 
-
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -35,4 +34,10 @@ if (token) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
+
+if (document.querySelector('#sanjab_search_app')) {
+    window.sanjabSearchApp = new Vue({
+        el: '#sanjab_search_app',
+    });
 }

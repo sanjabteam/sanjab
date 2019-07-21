@@ -22,6 +22,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 - [Quill](https://quilljs.com/)
 - [Shabnam font](https://github.com/rastikerdar/shabnam-font)
 - [Vue.js](https://vuejs.org/)
+- [Vue bootstrap typeahead](https://github.com/alexurquhart/vue-bootstrap-typeahead)
 - [Vue quill editor](https://github.com/surmon-china/vue-quill-editor)
 - [Vue select](https://github.com/sagalbot/vue-select)
 - [Vue2 leaflet](https://github.com/KoRiGaN/Vue2Leaflet)

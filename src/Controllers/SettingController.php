@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Session;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\App;
+use Sanjab\Helpers\SearchResult;
 
 abstract class SettingController extends SanjabController
 {
@@ -171,13 +174,13 @@ abstract class SettingController extends SanjabController
             MenuItem::create('javascript:void(0);')
                 ->title(trans('sanjab::sanjab.settings'))
                 ->icon('settings')
+                ->active(function () {
+                    return Route::is("sanjab.settings.*");
+                })
                 ->addChild(
                     MenuItem::create(route('sanjab.settings.'.static::property('key')))
                     ->title(static::property('title'))
                     ->icon(static::property('icon'))
-                    ->active(function () {
-                        return Route::is('sanjab.settings.'.static::property('route').'.*');
-                    })
                     ->hidden(function () {
                         return Auth::user()->cannot('update_setting_'.static::property('key'));
                     })
@@ -190,5 +193,33 @@ abstract class SettingController extends SanjabController
         $permission = PermissionItem::create(trans('sanjab::sanjab.settings'))
                         ->addPermission(trans('sanjab::sanjab.edit_:item', ['item' => static::property('title')]), 'update_setting_'.static::property('key'));
         return [$permission];
+    }
+
+    public static function globalSearch(string $search)
+    {
+        if (Auth::user()->can('update_setting_'.static::property('key')) && static::property('globalSearch')) {
+            $controllerInsatance = app(static::class);
+            App::call([$controllerInsatance, 'show']);
+
+
+            if (preg_match('/.*'.preg_quote($search).'.*/', static::property('title'))) {
+                return [
+                    SearchResult::create(static::property('title'), route('sanjab.settings.'.static::property('key')))
+                                            ->icon(static::property('icon'))
+                                            ->order(50)
+                ];
+            }
+
+            foreach ($controllerInsatance->widgets as $widget) {
+                if (preg_match('/.*'.preg_quote($search).'.*/', $widget->title)) {
+                    return [
+                        SearchResult::create(static::property('title'), route('sanjab.settings.'.static::property('key')))
+                                                ->icon(static::property('icon'))
+                                                ->order(50)
+                    ];
+                }
+            }
+        }
+        return [];
     }
 }

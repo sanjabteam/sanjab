@@ -27,7 +27,8 @@ class RoleController extends CrudController
                 ->model(Role::class)
                 ->icon('person')
                 ->defaultCards(false)
-                ->defaultDashboardCards(false);
+                ->defaultDashboardCards(false)
+                ->itemFormat('%title');
     }
 
     protected function init(string $type, Model $item = null): void

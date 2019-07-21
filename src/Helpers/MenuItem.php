@@ -36,11 +36,11 @@ class MenuItem extends PropertiesHolder
      */
     public function isActive()
     {
-        if (isset($this->properties['active'])) {
-            return App::call($this->properties['active']);
+        if (is_callable($this->property('active'))) {
+            return $this->property('active')();
         }
-        if (isset($this->properties['url'])) {
-            return Request::is(trim(parse_url($this->properties['url'])['path'], '/'));
+        if (! empty($this->property('url'))) {
+            return Request::is(trim(parse_url($this->property('url'))['path'], '/'));
         }
     }
 
@@ -63,6 +63,18 @@ class MenuItem extends PropertiesHolder
      * @return array|MenuItem[]
      */
     public function getChildren()
+    {
+        return array_filter($this->children, function ($menuItem) {
+            return !$menuItem->isHidden();
+        });
+    }
+
+    /**
+     * Get children of item including hidden children.
+     *
+     * @return array|MenuItem[]
+     */
+    public function getAllChildren()
     {
         return $this->children;
     }

@@ -8,6 +8,7 @@ use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Auth;
 use Sanjab\Helpers\NotificationItem;
 use Sanjab\Cards\Card;
+use Sanjab\Helpers\SearchResult;
 
 class Sanjab
 {
@@ -18,6 +19,7 @@ class Sanjab
         \Sanjab\Controllers\QuillController::class,
         \Sanjab\Controllers\RelationWidgetController::class,
         \Sanjab\Controllers\TranslationController::class,
+        \Sanjab\Controllers\SearchController::class,
     ];
 
     /**
@@ -162,7 +164,7 @@ class Sanjab
     /**
      * All controllers permission items.
      *
-     * @return PermissionItem[]
+     * @return Card[]
      * @throws Exception
      */
     public static function dashboardCards(): array
@@ -182,5 +184,32 @@ class Sanjab
             });
         }
         return static::$dashboardCards;
+    }
+
+    /**
+     * Search globally in all controllers.
+     *
+     * @return SearchResult[]
+     * @throws Exception
+     */
+    public static function search(string $search): array
+    {
+        $results = [];
+        foreach (static::controllers() as $controller) {
+            foreach ($controller::globalSearch($search) as $searchResult) {
+                if (! $searchResult instanceof SearchResult) {
+                    throw new Exception("Some search result in '$controller' is not a SearchResult type.");
+                }
+                $searchResult->setProperty('search', $search);
+                $results[] = $searchResult;
+                if (count($results) > 50) {
+                    break 2;
+                }
+            }
+        }
+        usort($results, function ($a, $b) {
+            return $a->order > $b->order;
+        });
+        return $results;
     }
 }

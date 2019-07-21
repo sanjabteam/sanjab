@@ -10,6 +10,7 @@
 @import '~quill/dist/quill.core.css';
 @import '~quill/dist/quill.snow.css';
 @import '~quill/dist/quill.bubble.css';
+@import '~vue-bootstrap-typeahead/dist/VueBootstrapTypeahead.css';
 @import '~shabnam-font/dist/font-face.css';
 @import '~material-dashboard/assets/css/material-dashboard.css';
 @import './material-dashboard-rtl.css';
@@ -195,6 +196,16 @@ html[dir="rtl"] {
         left: unset !important;
         right: 0;
     }
+
+    .vbt-autcomplete-list.list-group {
+        padding: 0 !important;
+
+        .list-group-item :first-child {
+            margin-right: 0 !important;
+        }
+    }
+
+
 }
 
 html[lang="fa"] {

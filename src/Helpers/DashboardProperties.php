@@ -2,8 +2,6 @@
 
 namespace Sanjab\Helpers;
 
-use Illuminate\Support\Str;
-
 /**
  * Holder of Dashboard properties.
  *

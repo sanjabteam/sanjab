@@ -32,27 +32,29 @@
                     <ul class="nav">
                         @foreach($sanjabMenuItems as $menuKey => $menuItem)
                             @if($menuItem->hasChildren())
-                                <li class="nav-item @if($menuItem->isActive()) active @endif">
-                                    <a class="nav-link" data-toggle="collapse" href="#sanjabMenuItem{{ $menuKey }}" aria-expanded="true">
-                                        <i class="material-icons">{{ $menuItem->icon }}</i>
-                                        <p>
-                                            {{ $menuItem->title }}
-                                            <b class="caret"></b>
-                                        </p>
-                                    </a>
-                                    <div class="collapse" id="sanjabMenuItem{{ $menuKey }}">
-                                        <ul class="nav">
-                                            @foreach($menuItem->getChildren() as $childMenu)
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="{{ $childMenu->url }}">
-                                                        <i class="material-icons">{{ $childMenu->icon }}</i>
-                                                        <span class="sidebar-normal">{{ $childMenu->title }}</span>
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </li>
+                                @if (count($menuItem->getChildren()) > 0)
+                                    <li class="nav-item @if($menuItem->isActive()) active @endif">
+                                        <a class="nav-link" data-toggle="collapse" href="#sanjabMenuItem{{ $menuKey }}" aria-expanded="{{ $menuItem->isActive() ? 'true' : 'false' }}">
+                                            <i class="material-icons">{{ $menuItem->icon }}</i>
+                                            <p>
+                                                {{ $menuItem->title }}
+                                                <b class="caret"></b>
+                                            </p>
+                                        </a>
+                                        <div class="collapse @if($menuItem->isActive()) show @endif" id="sanjabMenuItem{{ $menuKey }}">
+                                            <ul class="nav">
+                                                @foreach($menuItem->getChildren() as $childMenu)
+                                                    <li class="nav-item @if($childMenu->isActive()) active @endif">
+                                                        <a class="nav-link" href="{{ $childMenu->url }}">
+                                                            <i class="material-icons">{{ $childMenu->icon }}</i>
+                                                            <span class="sidebar-normal">{{ $childMenu->title }}</span>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endif
                             @else
                                 <li class="nav-item @if($menuItem->isActive()) active @endif">
                                     <a class="nav-link" href="{{  $menuItem->url }}" @if($menuItem->target) target="{{ $menuItem->target }}" @endif>
@@ -83,20 +85,10 @@
                             <span class="navbar-toggler-icon icon-bar"></span>
                             <span class="navbar-toggler-icon icon-bar"></span>
                         </button>
-                        <div class="collapse navbar-collapse
-                            justify-content-end">
-                            <form class="navbar-form">
-                                <div class="input-group no-border">
-                                    <input type="text" value=""
-                                        class="form-control"
-                                        placeholder="@lang('sanjab::sanjab.search')...">
-                                    <button type="submit" class="btn btn-white
-                                        btn-round btn-just-icon">
-                                        <i class="material-icons">search</i>
-                                        <div class="ripple-container"></div>
-                                    </button>
-                                </div>
-                            </form>
+                        <div class="collapse navbar-collapse justify-content-end">
+                            <div id="sanjab_search_app">
+                                <nav-search />
+                            </div>
                             <ul class="navbar-nav">
                                 @foreach($sanjabNotificationItems as $notificationItem)
                                     <li class="nav-item dropdown">

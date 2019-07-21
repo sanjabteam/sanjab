@@ -25,6 +25,8 @@ use Illuminate\Support\Str;
  * @method $this bulk (bool $val)                    Is bulk actions allowed or not.
  * @method $this defaultCards(bool $val)             Should default cards added to cards.
  * @method $this defaultDashboardCards(bool $val)    Should default dashboard cards added to dashboard.
+ * @method $this globalSearch(bool $val)             Should be present in global search or not.
+ * @method $this itemFormat(string $val)             Format to show as item id. (example: "%id. %name")
  */
 class CrudProperties extends PropertiesHolder
 {
@@ -46,6 +48,7 @@ class CrudProperties extends PropertiesHolder
         $this->permissionsKey('');
         $this->defaultCards(true);
         $this->defaultDashboardCards(true);
+        $this->globalSearch(true);
         parent::__construct($options);
     }
 

@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Sanjab\Helpers\PermissionItem;
 use Sanjab\Helpers\NotificationItem;
 use Sanjab\Cards\Card;
+use Sanjab\Helpers\SearchResult;
 
 abstract class SanjabController extends BaseController
 {
@@ -28,7 +29,7 @@ abstract class SanjabController extends BaseController
     /**
      * Load sanjab panel menu items for this controller.
      *
-     * @return MenuItem[]
+     * @return array|MenuItem[]
      */
     public static function menus(): array
     {
@@ -38,7 +39,7 @@ abstract class SanjabController extends BaseController
     /**
      * Load sanjab notification items.
      *
-     * @return NotificationItem[]
+     * @return array|NotificationItem[]
      */
     public static function notifications(): array
     {
@@ -48,7 +49,7 @@ abstract class SanjabController extends BaseController
     /**
      * Load sanjab permissions for this controller.
      *
-     * @return PermissionItem[]
+     * @return array|PermissionItem[]
      */
     public static function permissions(): array
     {
@@ -58,9 +59,20 @@ abstract class SanjabController extends BaseController
     /**
      * Load sanjab dashboard cards for this controller.
      *
-     * @return Card[]
+     * @return array|Card[]
      */
     public static function dashboardCards(): array
+    {
+        return [];
+    }
+
+    /**
+     * Global search in this controller.
+     *
+     * @param string $search  text to search.
+     * @return array|SearchResult[]
+     */
+    public static function globalSearch(string $search)
     {
         return [];
     }

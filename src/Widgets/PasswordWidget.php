@@ -12,7 +12,9 @@ class PasswordWidget extends Widget
     {
         $this->tag("b-form-input")
             ->onIndex(false)
-            ->onView(false);
+            ->onView(false)
+            ->searchable(false)
+            ->sortable(false);
         $this->setProperty("floatlabel", true);
         $this->setProperty("type", "password");
     }

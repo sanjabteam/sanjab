@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Builder;
 use Sanjab\Cards\StatsCard;
+use Sanjab\Helpers\SearchResult;
 
 abstract class CrudController extends SanjabController
 {
@@ -48,43 +49,8 @@ abstract class CrudController extends SanjabController
         if ($request->wantsJson()) {
             $model = $this->property('model');
             $items = $model::query();
-            if ($request->filled('filter')) {
-                $items->where(function ($query) use ($request) {
-                    foreach ($this->widgets as $widget) {
-                        if (! $widget->property('translation')) {
-                            $query->orWhere(function ($query) use ($widget, $request) {
-                                $widget->doSearch($query, $request->input('filter'), null);
-                            });
-                        }
-                    }
-                    $query->orWhereHas('translations', function (Builder $query) use ($request) {
-                        $query->where(function (Builder $query) use ($request) {
-                            foreach ($this->widgets as $widget) {
-                                if ($widget->property('translation')) {
-                                    $query->orWhere(function ($query) use ($widget, $request) {
-                                        $widget->doSearch($query, $request->input('filter'), null);
-                                    });
-                                }
-                            }
-                        });
-                    });
-                });
-            }
-            if ($request->filled('sortBy')) {
-                foreach ($this->widgets as $widget) {
-                    foreach ($widget->getTableColumns() as $tableColumn) {
-                        if ($request->input('sortBy') == $tableColumn->key) {
-                            $widget->doOrder(
-                                $items,
-                                $request->input('sortBy'),
-                                $request->input('sortDesc') == 'true' ? 'desc' : 'asc'
-                            );
-                        }
-                    }
-                }
-            } else {
-                $items->orderBy($this->property('defaultOrder'), $this->property('defaultOrderDirection'));
-            }
+            $this->querySearch($items, $request->input('filter'));
+            $this->querySort($items, $request->input('sortBy'), $request->input('sortDesc') == 'true' ? true : false);
             $this->queryScope($items);
             $items = $items->paginate($request->input('perPage', $this->property('perPage')));
             foreach ($items as $key => $value) {
@@ -380,8 +346,72 @@ abstract class CrudController extends SanjabController
      * @param Builder $query
      * @return void
      */
-    protected static function queryScope(Builder $query)
+    protected function queryScope(Builder $query)
     {
+    }
+
+    /**
+     * Perform search query by widgets.
+     *
+     * @param Builder $query
+     * @param string|null $search
+     * @return void
+     */
+    final protected function querySearch(Builder $query, $search)
+    {
+        if (! empty($search)) {
+            $query->where(function ($query) use ($search) {
+                foreach ($this->widgets as $widget) {
+                    if (! $widget->property('translation')) {
+                        $query->orWhere(function ($query) use ($widget, $search) {
+                            $widget->doSearch($query, $search, null);
+                        });
+                    }
+                }
+                if (count(array_filter($this->widgets, function ($widget) {
+                    return $widget->property('translation');
+                })) > 0) {
+                    $query->orWhereHas('translations', function (Builder $query) use ($search) {
+                        $query->where(function (Builder $query) use ($search) {
+                            foreach ($this->widgets as $widget) {
+                                if ($widget->property('translation')) {
+                                    $query->orWhere(function ($query) use ($widget, $search) {
+                                        $widget->doSearch($query, $search, null);
+                                    });
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+        }
+    }
+
+    /**
+     * Perform sort query by widgets.
+     *
+     * @param Builder $query
+     * @param string|null $sort  sort column
+     * @param bool $sortDesc  sort desc.
+     * @return void
+     */
+    final protected function querySort(Builder $query, $sort, bool $sortDesc)
+    {
+        if (! empty($sort)) {
+            foreach ($this->widgets as $widget) {
+                foreach ($widget->getTableColumns() as $tableColumn) {
+                    if ($sort == $tableColumn->key) {
+                        $widget->doOrder(
+                            $query,
+                            $sort,
+                            $sortDesc ? 'desc' : 'asc'
+                        );
+                    }
+                }
+            }
+        } else {
+            $query->orderBy($this->property('defaultOrder'), $this->property('defaultOrderDirection'));
+        }
     }
 
     public static function routes(): void
@@ -435,7 +465,7 @@ abstract class CrudController extends SanjabController
         if (static::property('defaultDashboardCards')) {
             $model = static::property('model');
             $items = $model::query();
-            static::queryScope($items);
+            app(static::class)->queryScope($items);
             return [
                 StatsCard::create(static::property('titles'))
                             ->value($items->count())
@@ -445,5 +475,54 @@ abstract class CrudController extends SanjabController
             ];
         }
         return [];
+    }
+
+    public static function globalSearch(string $search)
+    {
+        $results = [];
+        if (Auth::user()->can('viewAny'.static::property('permissionsKey'), static::property('model')) && static::property('globalSearch')) {
+            $controllerInsatance = app(static::class);
+            App::call([$controllerInsatance, 'index']);
+            $model = static::property('model');
+            $items = $model::query();
+            $controllerInsatance->querySearch($items, $search);
+            $controllerInsatance->queryScope($items);
+            $items = $items->get();
+
+            if (preg_match('/.*'.preg_quote($search).'.*/', static::property('title')) || preg_match('/.*'.preg_quote($search).'.*/', static::property('titles'))) {
+                $results[] = SearchResult::create(static::property('titles'), route('sanjab.modules.'.static::property('route').'.index'))
+                                            ->icon(static::property('icon'))
+                                            ->order(50);
+            }
+
+            $itemFormat = null;
+            if (static::property('itemFormat')) {
+                $itemFormat = static::property('itemFormat');
+            } elseif (! empty($model::first()->name)) {
+                $itemFormat = "%name";
+            } elseif (! empty($model::first()->title)) {
+                $itemFormat = "%title";
+            }
+            foreach ($items as $item) {
+                $itemName = $itemFormat;
+                preg_match_all("/%([A-Za-z0-9_]+)/", $itemFormat, $matches);
+                foreach ($matches[1] as $match) {
+                    $itemName = str_replace('%'.$match, $item->{ $match }, $itemName);
+                }
+                if (preg_match('/.*'.preg_quote($search).'.*/', $itemName)) {
+                    if (static::property('editable') && Auth::user()->can('edit'.static::property('permissionsKey'), $item)) {
+                        $results[] = SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $itemName, 'part' => static::property('titles')]), route('sanjab.modules.'.static::property('route').'.edit', ['id' => $item->id]))
+                                                    ->icon(static::property('icon'));
+                    } elseif (static::property('showable') && Auth::user()->can('view'.static::property('permissionsKey'), $item)) {
+                        $results[] = SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $itemName, 'part' => static::property('titles')]), route('sanjab.modules.'.static::property('route').'.show', ['id' => $item->id]))
+                                                    ->icon(static::property('icon'));
+                    } else {
+                        $results[] = SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $itemName, 'part' => static::property('titles')]), route('sanjab.modules.'.static::property('route').'.index'))
+                                                    ->icon(static::property('icon'));
+                    }
+                }
+            }
+        }
+        return $results;
     }
 }

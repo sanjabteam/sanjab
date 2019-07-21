@@ -33,6 +33,7 @@ return [
     'success' => 'موفقیت',
     'super_admin' => 'ادمین اصلی',
     'settings' => 'تنظیمات',
+    ':item_in_:part' => ':item در :part',
 
 
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',
