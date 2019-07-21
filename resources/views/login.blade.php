@@ -18,8 +18,7 @@
     </head>
 
     <body class="off-canvas-sidebar">
-        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute
-            fixed-top text-white">
+        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top text-white">
             <div class="container">
                 <div class="navbar-wrapper">
                     <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name') }}</a>
@@ -30,7 +29,7 @@
         <div class="wrapper wrapper-full-page">
             <div class="page-header login-page header-filter"
                 filter-color="black" style="background-image:
-                url('https://source.unsplash.com/daily'); background-size:
+                url('@if($sanjabImage){{ $sanjabImage['image'] }}@else{{ 'https://source.unsplash.com/daily' }}@endif'); background-size:
                 cover; background-position: top center;align-items: center;"
                 data-color="orange">
                 <div class="container" style="height: auto;">
@@ -135,6 +134,7 @@
                                     </div>
                                 </div>
                             </form>
+                            @if($sanjabImage)<a class="image-author" href="{{ $sanjabImage['link'] }}" title="{{ $sanjabImage['author'] }}" target="_blank">@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])</a>@endif
                         </div>
                     </div>
                 </div>

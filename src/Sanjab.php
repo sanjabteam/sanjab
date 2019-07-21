@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Sanjab\Helpers\NotificationItem;
 use Sanjab\Cards\Card;
 use Sanjab\Helpers\SearchResult;
+use Illuminate\Support\Facades\Cache;
 
 class Sanjab
 {
@@ -211,5 +212,35 @@ class Sanjab
             return $a->order > $b->order;
         });
         return $results;
+    }
+
+    /**
+     * Random image info for background.
+     *
+     * @return array|null
+     */
+    public static function image()
+    {
+        return Cache::remember('sanjab_background_details', now()->addHours(6), function () {
+            $curl = curl_init();
+            curl_setopt_array($curl, [
+                CURLOPT_URL => "https://sanjabteam.github.io/unsplash/images.json",
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_RETURNTRANSFER => true,
+            ]);
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            curl_close($curl);
+            if ($err) {
+                return null;
+            } else {
+                $response = json_decode($response, true);
+                $out = array_random($response);
+                if (is_array($out) && isset($out['image']) && isset($out['link']) && isset($out['author'])) {
+                    return $out;
+                }
+                return null;
+            }
+        });
     }
 }

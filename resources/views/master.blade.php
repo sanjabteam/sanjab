@@ -16,7 +16,7 @@
         <div class="wrapper">
             <div class="sidebar" data-color="orange"
                 data-background-color="black"
-                data-image="https://source.unsplash.com/daily">
+                data-image="@if($sanjabImage){{ $sanjabImage['image'] }}@else{{ 'https://source.unsplash.com/daily' }}@endif">
                 <div class="logo">
                     <a href="{{ url('/') }}" target="_blank" class="simple-text
                         logo-normal">
@@ -26,6 +26,7 @@
                 <div class="screen-saver-content">
                     <div>
                         <h1>@if(time() - Session::get('sanjab_hide_lock_screen') > 7200) @lang('sanjab::sanjab.welcome_back') @endif</h1>
+                        @if($sanjabImage)<a class="image-author" href="{{ $sanjabImage['link'] }}" title="{{ $sanjabImage['author'] }}" target="_blank">@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])</a>@endif
                     </div>
                 </div>
                 <div class="sidebar-wrapper">

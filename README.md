@@ -21,6 +21,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 - [Open street map](https://www.openstreetmap.org)
 - [Quill](https://quilljs.com/)
 - [Shabnam font](https://github.com/rastikerdar/shabnam-font)
+- [Unsplash](https://unsplash.com)
 - [Vue.js](https://vuejs.org/)
 - [Vue bootstrap typeahead](https://github.com/alexurquhart/vue-bootstrap-typeahead)
 - [Vue quill editor](https://github.com/surmon-china/vue-quill-editor)

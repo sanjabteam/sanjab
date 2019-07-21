@@ -20,6 +20,7 @@ class SanjabGuestMiddleware
         if (Auth::check()) {
             return redirect('/'.ltrim(config('sanjab.route'), '/'));
         }
+        $request->session()->forget('sanjab_hide_lock_screen');
 
         return $next($request);
     }

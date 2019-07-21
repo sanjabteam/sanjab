@@ -111,6 +111,7 @@ class SanjabServiceProvider extends ServiceProvider
         View::composer(['admin.*', 'sanjab.*', 'sanjab::*'], function (\Illuminate\View\View $view) {
             $view->with('sanjabMenuItems', app('sanjab')->menuItems());
             $view->with('sanjabNotificationItems', app('sanjab')->notificationItems());
+            $view->with('sanjabImage', app('sanjab')->image());
         });
     }
 
