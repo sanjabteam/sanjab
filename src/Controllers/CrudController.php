@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Builder;
+use Sanjab\Cards\StatsCard;
 
 abstract class CrudController extends SanjabController
 {
@@ -345,8 +346,21 @@ abstract class CrudController extends SanjabController
                                         return Auth::user()->can('delete'.static::property('permissionsKey'), $item);
                                     });
             }
+            if ($this->property('defaultCards')) {
+                $itemsCount = $model::query();
+                static::queryScope($itemsCount);
+                $this->cards[] = StatsCard::create(static::property('titles'))
+                                    ->value($itemsCount->count())
+                                    ->icon(static::property('icon'));
+            }
             $this->init($type, $item);
             $this->postInitWidgets($type, $item);
+            foreach ($this->cards as $card) {
+                $card->postInit();
+            }
+            usort($this->cards, function ($a, $b) {
+                return $a->order > $b->order;
+            });
             $this->sanjabCrudInitialized = true;
         }
     }
@@ -366,7 +380,7 @@ abstract class CrudController extends SanjabController
      * @param Builder $query
      * @return void
      */
-    protected function queryScope(Builder $query)
+    protected static function queryScope(Builder $query)
     {
     }
 
@@ -414,5 +428,22 @@ abstract class CrudController extends SanjabController
             $permission->addPermission(trans('sanjab::sanjab.delete_:item', ['item' => static::property('title')]), 'delete'.static::property('permissionsKey'), static::property('model'));
         }
         return [$permission];
+    }
+
+    public static function dashboardCards(): array
+    {
+        if (static::property('defaultDashboardCards')) {
+            $model = static::property('model');
+            $items = $model::query();
+            static::queryScope($items);
+            return [
+                StatsCard::create(static::property('titles'))
+                            ->value($items->count())
+                            ->link(route('sanjab.modules.'.static::property('route').'.index'))
+                            ->variant(array_random(['primary', 'secondary', 'success', 'info', 'warning', 'danger']))
+                            ->icon(static::property('icon'))
+            ];
+        }
+        return [];
     }
 }

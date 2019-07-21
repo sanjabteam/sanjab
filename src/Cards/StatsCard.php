@@ -10,8 +10,9 @@ use stdClass;
  * @method $this footerTitle(string $val)       title in footer.
  * @method $this footerIcon(string $val)        icon in footer.
  * @method $this link(string $val)              link of card.
- * @method $this value(callable $val)           value of stats.
+ * @method $this value(callable|string $val)    value of stats.
  * @method $this icon(string $val)              icon of stats.
+ * @method $this variant(string $val)           variant of stat card.
  */
 class StatsCard extends Card
 {
@@ -23,10 +24,10 @@ class StatsCard extends Card
 
     protected function modifyResponse(stdClass $response)
     {
-        if (is_callable("value")) {
+        if (is_callable($this->property("value"))) {
             $response->data = $this->property("value")();
         } else {
-            $response->data = "undefined";
+            $response->data = $this->property("value");
         }
     }
 }

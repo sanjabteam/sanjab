@@ -25,7 +25,9 @@ class RoleController extends CrudController
                 ->title(trans('sanjab::sanjab.role'))
                 ->titles(trans('sanjab::sanjab.roles'))
                 ->model(Role::class)
-                ->icon('person');
+                ->icon('person')
+                ->defaultCards(false)
+                ->defaultDashboardCards(false);
     }
 
     protected function init(string $type, Model $item = null): void

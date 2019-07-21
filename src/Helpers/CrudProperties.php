@@ -23,6 +23,8 @@ use Illuminate\Support\Str;
  * @method $this defaultOrderDirection (string $val) Default column order direction.
  * @method $this permissionsKey (string $val)        Permission key if you use more than one crud controller for one model.
  * @method $this bulk (bool $val)                    Is bulk actions allowed or not.
+ * @method $this defaultCards(bool $val)             Should default cards added to cards.
+ * @method $this defaultDashboardCards(bool $val)    Should default dashboard cards added to dashboard.
  */
 class CrudProperties extends PropertiesHolder
 {
@@ -42,6 +44,8 @@ class CrudProperties extends PropertiesHolder
         $this->defaultOrder('id');
         $this->defaultOrderDirection('desc');
         $this->permissionsKey('');
+        $this->defaultCards(true);
+        $this->defaultDashboardCards(true);
         parent::__construct($options);
     }
 

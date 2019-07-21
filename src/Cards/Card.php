@@ -11,12 +11,13 @@ use Sanjab\Helpers\PropertiesHolder;
  * @method $this tag(string $val)           tag of card.
  * @method $this cols(string $val)          bootstrap based column width.
  * @method $this title(string $val)         title of card.
+ * @method $this order(int $val)            order of card.
  */
 abstract class Card extends PropertiesHolder
 {
     public function __construct(array $properties = [])
     {
-        $this->tag("input")->cols(12);
+        $this->tag("input")->cols(12)->order(100);
         parent::__construct($properties);
         $this->init();
     }

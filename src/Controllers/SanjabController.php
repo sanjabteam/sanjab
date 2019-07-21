@@ -9,6 +9,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Sanjab\Helpers\PermissionItem;
 use Sanjab\Helpers\NotificationItem;
+use Sanjab\Cards\Card;
 
 abstract class SanjabController extends BaseController
 {
@@ -50,6 +51,16 @@ abstract class SanjabController extends BaseController
      * @return PermissionItem[]
      */
     public static function permissions(): array
+    {
+        return [];
+    }
+
+    /**
+     * Load sanjab dashboard cards for this controller.
+     *
+     * @return Card[]
+     */
+    public static function dashboardCards(): array
     {
         return [];
     }

@@ -7,6 +7,7 @@ use Sanjab\Helpers\MenuItem;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Auth;
 use Sanjab\Helpers\NotificationItem;
+use Sanjab\Cards\Card;
 
 class Sanjab
 {
@@ -39,6 +40,13 @@ class Sanjab
      * @var MenuItem[]
      */
     protected static $permissionItems = null;
+
+    /**
+     * Dashboard cards
+     *
+     * @var Card[]
+     */
+    protected static $dashboardCards = null;
 
     /**
      * Array of controllers.
@@ -149,5 +157,30 @@ class Sanjab
             });
         }
         return static::$permissionItems;
+    }
+
+    /**
+     * All controllers permission items.
+     *
+     * @return PermissionItem[]
+     * @throws Exception
+     */
+    public static function dashboardCards(): array
+    {
+        if (static::$dashboardCards == null) {
+            static::$dashboardCards = [];
+            foreach (static::controllers() as $controller) {
+                foreach ($controller::dashboardCards() as $dashboardCard) {
+                    if (! $dashboardCard instanceof Card) {
+                        throw new Exception("Some dashboard card item in '$controller' is not a Card type.");
+                    }
+                    static::$dashboardCards[] = $dashboardCard;
+                }
+            }
+            usort(static::$dashboardCards, function ($a, $b) {
+                return $a->order > $b->order;
+            });
+        }
+        return static::$dashboardCards;
     }
 }

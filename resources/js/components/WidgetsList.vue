@@ -1,10 +1,6 @@
 <template>
     <div>
-        <b-row>
-            <b-col v-for="(card, index) in cards" :key="index" :cols="card.cols">
-                <component :is="card.tag" :data="typeof cardsData[index] != 'undefined' ? cardsData[index] : null" v-bind="card" />
-            </b-col>
-        </b-row>
+        <cards-list :cards="cards" :data="cardsData" />
         <b-row ref="beforeTable">
             <b-col md="6" class="my-1">
                 <b-button v-for="(action, index) in generalActions" @click="onActionClick(action)" :variant="action.variant" :href="action.url ? action.url : 'javascript:void(0);'" :key="index" :title="action.title" v-b-tooltip><i class="material-icons">{{ action.icon }}</i>{{ action.title }}</b-button>

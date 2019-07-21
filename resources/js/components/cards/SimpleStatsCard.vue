@@ -1,7 +1,7 @@
 <template>
     <a :href="link">
         <div class="card card-stats">
-            <div class="card-header card-header-warning card-header-icon">
+            <div :class="'card-header card-header-icon card-header-' + variant">
                 <div class="card-icon">
                     <i class="material-icons">{{ icon }}</i>
                 </div>
@@ -45,6 +45,10 @@
             footerIcon: {
                 type: String,
                 default: null
+            },
+            variant: {
+                type: String,
+                default: "warning"
             },
             data: {
                 type: [Object],
