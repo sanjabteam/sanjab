@@ -81,7 +81,7 @@
                             selected: self.mutableValue,
                             controller: self.controller,
                             action: self.controllerAction,
-                            name: self.name,
+                            widget: self.name,
                             item: self.controllerItem,
                             search: search
                         })

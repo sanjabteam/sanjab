@@ -213,7 +213,7 @@ abstract class SettingController extends SanjabController
             foreach ($controllerInsatance->widgets as $widget) {
                 if (preg_match('/.*'.preg_quote($search).'.*/', $widget->title)) {
                     return [
-                        SearchResult::create(static::property('title'), route('sanjab.settings.'.static::property('key')))
+                        SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $widget->title, 'part' => static::property('title')]), route('sanjab.settings.'.static::property('key')))
                                                 ->icon(static::property('icon'))
                                                 ->order(50)
                     ];

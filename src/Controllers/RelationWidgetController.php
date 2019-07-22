@@ -4,42 +4,21 @@ namespace Sanjab\Controllers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Builder;
+use Sanjab\Helpers\InteractsWithWidget;
 
 class RelationWidgetController extends SanjabController
 {
+    use InteractsWithWidget;
+
     public function options(Request $request)
     {
         $this->validate($request, [
             'search'     => 'nullable|string',
             'selected'   => 'nullable|array',
             'selected.*' => 'numeric',
-            'controller' => 'required|string',
-            'action'     => 'required|string',
-            'item'       => 'nullable|numeric',
-            'name'       => 'required|string',
         ]);
-        $controller = $request->input("controller");
-        if (! class_exists($controller)) {
-            return abort(400, "Controller is not valid.");
-        }
-        $controllerInsatance = app($request->input('controller'));
-        $controllerAction = $request->input('action');
-        $controllerActionParameters = [];
-        if ($request->filled('item')) {
-            $controllerActionParameters[] = $request->input('item');
-        }
-        App::call([$controllerInsatance, $controllerAction], $controllerActionParameters);
-        $relationWidget = null;
-        foreach ($controllerInsatance->getWidgets() as $widget) {
-            if ($widget->name == $request->input('name')) {
-                $relationWidget = $widget;
-            }
-        }
-        if ($relationWidget == null) {
-            return abort(400, "Widget name is not valid.");
-        }
+        $relationWidget = $this->getInteractionInfo()[1];
         $model = $relationWidget->model;
         $format = $relationWidget->format;
 

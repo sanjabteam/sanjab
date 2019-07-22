@@ -19,6 +19,7 @@ class Sanjab
         \Sanjab\Controllers\DropzoneController::class,
         \Sanjab\Controllers\QuillController::class,
         \Sanjab\Controllers\RelationWidgetController::class,
+        \Sanjab\Controllers\CheckboxWidgetController::class,
         \Sanjab\Controllers\TranslationController::class,
         \Sanjab\Controllers\SearchController::class,
     ];

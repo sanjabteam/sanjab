@@ -42,6 +42,7 @@ return [
     'please_click_on_im_not_robot' => 'لطفا بر روی گزینه من ربات نیستم کلیک کنید.',
     'there_are_no_records_to_show' => 'هیچ داده ای جهت مشاهده وجود ندارد.',
     'no_records_found' => 'هیچ داده ای یافت نشد.',
+    'updated_successfully' => 'با موفقیت بروزرسانی شد.',
     ':item_created_successfully' => ':item با موفقیت ساخته شد.',
     ':item_updated_successfully' => ':item با موفقیت به روزرسانی شد.',
     'you_are_not_allowed_to_perform_this' => 'شما اجازه انجام این کار را ندارید.',
