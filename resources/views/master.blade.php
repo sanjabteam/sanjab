@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="{{ App::getLocale() }}" dir="@lang('sanjab::sanjab.dir')">
+<html lang="{{ App::getLocale() }}" dir="@lang('sanjab::sanjab.dir')" class="theme-{{ config('sanjab.theme.color') }}">
 
     <head>
         <meta charset="utf-8" />
@@ -14,7 +14,7 @@
 
     <body class="@if(time() - Session::get('sanjab_hide_lock_screen') > 300) screen-saver @endif">
         <div class="wrapper">
-            <div class="sidebar" data-color="orange"
+            <div class="sidebar"
                 data-background-color="black"
                 data-image="@if($sanjabImage){{ $sanjabImage['image'] }}@else{{ 'https://source.unsplash.com/daily' }}@endif">
                 <div class="logo">

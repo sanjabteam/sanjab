@@ -48,7 +48,7 @@
             },
             variant: {
                 type: String,
-                default: "warning"
+                default: "sanjab"
             },
             data: {
                 type: [Object],

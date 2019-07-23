@@ -92,7 +92,7 @@ abstract class DashboardController extends SanjabController
                     ->title(static::property('title'))
                     ->icon(static::property('icon'))
                     ->active(function () {
-                        return Route::is('sanjab.dashboards.'.static::property('key').'.*');
+                        return Route::is('sanjab.dashboards.'.static::property('key'));
                     })
         ];
     }

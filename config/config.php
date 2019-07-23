@@ -22,6 +22,7 @@ return [
         'ignore_on_debug' => true
     ],
     'theme' => [
+        'color' => 'orange',
         'footer_note' => '&copy; <script>document.write(new Date().getFullYear())</script>,
                         made with <i class="material-icons">favorite</i> by Creative Tim.
                         Powered by Sanjab',

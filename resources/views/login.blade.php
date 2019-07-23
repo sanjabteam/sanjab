@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="{{ App::getLocale() }}" dir="@lang('sanjab::sanjab.dir')">
+<html lang="{{ App::getLocale() }}" dir="@lang('sanjab::sanjab.dir')" class="theme-{{ config('sanjab.theme.color') }}">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -30,7 +30,7 @@
             <div class="page-header login-page header-filter"
                 filter-color="black" style="background-image:
                 url('@if($sanjabImage){{ $sanjabImage['image'] }}@else{{ 'https://source.unsplash.com/daily' }}@endif'); background-size:
-                cover; background-position: top center;align-items: center;"
+                cover; background-position: center center;align-items: center;"
                 data-color="orange">
                 <div class="container" style="height: auto;">
                     <div class="row align-items-center">
@@ -40,7 +40,7 @@
                                 action="{{ route('sanjab.auth.login') }}">
                                 @csrf
                                 <div class="card card-login card-hidden mb-3">
-                                    <div class="card-header card-header-warning text-center">
+                                    <div class="card-header card-header-sanjab text-center">
                                         <h4 class="card-title"><strong>@lang('sanjab::sanjab.login')</strong></h4>
                                         <div class="social-line">
                                             <a href="#pablo" class="btn
@@ -130,7 +130,7 @@
                                         @endif
                                     </div>
                                     <div class="card-footer justify-content-center">
-                                        <button type="submit" class="btn btn-warning btn-link btn-lg">@lang('sanjab::sanjab.login')</button>
+                                        <button type="submit" class="btn btn-sanjab btn-link btn-lg">@lang('sanjab::sanjab.login')</button>
                                     </div>
                                 </div>
                             </form>

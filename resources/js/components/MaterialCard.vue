@@ -4,8 +4,7 @@
             <slot></slot>
         </div>
         <div v-else class="card">
-            <div v-if="header" class="card-header
-                card-header-warning">
+            <div v-if="header" class="card-header card-header-sanjab">
                 <h4 class="card-title">{{ title }}</h4>
                 <p class="card-category">{{ description }}</p>
             </div>
