@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Sanjab\Helpers\SearchType;
 
 /**
  * Base class for all widgets ( form fields and table cells and view )
@@ -112,6 +113,41 @@ abstract class Widget extends PropertiesHolder
                 ->title($this->property("title"))
                 ->sortable($this->property('sortable'))
                 ->tag($this->property('indexTag'))
+        ];
+    }
+
+    /**
+     * Get search types.
+     *
+     * @return null|array|SearchType[]
+     */
+    final public function getSearchTypes()
+    {
+        if ($this->property('searchable')) {
+            $searchTypes = $this->searchTypes();
+            if (count($searchTypes) != 0) {
+                return $searchTypes;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get search types.
+     *
+     * @return array|SearchType[]
+     */
+    protected function searchTypes(): array
+    {
+        return [
+            SearchType::create('equal', trans('sanjab::sanjab.equal'))
+                        ->addWidget(TextWidget::create('equal', trans('sanjab::sanjab.equal'))),
+            SearchType::create('not_equal', trans('sanjab::sanjab.not_equal'))
+                        ->addWidget(TextWidget::create('not_equal', trans('sanjab::sanjab.not_equal'))),
+            SearchType::create('similar', trans('sanjab::sanjab.similar'))
+                        ->addWidget(TextWidget::create('similar', trans('sanjab::sanjab.similar'))),
+            SearchType::create('not_similar', trans('sanjab::sanjab.not_similar'))
+                        ->addWidget(TextWidget::create('not_similar', trans('sanjab::sanjab.not_similar'))),
         ];
     }
 
@@ -528,7 +564,7 @@ abstract class Widget extends PropertiesHolder
 
     public function getGetters()
     {
-        return array_merge(['tableColumns'], $this->getters);
+        return array_merge(['tableColumns', 'searchTypes'], $this->getters);
     }
 
     /**

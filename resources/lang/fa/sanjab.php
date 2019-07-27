@@ -35,6 +35,16 @@ return [
     'settings' => 'تنظیمات',
     ':item_in_:part' => ':item در :part',
     'photo_by_:author' => 'عکس توسط :author',
+    'advanced_search' => 'جستجوی پیشرفته',
+    'equal' => 'برابر',
+    'not_equal' => 'نابرابر',
+    'similar' => 'مشابه',
+    'not_similar' => 'نامشابه',
+    'less' => 'کمتر',
+    'less_or_eqaul' => 'کمتر یا مساوی',
+    'more' => 'بیشتر',
+    'more_or_eqaul' => 'بیشتر یا مساوی',
+    'between' => 'بین',
 
 
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',

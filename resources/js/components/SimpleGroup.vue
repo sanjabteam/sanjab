@@ -61,17 +61,20 @@
         },
         computed: {
             fieldError () {
-                var widgetName = this.widget.name;
-                if (this.fieldLocale) {
-                    widgetName = 'sanjab_translations.' + this.fieldLocale + '.' + widgetName;
+                if (this.errors instanceof Object && !(this.errors instanceof Array)) {
+                    var widgetName = this.widget.name;
+                    if (this.fieldLocale) {
+                        widgetName = 'sanjab_translations.' + this.fieldLocale + '.' + widgetName;
+                    }
+                    return this.errors[widgetName] ?
+                            Object.values(this.errors[widgetName])[0] :
+                            (
+                                this.errors[widgetName + '.*'] ?
+                                Object.values(this.errors[widgetName + '.*'])[0] :
+                                null
+                            );
                 }
-                return this.errors[widgetName] ?
-                        Object.values(this.errors[widgetName])[0] :
-                        (
-                            this.errors[widgetName + '.*'] ?
-                            Object.values(this.errors[widgetName + '.*'])[0] :
-                            null
-                        );
+                return null;
             }
         }
     }

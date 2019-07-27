@@ -462,7 +462,7 @@ abstract class CrudController extends SanjabController
 
     public static function dashboardCards(): array
     {
-        if (static::property('defaultDashboardCards')) {
+        if (static::property('defaultDashboardCards') && Auth::user()->can('viewAny'.static::property('permissionsKey'), static::property('model'))) {
             $model = static::property('model');
             $items = $model::query();
             app(static::class)->queryScope($items);

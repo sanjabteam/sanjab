@@ -89,7 +89,9 @@ class DropzoneWidget extends Widget
                 } else {
                     if (Storage::disk("local")->exists($file)) {
                         $result[] = ($this->property("fileStoreCallBack"))(Storage::disk("local")->get($file), $this->property("directory"), $filename, $this->property("disk"));
-                        Storage::disk("local")->delete($file);
+                        if (! config('app.debug')) {
+                            Storage::disk("local")->delete($file);
+                        }
                     }
                 }
             }

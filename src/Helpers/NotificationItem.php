@@ -78,7 +78,7 @@ class NotificationItem extends PropertiesHolder
      * @property string $icon  icon
      * @return static
      */
-    public static function create($icon = null)
+    public static function create(string $icon = null)
     {
         $out = new static;
         if ($icon) {

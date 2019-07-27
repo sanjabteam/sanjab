@@ -43,8 +43,10 @@
                     if (value.filter((i) => !this.value.includes(i)).length != 0) {
                         this.$emit("input", value);
                     }
-                } else {
+                } else if (newValue != null && typeof newValue.value !== 'undefined') {
                     this.$emit("input", newValue.value);
+                } else {
+                    this.$emit("input", null);
                 }
             },
             value (newValue, oldValue) {

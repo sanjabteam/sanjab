@@ -90,7 +90,7 @@
                 loading: true,
                 currentLocaleTab: 0,
                 showTranslation: false
-            }
+            };
         },
         methods: {
             onSubmit() {

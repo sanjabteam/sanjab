@@ -5,23 +5,55 @@
             <b-col md="6" class="my-1">
                 <b-button v-for="(action, index) in generalActions" @click="onActionClick(action)" :variant="action.variant" :href="action.url ? action.url : 'javascript:void(0);'" :key="index" :title="action.title" v-b-tooltip><i class="material-icons">{{ action.icon }}</i>{{ action.title }}</b-button>
             </b-col>
-            <b-col md="4" class="my-1">
-                <b-form-input @keyup="onFilterChanged" :placeholder="sanjabTrans('search') + '...'"></b-form-input>
+            <b-col md="5" class="my-1">
+                <b-input-group>
+                    <b-form-input @keyup="onFilterChanged" :value="filter" :placeholder="sanjabTrans('search') + '...'"></b-form-input>
+                    <b-button v-b-toggle.advanced_search_collapse variant="primary" :title="sanjabTrans('advanced_search')" v-b-tooltip>
+                        <i class="material-icons">search</i>
+                    </b-button>
+                </b-input-group>
             </b-col>
-            <b-col md="2" class="my-1">
+            <b-col md="1" class="my-1">
                 <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
             </b-col>
         </b-row>
+
+        <!-- Search -->
+        <!-- <b-collapse id="advanced_search_collapse">
+            <b-form @submit.prevent="onSearch">
+                <div v-for="(widget, index) in widgets" :key="index">
+                    <b-row v-if="widget.searchTypes != null">
+                        <b-col :cols="2">
+                            {{ widget.title }}
+                        </b-col>
+                        <b-col :cols="2">
+                             <b-form-select v-model="search_types[widget.name]" :options="searchTypeOptions(widget)"></b-form-select>
+                        </b-col>
+                        <b-col :cols="6">
+                            <b-row v-for="(searchType, searchIndex) in widget.searchTypes" :key="index + '_' + searchIndex" v-show="searchType.type == search_types[widget.name]">
+                                <b-col v-for="(searchWidget, searchWidgetIndex) in searchType.widgets" :key="index + '_' + searchIndex + '_' + searchWidgetIndex">
+                                    <component :is="searchWidget.groupTag" :widget="searchWidget" :properties="properties" />
+                                </b-col>
+                            </b-row>
+                        </b-col>
+                    </b-row>
+                </div>
+                <b-button type="submit" variant="primary" block>{{ sanjabTrans('search') }}</b-button>
+            </b-form>
+        </b-collapse> -->
+        <!-- END search -->
+
+        <!-- Bulk actions -->
         <b-collapse id="bulk_actions_collapse" v-model="bulkActionsVisible">
              <b-button-group>
-                <div v-for="(action) in bulkActions" :key="action.index">
-                    <b-button :disabled="selectedBulk.filter((bulkItem) => bulkItem.__can[action.index]).length != selectedBulk.length" @click="onActionClick(action, selectedBulk)" :variant="action.variant" href="javascript:void(0);" :title="action.title" v-b-tooltip>
-                        <i class="material-icons">{{ action.icon }}</i>
-                        {{ action.title }}
-                    </b-button>
-                </div>
+                <b-button v-for="(action) in bulkActions" :key="action.index" :disabled="selectedBulk.filter((bulkItem) => bulkItem.__can[action.index]).length != selectedBulk.length" @click="onActionClick(action, selectedBulk)" :variant="action.variant" href="javascript:void(0);" :title="action.title" v-b-tooltip>
+                    <i class="material-icons">{{ action.icon }}</i>
+                    {{ action.title }}
+                </b-button>
             </b-button-group>
         </b-collapse>
+        <!-- END Bulk actions -->
+
         <b-table
             ref="table"
             :items="items"
@@ -35,7 +67,7 @@
             show-empty
         >
             <div slot="table-busy" class="text-center text-danger my-2">
-                <b-spinner variant="warning" class="align-middle"></b-spinner>
+                <b-spinner variant="default" class="align-middle"></b-spinner>
             </div>
             <template slot="empty">
                 <center>{{ sanjabTrans('there_are_no_records_to_show') }}</center>
@@ -48,11 +80,9 @@
             </div>
             <div slot="actions" slot-scope="row">
                 <b-button-group>
-                    <div v-for="(action) in perItemActions" :key="action.index">
-                        <b-button v-if="row.item.__can[action.index] == true" @click="onActionClick(action, row.item)" :variant="action.variant" :href="row.item.__action_url[action.index] ? row.item.__action_url[action.index] : 'javascript:void(0);'" size="sm" :title="action.title" v-b-tooltip>
-                            <i class="material-icons">{{ action.icon }}</i>
-                        </b-button>
-                    </div>
+                    <b-button v-for="(action) in perItemActions" :key="action.index" v-if="row.item.__can[action.index] == true" @click="onActionClick(action, row.item)" :variant="action.variant" :href="row.item.__action_url[action.index] ? row.item.__action_url[action.index] : 'javascript:void(0);'" size="sm" :title="action.title" v-b-tooltip>
+                        <i class="material-icons">{{ action.icon }}</i>
+                    </b-button>
                 </b-button-group>
             </div>
 
@@ -100,9 +130,11 @@
             return {
                 page: 1,
                 perPage: this.properties.perPage,
-                filter: "",
                 total: 0,
+                filter: "",
                 filterTimer: null,
+                search: {},
+                search_types: {},
                 currentAction: {},
                 actionItem: null,
                 actionItems: null,
@@ -187,6 +219,17 @@
                         }
                     })
                 }
+            },
+            onSearch() {
+                this.filter = "";
+
+            },
+            searchTypeOptions(widget) {
+                if (typeof this.search_types[widget.name] === 'undefined') {
+                    this.$set('search_types[' + widget.name + ']', null);
+                    Vue.set(this.search_types[newPsgId], 'name', null);
+                }
+                return [{value: null, text: widget.title}].concat(widget.searchTypes.map((stype) => {return {text: stype.title, value: stype.type}}));
             }
         },
         computed: {
@@ -259,6 +302,12 @@
                     }
                 }
             },
+            search: {
+                deep: true,
+                handler: function (newValue, oldValue) {
+                    console.log(newValue, oldValue);
+                }
+            }
         },
   }
 </script>

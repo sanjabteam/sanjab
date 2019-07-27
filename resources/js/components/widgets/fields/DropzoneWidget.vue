@@ -21,7 +21,7 @@
         },
         props: {
             value: {
-                type: Array,
+                type: [Array, String],
                 default: () => []
             },
             maxSize: {
@@ -65,7 +65,7 @@
                     dictRemoveFileConfirmation: "برای حذف فایل مطمئن هستید؟",
                     dictMaxFilesExceeded: "شما فایل بیشتری نمیتوانید آپلود کنید",
                 }
-            }
+            };
         },
         methods: {
             onSuccess (file, response) {
@@ -92,6 +92,10 @@
                         var file = { size: newValue[i].size, name: newValue[i].original, type: "image/jpeg", serverFile: newValue[i].name };
                         var url = newValue[i].url;
                         this.$refs.dropzoneInstance.manuallyAddFile(file, url);
+                    } else if (typeof newValue[i] == 'string') {
+                        this.files.push(newValue[i]);
+                        var file = { size: '100', name: 'image', type: "image/jpeg", serverFile: newValue[i] };
+                        this.$refs.dropzoneInstance.manuallyAddFile(file, '#');
                     }
                 }
                 this.disableWatchValue = true;
