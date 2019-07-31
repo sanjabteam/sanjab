@@ -4,12 +4,17 @@ namespace Sanjab;
 
 use Bouncer;
 use ReCaptcha\ReCaptcha;
+use TusPhp\Tus\Server as TusServer;
 use Illuminate\Support\Facades\View;
 use ReCaptcha\RequestMethod\CurlPost;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
+use TusPhp\Events\TusEvent;
+use TusPhp\Cache\FileStore;
 
 class SanjabServiceProvider extends ServiceProvider
 {
@@ -50,7 +55,8 @@ class SanjabServiceProvider extends ServiceProvider
 
             // Registering package commands.
             $this->commands([
-                \Sanjab\Commands\MakeAdmin::class
+                \Sanjab\Commands\MakeAdmin::class,
+                \Sanjab\Commands\ClearUpload::class
             ]);
         }
 
@@ -74,6 +80,7 @@ class SanjabServiceProvider extends ServiceProvider
         $this->app->singleton('sanjab', function () {
             return new Sanjab;
         });
+        $this->registerTus();
     }
 
     /**
@@ -139,6 +146,35 @@ class SanjabServiceProvider extends ServiceProvider
 
         Validator::replacer('sanjab_recaptcha', function ($message, $attribute, $rule, $parameters) {
             return trans('sanjab::sanjab.please_click_on_im_not_robot');
+        });
+    }
+
+    /**
+     * Register php tus.
+     *
+     * @return void
+     */
+    public function registerTus()
+    {
+        $this->app->singleton('sanjab-tus-server', function ($app) {
+
+            if (! Storage::disk('local')->exists('temp/'.Session::getId())) {
+                Storage::disk('local')->makeDirectory('temp/'.Session::getId());
+            }
+
+            $server = new TusServer(new FileStore(Storage::disk('local')->path('temp/'), Session::getId().'_tus_php.server.cache'));
+
+            $server->event()->addListener('tus-server.upload.complete', function (TusEvent $event) {
+                $uploadedFiles = Session::get('sanjab_uppy_files');
+                $uploadedFiles[$event->getFile()->getKey()] = $event->getFile()->details();
+                Session::put('sanjab_uppy_files', $uploadedFiles);
+            });
+
+            $server
+                ->setApiPath('/admin/helpers/uppy/upload')
+                ->setUploadDir(Storage::disk('local')->path('temp/'.Session::getId()));
+
+            return $server;
         });
     }
 }

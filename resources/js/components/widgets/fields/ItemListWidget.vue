@@ -70,7 +70,7 @@
             return {
                 items: [],
                 form: {},
-            }
+            };
         },
         methods: {
             addOption() {

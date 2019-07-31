@@ -10,14 +10,15 @@ use Sanjab\Helpers\NotificationItem;
 use Sanjab\Cards\Card;
 use Sanjab\Helpers\SearchResult;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class Sanjab
 {
     const SANJAB_CONTROLLERS = [
         \Sanjab\Controllers\AuthController::class,
         \Sanjab\Controllers\RoleController::class,
-        \Sanjab\Controllers\DropzoneController::class,
         \Sanjab\Controllers\QuillController::class,
+        \Sanjab\Controllers\UppyWidgetController::class,
         \Sanjab\Controllers\RelationWidgetController::class,
         \Sanjab\Controllers\CheckboxWidgetController::class,
         \Sanjab\Controllers\TranslationController::class,
@@ -243,5 +244,30 @@ class Sanjab
                 return null;
             }
         });
+    }
+
+    /**
+     * Clear unused uploads by uppy.
+     *
+     * @param string $path
+     * @return void
+     */
+    public static function clearUploadCache(string $path = 'temp')
+    {
+        foreach (Storage::disk('local')->files($path) as $file) {
+            // if last modified was more than 24 hours ago.
+            if (time() > Storage::disk('local')->lastModified($file) + 26400) {
+                Storage::disk('local')->delete($file);
+            }
+        }
+
+        // delete files inside subdirectories.
+        foreach (Storage::disk('local')->directories($path) as $subDirectory) {
+            static::clearUploadCache($subDirectory);
+            // if all files inside directory deleted. then delete directory self also.
+            if (count(Storage::disk('local')->files($subDirectory)) == 0) {
+                Storage::disk('local')->deleteDirectory($subDirectory);
+            }
+        }
     }
 }

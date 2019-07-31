@@ -25,7 +25,7 @@ use Sanjab\Helpers\SearchType;
  * @method $this    customPreStore(callable $val)               pre store with custom method -  parameters : ($request, $item).
  * @method $this    customPostStore(callable $val)              post store with custom method -  parameters : ($request, $item).
  * @method $this    customModifyResponse(callable $val)         custom item response modifyer -  parameters : ($response, $item).
- * @method $this    customModifyRequest(callable $val)          custom request modify -  parameters : ($request).
+ * @method $this    customModifyRequest(callable $val)          custom request modify -  parameters : ($request, $item).
  * @method $this    value(mixed $val)                           default value for input.
  * @method $this    name(string $val)                           field name.
  * @method $this    title(string $val)                          field title.
@@ -303,14 +303,15 @@ abstract class Widget extends PropertiesHolder
      * Do modifying request.
      *
      * @param Request $request
+     * @param Model|null $item
      * @return void
      */
-    final public function doModifyRequest(Request $request)
+    final public function doModifyRequest(Request $request, Model $item = null)
     {
         if (is_callable($this->property('customModifyRequest'))) {
-            return ($this->property('customModifyRequest'))($request);
+            return ($this->property('customModifyRequest'))($request, $item);
         }
-        $this->modifyRequest($request);
+        $this->modifyRequest($request, $item);
     }
 
     /**
@@ -333,9 +334,10 @@ abstract class Widget extends PropertiesHolder
      * To override modifying request.
      *
      * @param Request $request
+     * @param null|Model $item
      * @return void
      */
-    protected function modifyRequest(Request $request)
+    protected function modifyRequest(Request $request, Model $item = null)
     {
     }
 
@@ -354,9 +356,12 @@ abstract class Widget extends PropertiesHolder
     /**
      * Returns validation attributes.
      *
+     * @param Request $request
+     * @param string $type 'create' or 'edit'.
+     * @param Model|null $item
      * @return array
      */
-    public function validationAttributes(): array
+    public function validationAttributes(Request $request, string $type, Model $item = null): array
     {
         return [
             $this->name         => $this->title,
@@ -367,10 +372,12 @@ abstract class Widget extends PropertiesHolder
     /**
      * Returns validation rules.
      *
+     * @param Request $request
      * @property string $type 'create' or 'edit'.
+     * @property Model|null $item
      * @return array
      */
-    public function validationRules($type): array
+    public function validationRules(Request $request, string $type, Model $item = null): array
     {
         return [
             $this->name => $this->property('rules.'.$type, []),
@@ -380,9 +387,12 @@ abstract class Widget extends PropertiesHolder
     /**
      * Returns validation messages.
      *
+     * @param Request $request
+     * @property string $type 'create' or 'edit'.
+     * @property Model|null $item
      * @return array
      */
-    public function validationMessages(): array
+    public function validationMessages(Request $request, string $type, Model $item = null): array
     {
         return [];
     }

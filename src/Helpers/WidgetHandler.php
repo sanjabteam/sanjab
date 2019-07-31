@@ -69,11 +69,12 @@ trait WidgetHandler
     /**
      * Validation rules
      *
+     * @param Request $request
      * @param string $type  create|edit
      * @param Model|null $item
      * @return array
      */
-    public function validationRules(string $type, Model $item = null)
+    public function validationRules(Request $request, string $type, Model $item = null)
     {
         return [];
     }
@@ -81,11 +82,12 @@ trait WidgetHandler
     /**
      * Validation attributes
      *
+     * @param Request $request
      * @param string $type  create|edit
      * @param Model|null $item
      * @return array
      */
-    public function validationAttributes(string $type, Model $item = null)
+    public function validationAttributes(Request $request, string $type, Model $item = null)
     {
         return [];
     }
@@ -93,11 +95,12 @@ trait WidgetHandler
     /**
      * Validation messages.
      *
+     * @param Request $request
      * @param string $type  create|edit
      * @param Model|null $item
      * @return array
      */
-    public function validationMessages(string $type, Model $item = null)
+    public function validationMessages(Request $request, string $type, Model $item = null)
     {
         return [];
     }
@@ -146,11 +149,11 @@ trait WidgetHandler
      */
     public function widgetsPreStore(array $widgets, Request $request, Model $item)
     {
-        $this->modifyRequest($request);
+        $this->modifyRequest($request, $item);
 
         foreach ($widgets as $widget) {
             if (! $widget->property('translation')) {
-                $widget->doModifyRequest($request);
+                $widget->doModifyRequest($request, $item);
             }
         }
         foreach ($widgets as $widget) {
@@ -163,7 +166,7 @@ trait WidgetHandler
             $translatedRequest = $this->translatedRequest($request, $locale);
             foreach ($widgets as $widget) {
                 if ($widget->property('translation')) {
-                    $widget->doModifyRequest($translatedRequest);
+                    $widget->doModifyRequest($translatedRequest, $item);
                 }
             }
             foreach ($widgets as $widget) {
@@ -237,9 +240,9 @@ trait WidgetHandler
      */
     public function widgetsValidate(array $widgets, Request $request, string $type, Model $item = null)
     {
-        $messages = $this->validationMessages($type, $item);
-        $attributes = $this->validationAttributes($type, $item);
-        $rules = $this->validationRules($type, $item);
+        $messages = $this->validationMessages($request, $type, $item);
+        $attributes = $this->validationAttributes($request, $type, $item);
+        $rules = $this->validationRules($request, $type, $item);
         foreach ($rules as $key => $rule) {
             if (is_string($rule)) {
                 $rules[$key] = explode("|", $rule);
@@ -261,29 +264,29 @@ trait WidgetHandler
         foreach ($widgets as $widget) {
             if ($widget->property('translation')) {
                 foreach (config('sanjab.locales') as $locale => $localeName) {
-                    foreach ($widget->validationRules($type) as $key => $rule) {
+                    foreach ($widget->validationRules($request, $type, $item) as $key => $rule) {
                         if (! isset($rules['sanjab_translations'][$locale][$key])) {
                             $rules['sanjab_translations.'.$locale.'.'.$key] = [];
                         }
-                        $rules['sanjab_translations.'.$locale.'.'.$key] = array_values(array_unique(array_merge($rules['sanjab_translations.'.$locale.'.'.$key], $widget->validationRules($type)[$key])));
+                        $rules['sanjab_translations.'.$locale.'.'.$key] = array_values(array_unique(array_merge($rules['sanjab_translations.'.$locale.'.'.$key], $widget->validationRules($request, $type, $item)[$key])));
                     }
-                    $messages['sanjab_translations'][$locale] = array_merge($messages['sanjab_translations'][$locale], $widget->validationMessages());
+                    $messages['sanjab_translations'][$locale] = array_merge($messages['sanjab_translations'][$locale], $widget->validationMessages($request, $type, $item));
                     $attributes['sanjab_translations'][$locale] = array_merge(
                         $attributes['sanjab_translations'][$locale],
                         array_map(function ($attr) use ($localeName) {
                             return $attr.' ('.$localeName.')';
-                        }, $widget->validationAttributes())
+                        }, $widget->validationAttributes($request, $type, $item))
                     );
                 }
             } else {
-                foreach ($widget->validationRules($type) as $key => $rule) {
+                foreach ($widget->validationRules($request, $type, $item) as $key => $rule) {
                     if (! isset($rules[$key])) {
                         $rules[$key] = [];
                     }
                     $rules[$key] = array_values(array_unique(array_merge($rules[$key], $rule)));
                 }
-                $messages = array_merge($messages, $widget->validationMessages());
-                $attributes = array_merge($attributes, $widget->validationAttributes());
+                $messages = array_merge($messages, $widget->validationMessages($request, $type, $item));
+                $attributes = array_merge($attributes, $widget->validationAttributes($request, $type, $item));
             }
         }
         $messages = array_dot($messages);
@@ -314,9 +317,10 @@ trait WidgetHandler
      * Modify request before validate and store.
      *
      * @param Request $request
+     * @param Model|null $item
      * @return void
      */
-    protected function modifyRequest(Request $request)
+    protected function modifyRequest(Request $request, Model $item = null)
     {
     }
 

@@ -2,6 +2,9 @@
 
 namespace Sanjab\Widgets;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+
 /**
  * Input list of items
  *
@@ -22,7 +25,7 @@ class TextListWidget extends Widget
         $this->unique(true);
     }
 
-    public function validationRules($type): array
+    public function validationRules(Request $request, string $type, Model $item = null): array
     {
         $rules = is_string($this->property('itemRules')) ? explode('|', $this->property('itemRules')) : $this->property('itemRules', []);
         if ($this->property('unique')) {

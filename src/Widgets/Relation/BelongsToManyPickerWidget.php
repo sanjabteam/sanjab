@@ -80,7 +80,7 @@ class BelongsToManyPickerWidget extends RelationWidget
         $response->{ $this->property("name") } = $item->{ $this->property("name") }()->get()->pluck($this->relatedKey)->toArray();
     }
 
-    public function validationRules($type): array
+    public function validationRules(Request $request, string $type, Model $item = null): array
     {
         $arrayRule = ['array'];
         if ($this->property("max")) {

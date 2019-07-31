@@ -8,9 +8,9 @@
             <b-col md="5" class="my-1">
                 <b-input-group>
                     <b-form-input @keyup="onFilterChanged" :value="filter" :placeholder="sanjabTrans('search') + '...'"></b-form-input>
-                    <b-button v-b-toggle.advanced_search_collapse variant="primary" :title="sanjabTrans('advanced_search')" v-b-tooltip>
+                    <!-- <b-button v-b-toggle.advanced_search_collapse variant="primary" :title="sanjabTrans('advanced_search')" v-b-tooltip>
                         <i class="material-icons">search</i>
-                    </b-button>
+                    </b-button> -->
                 </b-input-group>
             </b-col>
             <b-col md="1" class="my-1">

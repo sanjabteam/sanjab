@@ -30,23 +30,25 @@ class ItemListWidget extends Widget
         $this->sortable(false);
         $this->tag("item-list-widget");
         $this->viewTag("item-list-view");
-        $this->inputOptions(["type" => "text"]);
-        $this->unique(true);
     }
 
     protected function preStore(Request $request, Model $item)
     {
-        $values = $item->{$this->property('name')};
-        if (! is_array($values)) {
-            $values = [];
+        $values = [];
+        if (is_array($request->input($this->name))) {
+            foreach ($request->input($this->name) as $key => $requestValue) {
+                if (isset($requestValue['__id']) && is_array($item->{ $this->name }) && isset($item->{ $this->name }[$requestValue['__id']])) {
+                    $values[$key] = $item->{ $this->name }[$requestValue['__id']];
+                } else {
+                    $values[$key] = [];
+                }
+            }
         }
         $values = $this->arraysToModels($request, $values);
-        if (is_array($request->input($this->property('name')))) {
-            foreach ($values as $key => $requestValues) {
-                $widgetRequest = $this->widgetRequest($request, $key);
-                foreach ($this->widgets as $widget) {
-                    $widget->doPreStore($widgetRequest, $values[$key]);
-                }
+        foreach ($values as $key => $requestValues) {
+            $widgetRequest = $this->widgetRequest($request, $key);
+            foreach ($this->widgets as $widget) {
+                $widget->doPreStore($widgetRequest, $values[$key]);
             }
         }
         $item->{$this->property('name')} = $this->modelsToArrays($values);
@@ -55,12 +57,10 @@ class ItemListWidget extends Widget
     protected function store(Request $request, Model $item)
     {
         $values = $this->arraysToModels($request, $item->{$this->property('name')});
-        if (is_array($request->input($this->property('name')))) {
-            foreach ($values as $key => $requestValues) {
-                $widgetRequest = $this->widgetRequest($request, $key);
-                foreach ($this->widgets as $widget) {
-                    $widget->doStore($widgetRequest, $values[$key]);
-                }
+        foreach ($values as $key => $requestValues) {
+            $widgetRequest = $this->widgetRequest($request, $key);
+            foreach ($this->widgets as $widget) {
+                $widget->doStore($widgetRequest, $values[$key]);
             }
         }
         $item->{$this->property('name')} = $this->modelsToArrays($values);
@@ -69,12 +69,10 @@ class ItemListWidget extends Widget
     protected function postStore(Request $request, Model $item)
     {
         $values = $this->arraysToModels($request, $item->{$this->property('name')});
-        if (is_array($request->input($this->property('name')))) {
-            foreach ($values as $key => $requestValues) {
-                $widgetRequest = $this->widgetRequest($request, $key);
-                foreach ($this->widgets as $widget) {
-                    $widget->doPostStore($widgetRequest, $values[$key]);
-                }
+        foreach ($values as $key => $requestValues) {
+            $widgetRequest = $this->widgetRequest($request, $key);
+            foreach ($this->widgets as $widget) {
+                $widget->doPostStore($widgetRequest, $values[$key]);
             }
         }
         $item->{$this->property('name')} = $this->modelsToArrays($values);
@@ -87,39 +85,53 @@ class ItemListWidget extends Widget
         }
     }
 
-    public function validationRules($type): array
+    public function validationRules(Request $request, string $type, Model $item = null): array
     {
         $rules = [
             $this->name => array_merge($this->property('rules.'.$type, []), ['array']),
         ];
-        foreach ($this->widgets as $widget) {
-            foreach ($widget->validationRules($type) as $ruleKey => $widgetRules) {
-                $rules[$this->name.'.*.'.$ruleKey] = $widgetRules;
+        $values = $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+        foreach ($values as $key => $requestValues) {
+            $widgetRequest = $this->widgetRequest($request, $key);
+            foreach ($this->widgets as $widget) {
+                $widgetRequest = $this->widgetRequest($request, $key);
+                foreach ($widget->validationRules($widgetRequest, $type, $item) as $ruleKey => $widgetRules) {
+                    $rules[$this->name.'.'.$key.'.'.$ruleKey] = $widgetRules;
+                }
             }
         }
         return $rules;
     }
 
-    public function validationAttributes(): array
+    public function validationAttributes(Request $request, string $type, Model $item = null): array
     {
         $attributes = [
             $this->name         => $this->title,
             $this->name.'.*'    => $this->title,
         ];
-        foreach ($this->widgets as $widget) {
-            foreach ($widget->validationAttributes() as $attributeKey => $widgetAttributes) {
-                $attributes[$this->name.'.*.'.$attributeKey] = $widgetAttributes.'('.$this->title.')';
+        $values = $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+        foreach ($values as $key => $requestValues) {
+            $widgetRequest = $this->widgetRequest($request, $key);
+            foreach ($this->widgets as $widget) {
+                $widgetRequest = $this->widgetRequest($request, $key);
+                foreach ($widget->validationAttributes($widgetRequest, $type, $item) as $attributeKey => $widgetAttributes) {
+                    $attributes[$this->name.'.'.$key.'.'.$attributeKey] = $widgetAttributes.'('.$this->title.')';
+                }
             }
         }
         return $attributes;
     }
 
-    public function validationMessages(): array
+    public function validationMessages(Request $request, string $type, Model $item = null): array
     {
         $messages = [];
-        foreach ($this->widgets as $widget) {
-            foreach ($widget->validationMessages() as $messageKey => $widgetMessages) {
-                $messages[$this->name.'.*.'.$messageKey] = $widgetMessages.'('.$this->title.')';
+        $values = $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+        foreach ($values as $key => $requestValues) {
+            foreach ($this->widgets as $widget) {
+                $widgetRequest = $this->widgetRequest($request, $key);
+                foreach ($widget->validationMessages($widgetRequest, $type, $item) as $messageKey => $widgetMessages) {
+                    $messages[$this->name.'.'.$key.'.'.$messageKey] = $widgetMessages.'('.$this->title.')';
+                }
             }
         }
         return $messages;
@@ -128,15 +140,43 @@ class ItemListWidget extends Widget
     protected function modifyResponse(stdClass $response, Model $item)
     {
         $responseItems = [];
-        foreach ($item->{ $this->property("name") } as $itemModel) {
-            $itemModel = $this->arrayToModel($itemModel);
-            $responseObject = new stdClass;
-            foreach ($this->widgets as $widget) {
-                $widget->doModifyResponse($responseObject, $itemModel);
+        if (is_array($item->{ $this->property("name") })) {
+            foreach ($item->{ $this->property("name") } as $key => $itemModel) {
+                $itemModel = $this->arrayToModel($itemModel);
+                $responseObject = new stdClass;
+                $responseObject->__id = $key;
+                foreach ($this->widgets as $widget) {
+                    $widget->doModifyResponse($responseObject, $itemModel);
+                }
+                $responseItems[] = (array)$responseObject;
             }
-            $responseItems[] = (array)$responseObject;
         }
         $response->{ $this->property("name") } = $responseItems;
+    }
+
+    protected function modifyRequest(Request $request, Model $item = null)
+    {
+        $values = [];
+        if (is_array($request->input($this->name))) {
+            foreach ($request->input($this->name) as $key => $requestValue) {
+                if (isset($requestValue['__id']) && $item && is_array($item->{ $this->name }) && isset($item->{ $this->name }[$requestValue['__id']])) {
+                    $values[$key] = $item->{ $this->name }[$requestValue['__id']];
+                } else {
+                    $values[$key] = [];
+                }
+            }
+        }
+        $values = $this->arraysToModels($request, $values);
+        $editedRequest = $request->input($this->property('name'));
+        foreach ($values as $key => $requestValues) {
+            $widgetRequest = $this->widgetRequest($request, $key);
+            foreach ($this->widgets as $widget) {
+                $widget->doModifyRequest($widgetRequest, $requestValues);
+            }
+            $editedRequest[$key] = $widgetRequest->all();
+        }
+        $editedRequest = $editedRequest;
+        $request->merge([$this->property('name') => $editedRequest]);
     }
 
     /**
@@ -144,7 +184,8 @@ class ItemListWidget extends Widget
      *
      * @param Request $request
      * @param int $index
-     * @return Request
+     * @param Model|null $item
+     * @return Request|null
      */
     protected function widgetRequest(Request $request, int $index)
     {
@@ -172,12 +213,14 @@ class ItemListWidget extends Widget
         $models = [];
         if (is_array($request->input($this->property('name')))) {
             foreach ($request->input($this->property('name')) as $key => $requestValues) {
-                if (isset($attributes[$key])) {
-                    $models[] = $this->arrayToModel($attributes[$key]);
+                if (is_array($requestValues) && isset($attributes[$key])) {
+                    $models[$key] = $this->arrayToModel($attributes[$key]);
+                } else {
+                    $models[$key] = new TempModel();
                 }
             }
-            return $models;
         }
+        return $models;
     }
 
     /**

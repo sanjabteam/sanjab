@@ -38,7 +38,7 @@ class MapWidget extends Widget
         ];
     }
 
-    public function validationRules($type): array
+    public function validationRules(Request $request, string $type, Model $item = null): array
     {
         return [
             $this->name => $this->property('rules.'.$type, []),

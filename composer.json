@@ -5,7 +5,7 @@
         "sanjab",
         "laravel"
     ],
-    "homepage": "https://github.com/sanjab/sanjab",
+    "homepage": "https://github.com/sanjabteam/sanjab",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -16,11 +16,12 @@
     ],
     "require": {
         "php": "^7.1",
+        "ankitpokhrel/tus-php": "^1.0",
+        "astrotomic/laravel-translatable": "^11.1",
+        "google/recaptcha": "^1.2",
         "illuminate/support": "5.8.*",
         "intervention/image": "^2.5",
-        "google/recaptcha": "^1.2",
-        "silber/bouncer": "v1.0.0-rc.5",
-        "astrotomic/laravel-translatable": "^11.1"
+        "silber/bouncer": "v1.0.0-rc.5"
     },
     "require-dev": {
         "orchestra/testbench": "3.8.*",

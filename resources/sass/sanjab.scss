@@ -4,13 +4,13 @@
 @import '~bootstrap-material-design/dist/css/bootstrap-material-design.min.css';
 @import '~perfect-scrollbar/css/perfect-scrollbar.css';
 @import '~sweetalert2/src/sweetalert2.scss';
-@import '~vue2-dropzone/dist/vue2Dropzone.min.css';
 @import '~vue-select/dist/vue-select.css';
 @import '~leaflet/dist/leaflet.css';
 @import '~quill/dist/quill.core.css';
 @import '~quill/dist/quill.snow.css';
 @import '~quill/dist/quill.bubble.css';
 @import '~vue-bootstrap-typeahead/dist/VueBootstrapTypeahead.css';
+@import '~uppy/dist/uppy.min.css';
 @import '~shabnam-font/dist/font-face.css';
 @import '~material-dashboard/assets/scss/material-dashboard.scss';
 @import './variables.scss';
@@ -110,16 +110,16 @@ a.image-author {
     display: none;
 }
 
-.dropzone .dz-preview .dz-error-message {
-    top: 50px !important;
-}
-
 .bmd-form-group .bmd-label-static, .bmd-form-group.is-filled .bmd-label-floating, .bmd-form-group .is-filled .bmd-label-floating, .bmd-form-group.is-focused .bmd-label-floating, .bmd-form-group .is-focused .bmd-label-floating {
     top: 0.7rem !important;
 }
 
 .list-group.vbt-autcomplete-list {
     background: #fff;
+}
+
+.uppy-Dashboard--modal {
+    z-index: 2500;
 }
 
 #advanced_search_collapse {
@@ -133,6 +133,13 @@ a.image-author {
         transform: translate3d(0, 0, 0);
     }
 }
+
+@media (min-width: 820px) {
+    html[dir="rtl"] .uppy-Dashboard--modal .uppy-Dashboard-inner {
+        right: unset;
+    }
+}
+
 
 /** RTL **/
 
@@ -168,8 +175,6 @@ html[dir="rtl"] {
             margin-right: 0 !important;
         }
     }
-
-
 }
 
 html[lang="fa"] {
