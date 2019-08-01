@@ -2,11 +2,13 @@
 
 namespace Sanjab\Commands;
 
+use Bouncer;
 use Illuminate\Console\Command;
 use Silber\Bouncer\Database\Role;
-use Bouncer;
-use App\User;
 
+/**
+ * Assign super_admin to an user.
+ */
 class MakeAdmin extends Command
 {
     /**
@@ -14,7 +16,7 @@ class MakeAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'sanjab:make_admin
+    protected $signature = 'sanjab:make:admin
                             {--U|user= : Username of admin}';
 
     /**
@@ -22,7 +24,7 @@ class MakeAdmin extends Command
      *
      * @var string
      */
-    protected $description = 'Make a new super admin.';
+    protected $description = 'Make a new super admin';
 
     /**
      * Create a new command instance.

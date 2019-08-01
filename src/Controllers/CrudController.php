@@ -4,20 +4,23 @@ namespace Sanjab\Controllers;
 
 use stdClass;
 use Sanjab\Helpers\Action;
+use Sanjab\Cards\StatsCard;
 use Illuminate\Http\Request;
 use Sanjab\Helpers\MenuItem;
+use Sanjab\Helpers\SearchResult;
 use Sanjab\Helpers\WidgetHandler;
 use Sanjab\Helpers\CrudProperties;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Sanjab\Cards\StatsCard;
-use Sanjab\Helpers\SearchResult;
 
+/**
+ * Base controller for CRUD controllers.
+ */
 abstract class CrudController extends SanjabController
 {
     use WidgetHandler;
@@ -46,17 +49,27 @@ abstract class CrudController extends SanjabController
     {
         $this->authorize('viewAny'.static::property('permissionsKey'), $this->property('model'));
         $this->initCrud("index");
+
+        // items for json ajax.
         if ($request->wantsJson()) {
             $model = $this->property('model');
             $items = $model::query();
+            // Do search
             $this->querySearch($items, $request->input('filter'));
+            // Do sort
             $this->querySort($items, $request->input('sortBy'), $request->input('sortDesc') == 'true' ? true : false);
+            // Customize query by query scope
             $this->queryScope($items);
+
+            // Get and paginate
             $items = $items->paginate($request->input('perPage', $this->property('perPage')));
+
+            // Convert each item to well formatted response including actions authorizations/urls and widget modified responses
             foreach ($items as $key => $value) {
                 $items[$key] = $this->itemResponse($value);
             }
 
+            // Add cards data to response
             $cardsData = [];
             foreach ($this->cards as $key => $card) {
                 $cardsData[$key] = new stdClass;
@@ -64,6 +77,8 @@ abstract class CrudController extends SanjabController
             }
             return compact("items", "cardsData");
         }
+
+        // view it self without items
         return view(
             'sanjab::crud.list',
             [
@@ -104,10 +119,13 @@ abstract class CrudController extends SanjabController
     {
         $this->authorize('create'.static::property('permissionsKey'), $this->property('model'));
         abort_unless($this->property("creatable"), 404);
+        // initialize crud
         $this->initCrud("create");
         $model = $this->property('model');
+        // Create new model and save
         $item = new $model;
         $this->save($request, $item, 'create');
+        // Success toast
         Session::flash('sanjab_success', trans('sanjab::sanjab.:item_created_successfully', ['item' => $this->property('title')]));
         return ['success' => true];
     }
@@ -123,14 +141,16 @@ abstract class CrudController extends SanjabController
     {
         $model = $this->property('model');
         $item = $model::where('id', $id);
+        // customize query by query scope
         $this->queryScope($item);
         $item = $item->firstOrFail();
         $this->authorize('view'.static::property('permissionsKey'), $item);
         $this->initCrud("show", $item);
-        if ($request->wantsJson()) {
-            return $this->itemResponse($item);
-        }
+        // item itself if request wants json.
         $item = $this->itemResponse($item);
+        if ($request->wantsJson()) {
+            return $item;
+        }
         return view(
             'sanjab::crud.show',
             [
@@ -152,10 +172,13 @@ abstract class CrudController extends SanjabController
         abort_unless($this->property("editable"), 404);
         $model = $this->property('model');
         $item = $model::where('id', $id);
+        // customize query by query scope
         $this->queryScope($item);
         $item = $item->firstOrFail();
+        // authorization
         $this->authorize('update'.static::property('permissionsKey'), $item);
         $this->initCrud("edit", $item);
+        // convert item to response object.
         $item = $this->itemResponse($item);
         return view(
             'sanjab::crud.form',
@@ -179,11 +202,13 @@ abstract class CrudController extends SanjabController
         abort_unless($this->property("editable"), 404);
         $model = $this->property('model');
         $item = $model::where('id', $id);
+        // customize query by query scope
         $this->queryScope($item);
         $item = $item->firstOrFail();
         $this->authorize('update'.static::property('permissionsKey'), $item);
         $this->initCrud("edit", $item);
         $this->save($request, $item, 'edit');
+        // success toast.
         Session::flash('sanjab_success', trans('sanjab::sanjab.:item_updated_successfully', ['item' => $this->property('title')]));
         return ['success' => true];
     }
@@ -210,30 +235,40 @@ abstract class CrudController extends SanjabController
     public function action(Request $request, $action)
     {
         $this->initCrud("action");
+        // Find action in actions array
         $action = array_filter($this->actions, function ($act) use ($action) {
             return $act->action == $action;
         });
+        // If did not find action then response error 404
         abort_if(count($action) == 0, 404);
         $action = array_first($action);
+
+        // Per item action
         if ($action->perItem) {
             $model = $this->property("model");
             $items = $model::whereIn('id', $request->input('items'));
+            // customize query by queryScope
             $this->queryScope($items);
             $items = $items->get();
+            // Authorize all items by action
             foreach ($items as $item) {
                 abort_unless($action->property('authorize')($item), 403);
             }
+            // Detect action is bulk handling action or one by one model action.
             if (count(array_filter((new \ReflectionMethod(static::class, $action->action))->getParameters(), function (\ReflectionParameter $parameter) {
                 return optional($parameter->getType())->getName() == 'Illuminate\Support\Collection';
             })) > 0) {
+                // Call action in bulk way.
                 return App::call([$this, $action->action], ['Illuminate\Support\Collection' => $items]);
             }
+            // Call action per item.
             $response = null;
             foreach ($items as $item) {
                 $response = App::call([$this, $action->action], [Model::class => $item, $this->property('model') => $item]);
             }
             return $response;
         }
+        // Non per item action
         return App::call([$this, $action->action]);
     }
 
@@ -271,12 +306,15 @@ abstract class CrudController extends SanjabController
             $model = $this->property("model");
             $this->initWidgets($model);
 
+            // Add create action to actions
             if ($this->property('creatable') && Auth::user()->can('create'.static::property('permissionsKey'), $this->property('model'))) {
                 $this->actions[] = Action::create(trans('sanjab::sanjab.create'))
                                     ->icon('add')
                                     ->url(route('sanjab.modules.'.$this->property('route').'.create'))
                                     ->variant('success');
             }
+
+            // Add show item action to actions
             if ($this->property('showable')) {
                 $this->actions[] = Action::create(trans('sanjab::sanjab.show'))
                                     ->perItem(true)
@@ -289,6 +327,8 @@ abstract class CrudController extends SanjabController
                                         return route('sanjab.modules.'.$this->property('route').'.show', ['id' => $actionItem->id]);
                                     });
             }
+
+            // Add edit item action to actions
             if ($this->property('editable')) {
                 $this->actions[] = Action::create(trans('sanjab::sanjab.edit'))
                                     ->perItem(true)
@@ -301,6 +341,8 @@ abstract class CrudController extends SanjabController
                                         return route('sanjab.modules.'.$this->property('route').'.edit', ['id' => $actionItem->id]);
                                     });
             }
+
+            // Add delete item action to actions
             if ($this->property('deletable')) {
                 $this->actions[] = Action::create(trans('sanjab::sanjab.delete'))
                                     ->perItem(true)
@@ -312,6 +354,8 @@ abstract class CrudController extends SanjabController
                                         return Auth::user()->can('delete'.static::property('permissionsKey'), $item);
                                     });
             }
+
+            // Add default stats card (simple counter) to cards list
             if ($this->property('defaultCards')) {
                 $itemsCount = $model::query();
                 static::queryScope($itemsCount);
@@ -319,11 +363,16 @@ abstract class CrudController extends SanjabController
                                     ->value($itemsCount->count())
                                     ->icon(static::property('icon'));
             }
+
+            // Call user defined init
             $this->init($type, $item);
+            // Call widgets post init
             $this->postInitWidgets($type, $item);
+            // Call cards post init
             foreach ($this->cards as $card) {
                 $card->postInit();
             }
+            // Sort cards
             usort($this->cards, function ($a, $b) {
                 return $a->order > $b->order;
             });
@@ -361,6 +410,7 @@ abstract class CrudController extends SanjabController
     {
         if (! empty($search)) {
             $query->where(function ($query) use ($search) {
+                // Non translated widgets search.
                 foreach ($this->widgets as $widget) {
                     if (! $widget->property('translation')) {
                         $query->orWhere(function ($query) use ($widget, $search) {
@@ -368,6 +418,9 @@ abstract class CrudController extends SanjabController
                         });
                     }
                 }
+
+                // translated widgets search
+                // first check any translated widget exists or not
                 if (count(array_filter($this->widgets, function ($widget) {
                     return $widget->property('translation');
                 })) > 0) {
@@ -397,6 +450,7 @@ abstract class CrudController extends SanjabController
      */
     final protected function querySort(Builder $query, $sort, bool $sortDesc)
     {
+        // perform sort by widget field if sort is not empty.
         if (! empty($sort)) {
             foreach ($this->widgets as $widget) {
                 foreach ($widget->getTableColumns() as $tableColumn) {
@@ -410,6 +464,7 @@ abstract class CrudController extends SanjabController
                 }
             }
         } else {
+            // order by default
             $query->orderBy($this->property('defaultOrder'), $this->property('defaultOrderDirection'));
         }
     }
@@ -480,43 +535,52 @@ abstract class CrudController extends SanjabController
     public static function globalSearch(string $search)
     {
         $results = [];
+        // Authorize can user access to items list atleasts.
         if (Auth::user()->can('viewAny'.static::property('permissionsKey'), static::property('model')) && static::property('globalSearch')) {
             $controllerInsatance = app(static::class);
             App::call([$controllerInsatance, 'index']);
             $model = static::property('model');
             $items = $model::query();
+            // Search scope and query scope
             $controllerInsatance->querySearch($items, $search);
             $controllerInsatance->queryScope($items);
             $items = $items->get();
 
+            // Check controller title is searched or not
             if (preg_match('/.*'.preg_quote($search).'.*/', static::property('title')) || preg_match('/.*'.preg_quote($search).'.*/', static::property('titles'))) {
                 $results[] = SearchResult::create(static::property('titles'), route('sanjab.modules.'.static::property('route').'.index'))
                                             ->icon(static::property('icon'))
                                             ->order(50);
             }
 
+            // Item format. if it's null then name field or title field will be used.
             $itemFormat = null;
             if (static::property('itemFormat')) {
                 $itemFormat = static::property('itemFormat');
-            } elseif (! empty($model::first()->name)) {
+            } elseif (! empty(optional($model::first())->name)) {
                 $itemFormat = "%name";
-            } elseif (! empty($model::first()->title)) {
+            } elseif (! empty(optional($model::first())->title)) {
                 $itemFormat = "%title";
             }
             foreach ($items as $item) {
                 $itemName = $itemFormat;
                 preg_match_all("/%([A-Za-z0-9_]+)/", $itemFormat, $matches);
+                // Format item by requested format
                 foreach ($matches[1] as $match) {
                     $itemName = str_replace('%'.$match, $item->{ $match }, $itemName);
                 }
+                // Check searched string exists in formated output.
                 if (preg_match('/.*'.preg_quote($search).'.*/', $itemName)) {
                     if (static::property('editable') && Auth::user()->can('edit'.static::property('permissionsKey'), $item)) {
+                        // Link to item's edit if user can edit
                         $results[] = SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $itemName, 'part' => static::property('titles')]), route('sanjab.modules.'.static::property('route').'.edit', ['id' => $item->id]))
                                                     ->icon(static::property('icon'));
                     } elseif (static::property('showable') && Auth::user()->can('view'.static::property('permissionsKey'), $item)) {
+                        // Link to item's view if user can view
                         $results[] = SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $itemName, 'part' => static::property('titles')]), route('sanjab.modules.'.static::property('route').'.show', ['id' => $item->id]))
                                                     ->icon(static::property('icon'));
                     } else {
+                        // Link to list
                         $results[] = SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $itemName, 'part' => static::property('titles')]), route('sanjab.modules.'.static::property('route').'.index'))
                                                     ->icon(static::property('icon'));
                     }

@@ -18,6 +18,15 @@ use TusPhp\Cache\FileStore;
 
 class SanjabServiceProvider extends ServiceProvider
 {
+    protected $commands = [
+        \Sanjab\Commands\MakeAdmin::class,
+        \Sanjab\Commands\Clear::class,
+        \Sanjab\Commands\Install::class,
+        \Sanjab\Commands\MakeDashboard::class,
+        \Sanjab\Commands\MakeCrud::class,
+        \Sanjab\Commands\MakeSetting::class,
+    ];
+
     /**
      * Bootstrap the application services.
      */
@@ -54,10 +63,7 @@ class SanjabServiceProvider extends ServiceProvider
             ], 'lang');
 
             // Registering package commands.
-            $this->commands([
-                \Sanjab\Commands\MakeAdmin::class,
-                \Sanjab\Commands\ClearUpload::class
-            ]);
+            $this->commands($this->commands);
         }
 
         Gate::policy(\Silber\Bouncer\Database\Role::class, \Sanjab\Policies\RolePolicy::class);
@@ -162,7 +168,9 @@ class SanjabServiceProvider extends ServiceProvider
                 Storage::disk('local')->makeDirectory('temp/'.Session::getId());
             }
 
-            $server = new TusServer(new FileStore(Storage::disk('local')->path('temp/'), Session::getId().'_tus_php.server.cache'));
+            $server = new TusServer(
+                new FileStore(Storage::disk('local')->path('temp/'), Session::getId().'_tus_php.server.cache')
+            );
 
             $server->event()->addListener('tus-server.upload.complete', function (TusEvent $event) {
                 $uploadedFiles = Session::get('sanjab_uppy_files');

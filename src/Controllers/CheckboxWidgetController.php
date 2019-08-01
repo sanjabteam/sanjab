@@ -18,23 +18,29 @@ class CheckboxWidgetController extends SanjabController
         [$controllerInsatance, $checkboxWidget] = $this->getInteractionInfo();
 
         $model = $controllerInsatance->property('model');
-        if (! class_exists($model)) { // check model exist
+        // check model exist
+        if (! class_exists($model)) {
             return abort(400);
         }
 
+        // Get item.
         $item = $model::where('id', $request->input('item'))->withoutGlobalScopes()->firstOrFail();
-        if (! $checkboxWidget->property("fastChangeControllerAuthorize")($item)) { // check user authorized to update model
+        // Check user authorized to update model
+        if (! $checkboxWidget->property("fastChangeControllerAuthorize")($item)) {
             return response()->json(['success' => false], 403);
         }
 
         $item->{$checkboxWidget->name} = $request->input('value') == true;
 
-        if ($checkboxWidget->property('fastChangeTimestamps') == false) { // should we update updated_at field
+        // should we update updated_at field or not
+        if ($checkboxWidget->property('fastChangeTimestamps') == false) {
             $item->timestamps = false;
         }
 
+        // Call before save callback
         ($checkboxWidget->property('fastChangeBefore'))($item);
         $item->save();
+        // Call after save callback
         ($checkboxWidget->property('fastChangeAfter'))($item);
         $item->save();
         return ['success' => true];

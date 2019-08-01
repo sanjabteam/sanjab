@@ -1,10 +1,16 @@
 var screenSaverTimer = 0;
 var screenSaverLoaded = false;
 
+/**
+ * Convert url string to url with sanjab route prefix.
+ */
 window.sanjabUrl = function (url = '') {
     return '/' + sanjab.config.route + '/' + url.replace(/^\//g, '');
 }
 
+/**
+ * Show a success message.
+ */
 window.sanjabSuccess = function (title, message = '') {
     return Swal.fire(
         title,
@@ -13,6 +19,9 @@ window.sanjabSuccess = function (title, message = '') {
     );
 }
 
+/**
+ * Show a error message.
+ */
 window.sanjabError = function (title, message = '') {
     return Swal.fire(
         title,
@@ -21,6 +30,9 @@ window.sanjabError = function (title, message = '') {
     );
 }
 
+/**
+ * Get Http error text by status code.
+ */
 window.sanjabHttpErrorMessage = function (status) {
     if (status == 403) {
         return sanjabTrans('you_are_not_allowed_to_perform_this');
@@ -31,10 +43,16 @@ window.sanjabHttpErrorMessage = function (status) {
     }
 }
 
+/**
+ * Show http error by status code.
+ */
 window.sanjabHttpError = function (status) {
     return sanjabError(sanjabHttpErrorMessage(status));
 }
 
+/**
+ * Show Success toast.
+ */
 window.sanjabSuccessToast = function (title = '') {
     return Swal.fire({
         title: title,
@@ -46,6 +64,9 @@ window.sanjabSuccessToast = function (title = '') {
     });
 }
 
+/**
+ * Screen saver setup.
+ */
 function loadScreenSaver() {
     if (!screenSaverLoaded) {
         setInterval(function () {

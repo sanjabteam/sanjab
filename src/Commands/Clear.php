@@ -2,27 +2,27 @@
 
 namespace Sanjab\Commands;
 
-use Illuminate\Console\Command;
-use Silber\Bouncer\Database\Role;
-use Bouncer;
-use App\User;
 use Sanjab\Sanjab;
+use Illuminate\Console\Command;
 
-class ClearUpload extends Command
+/**
+ * Clear unused files command.
+ */
+class Clear extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sanjab:clear_upload';
+    protected $signature = 'sanjab:clear';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Clear unused uploaded files by uppy.';
+    protected $description = 'Clear any unused files.';
 
     /**
      * Create a new command instance.

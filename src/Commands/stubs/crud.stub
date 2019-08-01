@@ -1,0 +1,26 @@
+<?php
+
+namespace DummyNamespace;
+
+use Sanjab\Widgets\IdWidget;
+use Sanjab\Helpers\MaterialIcons;
+use Sanjab\Helpers\CrudProperties;
+use Sanjab\Controllers\CrudController;
+use Illuminate\Database\Eloquent\Model;
+
+class DummyClass extends CrudController
+{
+    protected static function properties(): CrudProperties
+    {
+        return CrudProperties::create('DummyRoute')
+                ->model(DummyModel::class)
+                ->title("DummyTitle")
+                ->titles("DummyTitles")
+                ->icon(MaterialIcons::GROUP_WORK);
+    }
+
+    protected function init(string $type, Model $item = null): void
+    {
+        $this->widgets[] = IdWidget::create();
+    }
+}

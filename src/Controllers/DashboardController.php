@@ -2,12 +2,15 @@
 
 namespace Sanjab\Controllers;
 
-use Illuminate\Support\Facades\Route;
+use stdClass;
 use Sanjab\Helpers\MenuItem;
 use Sanjab\Helpers\PermissionItem;
+use Illuminate\Support\Facades\Route;
 use Sanjab\Helpers\DashboardProperties;
-use stdClass;
 
+/**
+ * Base controller for dashboard classes.
+ */
 abstract class DashboardController extends SanjabController
 {
     /**

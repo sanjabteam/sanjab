@@ -14,7 +14,6 @@ return [
     |--------------------------------------------------------------------------
      */
     'controllers' => [
-
     ],
 
     /*
@@ -118,7 +117,7 @@ return [
         */
         'footer_links' => [
             ['title' => 'CREATIVE TIM', 'link' => 'https://www.creative-tim.com/'],
-            ['title' => 'SANJAB', 'link' => 'https://amir9480.github.io/'],
+            ['title' => 'SANJAB', 'link' => 'https://sanjabteam.github.io/'],
         ]
     ]
 ];

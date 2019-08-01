@@ -1,0 +1,21 @@
+<?php
+
+namespace DummyNamespace;
+
+use Sanjab\Widgets\TextWidget;
+use Sanjab\Helpers\SettingProperties;
+use Sanjab\Controllers\SettingController;
+
+class DummyClass extends SettingController
+{
+    protected static function properties(): SettingProperties
+    {
+        return SettingProperties::create('DummyKey')
+            ->title('DummyTitle');
+    }
+
+    protected function init(): void
+    {
+        $this->widgets[] = TextWidget::create('example');
+    }
+}

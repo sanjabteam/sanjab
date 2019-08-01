@@ -11,6 +11,7 @@ use Sanjab\Cards\Card;
 use Sanjab\Helpers\SearchResult;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class Sanjab
 {
@@ -60,7 +61,17 @@ class Sanjab
      */
     public static function controllers()
     {
-        return array_merge(config('sanjab.controllers'), static::SANJAB_CONTROLLERS);
+        return array_filter(
+            array_merge(config('sanjab.controllers'), static::SANJAB_CONTROLLERS),
+            function ($controller) {
+                if (class_exists($controller) && is_subclass_of($controller, \Sanjab\Controllers\SanjabController::class)) {
+                    return true;
+                } else {
+                    Log::warning("'$controller' is not a valid sanjab controller.");
+                    return false;
+                }
+            }
+        );
     }
 
     /**
@@ -268,6 +279,45 @@ class Sanjab
             if (count(Storage::disk('local')->files($subDirectory)) == 0) {
                 Storage::disk('local')->deleteDirectory($subDirectory);
             }
+        }
+    }
+
+    /**
+     * Add a controller to controllers config.
+     *
+     * @param string $controller
+     * @return void
+     */
+    public static function addControllerToConfig($controller)
+    {
+        if (! file_exists(config_path('sanjab.php'))) {
+            throw new Exception("Sanjab config not found.");
+        }
+        if (! class_exists($controller)) {
+            $controller = ltrim($controller, '\\');
+            if (class_exists('App\Http\Controllers\Admin\Crud\\'.$controller)) {
+                $controller = 'App\Http\Controllers\Admin\Crud\\'.$controller;
+            } elseif (class_exists('App\Http\Controllers\Admin\Setting\\'.$controller)) {
+                $controller = 'App\Http\Controllers\Admin\Setting\\'.$controller;
+            } elseif (class_exists('App\Http\Controllers\Admin\\'.$controller)) {
+                $controller = 'App\Http\Controllers\Admin\\'.$controller;
+            } else {
+                $controller = 'App\Http\Controllers\\'.$controller;
+            }
+        }
+        if (class_exists($controller) && is_subclass_of($controller, \Sanjab\Controllers\SanjabController::class)) {
+            $regex = "/\\'controllers\\' => ((\[|array\s*\()[^\]\)]*\s*(\]|\)))/";
+            $config = file_get_contents(config_path('sanjab.php'));
+            preg_match_all($regex, $config, $controllerResult);
+            $controllerResult = $controllerResult[1][0];
+            $controllerResult = eval('return '.$controllerResult.';');
+            $controllerResult[] = $controller;
+            $controllerResult = array_unique($controllerResult);
+            $controllerResult = array_map(function ($controller) {
+                return $controller.'::class';
+            }, $controllerResult);
+            $controllerResult = "'controllers' => [\n        ".implode(",\n        ", $controllerResult).",\n    ]";
+            file_put_contents(config_path('sanjab.php'), preg_replace($regex, $controllerResult, $config));
         }
     }
 }

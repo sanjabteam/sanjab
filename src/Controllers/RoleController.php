@@ -2,20 +2,17 @@
 
 namespace Sanjab\Controllers;
 
-use App\User;
-use Sanjab\Widgets\TextWidget;
-use Sanjab\Helpers\CrudProperties;
-use Sanjab\Widgets\PasswordWidget;
-use Sanjab\Controllers\CrudController;
-use Illuminate\Database\Eloquent\Model;
-use Silber\Bouncer\Database\Role;
 use Sanjab;
 use Bouncer;
-use Sanjab\Widgets\CheckboxGroupWidget;
-use Illuminate\Http\Request;
-use Sanjab\Helpers\PermissionItem;
-use Sanjab\Widgets\CheckboxWidget;
 use stdClass;
+use Illuminate\Http\Request;
+use Sanjab\Widgets\TextWidget;
+use Silber\Bouncer\Database\Role;
+use Sanjab\Helpers\CrudProperties;
+use Sanjab\Helpers\PermissionItem;
+use Sanjab\Controllers\CrudController;
+use Illuminate\Database\Eloquent\Model;
+use Sanjab\Widgets\CheckboxGroupWidget;
 
 class RoleController extends CrudController
 {
