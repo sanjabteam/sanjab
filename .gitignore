@@ -4,3 +4,4 @@
 /resources/assets/js/*
 resources/assets/mix-manifest.json
 composer.lock
+/build

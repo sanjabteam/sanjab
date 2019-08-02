@@ -67,7 +67,7 @@ class Sanjab
                 if (class_exists($controller) && is_subclass_of($controller, \Sanjab\Controllers\SanjabController::class)) {
                     return true;
                 } else {
-                    Log::warning("'$controller' is not a valid sanjab controller.");
+                    Log::error("'$controller' is not a valid sanjab controller.");
                     return false;
                 }
             }

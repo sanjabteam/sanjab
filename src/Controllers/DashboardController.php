@@ -44,7 +44,7 @@ abstract class DashboardController extends SanjabController
      * Get CRUD property.
      *
      * @param string $key
-     * @return string|CrudProperties
+     * @return string|DashboardProperties
      */
     final public static function property(string $key = null)
     {

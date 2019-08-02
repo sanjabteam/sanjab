@@ -24,7 +24,8 @@
         "silber/bouncer": "v1.0.0-rc.5"
     },
     "require-dev": {
-        "orchestra/testbench": "3.8.*",
+        "orchestra/testbench": "^3.8",
+        "orchestra/testbench-dusk": "^3.8",
         "phpunit/phpunit": "^7.0"
     },
     "autoload": {
@@ -41,8 +42,8 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+        "test": "\"vendor/bin/phpunit\"",
+        "test-coverage": "\"vendor/bin/phpunit\" --coverage-html coverage"
     },
     "config": {
         "sort-packages": true

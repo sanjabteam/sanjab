@@ -3,6 +3,7 @@
 namespace Sanjab\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 /**
  * Sanjab install command.
@@ -14,7 +15,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'sanjab:install';
+    protected $signature = 'sanjab:install {--force}';
 
     /**
      * The console command description.
@@ -43,24 +44,33 @@ class Install extends Command
         $this->info('Installing Sanjab...');
 
         $this->line('Publishing configs.');
-        $this->call('vendor:publish', ['--provider' => 'Sanjab\SanjabServiceProvider', '--tag' => 'config']);
+        $this->call('vendor:publish', ['--provider' => 'Sanjab\SanjabServiceProvider', '--tag' => 'config', '--force' => $this->option('force')]);
         $this->info('Configs published.');
 
         $this->line('Publishing assets.');
-        $this->call('vendor:publish', ['--provider' => 'Sanjab\SanjabServiceProvider', '--tag' => 'assets']);
+        $this->call('vendor:publish', ['--provider' => 'Sanjab\SanjabServiceProvider', '--tag' => 'assets', '--force' => $this->option('force')]);
         $this->info('Assets published.');
 
-        $this->line('Creating DashboardController.');
-        $this->call('sanjab:make:dashboard', ['name' => 'DashboardController']);
-        $this->info('DashboardController created.');
+        if (! file_exists(app_path('Http/Controllers/Admin/DashboardController.php')) || $this->option('force')) {
+            $this->line('Creating DashboardController.');
+            if (file_exists(app_path('Http/Controllers/Admin/DashboardController.php'))) {
+                File::delete(app_path('Http/Controllers/Admin/DashboardController.php'));
+            }
+            $this->call('sanjab:make:dashboard', ['name' => 'DashboardController']);
+            $this->info('DashboardController created.');
+        }
 
-        $this->line('Creating user controller.');
-        $this->call('sanjab:make:crud', ['name' => 'UserController']);
-        file_put_contents(
-            app_path('Http/Controllers/Admin/Crud/UserController.php'),
-            file_get_contents(__DIR__.'/stubs/usercontroller.stub')
-        );
-        $this->info('UserController created.');
+        if (! file_exists(app_path('Http/Controllers/Admin/Crud/UserController.php')) || $this->option('force')) {
+            $this->line('Creating user controller.');
+            if (! file_exists(app_path('Http/Controllers/Admin/Crud/UserController.php'))) {
+                $this->call('sanjab:make:crud', ['name' => 'UserController']);
+            }
+            file_put_contents(
+                app_path('Http/Controllers/Admin/Crud/UserController.php'),
+                file_get_contents(__DIR__.'/stubs/usercontroller.stub')
+            );
+            $this->info('UserController created.');
+        }
 
         if (file_exists(app_path('User.php'))) {
             $this->line('Adding SanjabUser trait to User Model.');

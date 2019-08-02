@@ -20,10 +20,15 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="tap" target="build/report.tap"/>
         <log type="junit" target="build/report.junit.xml"/>
-        <log type="coverage-html" target="build/coverage" charset="UTF-8" yui="true" highlight="true"/>
-        <log type="coverage-text" target="build/coverage.txt"/>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
+        <log type="coverage-html" target="build/coverage" />
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false" showOnlySummary="true"/>
     </logging>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_DEBUG" value="true"/>
+        <env name="APP_URL" value="http://127.0.0.1:8000"/>
+        <env name="APP_KEY" value="base64:maCfLlcIuzpt0FfvlVb189gLdxurkn+1L/ErDba0bXU="/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+    </php>
 </phpunit>
