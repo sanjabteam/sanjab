@@ -32,7 +32,7 @@ class CheckboxGroupWidget extends Widget
         $item->{ $this->option("name") } = $request->input($this->option("name")) == "true";
     }
 
-    protected function search(Builder $query, string $search, string $type = null)
+    protected function search(Builder $query, string $type = null, $search = null)
     {
         if ($search == "true") {
             $query->where($this->name, 1);

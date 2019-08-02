@@ -2,7 +2,7 @@
 
 return [
     'sanjab' => 'Sanjab',
-    'dir' => 'rtl',
+    'dir' => 'ltr',
     'search' => 'Search',
     'user' => 'User',
     'users' => 'Users',

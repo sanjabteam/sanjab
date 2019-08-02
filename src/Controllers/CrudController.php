@@ -414,7 +414,7 @@ abstract class CrudController extends SanjabController
                 foreach ($this->widgets as $widget) {
                     if (! $widget->property('translation')) {
                         $query->orWhere(function ($query) use ($widget, $search) {
-                            $widget->doSearch($query, $search, null);
+                            $widget->doSearch($query, null, $search);
                         });
                     }
                 }
@@ -429,7 +429,7 @@ abstract class CrudController extends SanjabController
                             foreach ($this->widgets as $widget) {
                                 if ($widget->property('translation')) {
                                     $query->orWhere(function ($query) use ($widget, $search) {
-                                        $widget->doSearch($query, $search, null);
+                                        $widget->doSearch($query, null, $search);
                                     });
                                 }
                             }

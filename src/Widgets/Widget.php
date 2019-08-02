@@ -155,14 +155,18 @@ abstract class Widget extends PropertiesHolder
      * To do search.
      *
      * @param Builder $query
-     * @param string $search
      * @param string $type
+     * @param mixed $search
      * @return void
      */
-    final public function doSearch(Builder $query, string $search, string $type = null)
+    final public function doSearch(Builder $query, string $type = null, $search = null)
     {
-        if ($this->property("searchable") && !empty($search)) {
-            $this->search($query, $search, $type);
+        if ($this->property("searchable") &&
+            (
+                ($type == null && is_string($search) && !empty($search)) || ($type != null)
+            )
+        ) {
+            $this->search($query, $type, $search);
         }
     }
 
@@ -170,11 +174,11 @@ abstract class Widget extends PropertiesHolder
      * To override search query modify.
      *
      * @param Builder $query
-     * @param string $search
      * @param string $type
+     * @param mixed $search
      * @return void
      */
-    protected function search(Builder $query, string $search, string $type = null)
+    protected function search(Builder $query, string $type = null, $search = null)
     {
         switch ($type) {
             case 'exact':

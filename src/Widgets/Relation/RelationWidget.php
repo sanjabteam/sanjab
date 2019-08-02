@@ -63,7 +63,7 @@ abstract class RelationWidget extends Widget
     {
     }
 
-    protected function search(Builder $query, string $search, string $type = null)
+    protected function search(Builder $query, string $type = null, $search = null)
     {
         foreach ($this->property('searchFields') as $searchField) {
             $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property("name").'.'.$searchField);

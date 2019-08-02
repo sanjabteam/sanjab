@@ -50,7 +50,7 @@ class CheckboxWidget extends Widget
         $item->{ $this->property("name") } = $request->input($this->property("name")) == "true";
     }
 
-    protected function search(Builder $query, string $search, string $type = null): void
+    protected function search(Builder $query, string $type = null, $search = null): void
     {
         if ($search == "true") {
             $query->where($this->property('name'), 1);

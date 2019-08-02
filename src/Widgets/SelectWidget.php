@@ -39,7 +39,7 @@ class SelectWidget extends Widget
         return $this;
     }
 
-    protected function search(Builder $query, string $search, string $type = null)
+    protected function search(Builder $query, string $type = null, $search = null)
     {
         $filteredOptions = array_filter($this->selectOptions, function ($selectOption) use ($search) {
             return preg_match('/.*'.preg_quote($search).'.*/i', $selectOption);
