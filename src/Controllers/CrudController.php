@@ -487,6 +487,8 @@ abstract class CrudController extends SanjabController
             MenuItem::create(route('sanjab.modules.'.static::property('route').'.index'))
                     ->title(static::property('titles'))
                     ->icon(static::property('icon'))
+                    ->badge(static::property('badge'))
+                    ->badgeVariant(static::property('badgeVariant'))
                     ->active(function () {
                         return Route::is('sanjab.modules.'.static::property('route').'.*');
                     })

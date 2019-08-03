@@ -27,11 +27,14 @@ use Illuminate\Support\Str;
  * @method $this defaultDashboardCards(bool $val)    Should default dashboard cards added to dashboard.
  * @method $this globalSearch(bool $val)             Should be present in global search or not.
  * @method $this itemFormat(string $val)             Format to show as item id. (example: "%id. %name")
+ * @method $this badge (string $val)                 badge to show beside menu.
+ * @method $this badgeVariant (string $val)          menu badge bootstrap variant.
  */
 class CrudProperties extends PropertiesHolder
 {
     protected $properties = [
-        'icon' => 'code'
+        'icon' => 'code',
+        'badgeVariant' => 'danger',
     ];
 
     public function __construct(array $options = [])

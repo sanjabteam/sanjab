@@ -12,12 +12,15 @@ use Illuminate\Support\Str;
  * @method $this description (string $val)           short description about setting.
  * @method $this icon (string $val)                  Icon of setting.
  * @method $this globalSearch (bool $val)            Should be present in global search or not.
+ * @method $this badge (string $val)                 badge to show beside menu.
+ * @method $this badgeVariant (string $val)          menu badge bootstrap variant.
  */
 class SettingProperties extends PropertiesHolder
 {
     protected $properties = [
         'icon' => 'settings',
-        'globalSearch' => true
+        'globalSearch' => true,
+        'badgeVariant' => 'danger',
     ];
 
     /**

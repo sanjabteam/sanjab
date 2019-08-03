@@ -68,7 +68,7 @@ class ItemListWidget extends Widget
 
     protected function postStore(Request $request, Model $item)
     {
-        $values = $this->arraysToModels($request, $item->{$this->property('name')});
+        $values = $this->arraysToModels($request, is_array($item->{$this->property('name')}) ? $item->{$this->property('name')} : []);
         foreach ($values as $key => $requestValues) {
             $widgetRequest = $this->widgetRequest($request, $key);
             foreach ($this->widgets as $widget) {

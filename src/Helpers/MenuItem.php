@@ -6,19 +6,22 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
 
 /**
- * @method $this url (string $value)       url of menu item.
- * @method $this title (string $value)     title of menu.
- * @method $this icon (string $value)      icon of menu.
- * @method $this active (callable $value)  callback to check this item is active or not.
- * @method $this hidden (callable $value)  callback to hide or show.
- * @method $this target (string $value)    menu target.
- * @method $this order (int $value)        order of menu item.
+ * @method $this url (string $value)        url of menu item.
+ * @method $this title (string $value)      title of menu.
+ * @method $this icon (string $value)       icon of menu.
+ * @method $this active (callable $value)   callback to check this item is active or not.
+ * @method $this hidden (callable $value)   callback to hide or show.
+ * @method $this target (string $value)     menu target.
+ * @method $this order (int $value)         order of menu item.
+ * @method $this badge (string $val)        badge to show beside menu.
+ * @method $this badgeVariant (string $val) bootstrap badge variant.
  */
 class MenuItem extends PropertiesHolder
 {
     protected $properties = [
         'icon' => 'code',
         'title' => 'TITLE HERE',
+        'badgeVariant' => 'danger',
         'order' => 100
     ];
 

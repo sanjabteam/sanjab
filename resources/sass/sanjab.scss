@@ -87,7 +87,7 @@ a.image-author {
 }
 
 .bmd-form-group:not(.is-focused):not(.is-filled) .bmd-label-floating {
-    top: 35px !important;
+    top: 35px;
 }
 
 .card .card-body .form-group {
@@ -120,6 +120,11 @@ a.image-author {
 
 .uppy-Dashboard--modal {
     z-index: 2500;
+}
+
+.sidebar .badge {
+    float: right;
+    margin-top: -21px;
 }
 
 #advanced_search_collapse {
@@ -174,6 +179,10 @@ html[dir="rtl"] {
         .list-group-item :first-child {
             margin-right: 0 !important;
         }
+    }
+
+    .sidebar .badge {
+        float: left;
     }
 }
 

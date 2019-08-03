@@ -9,7 +9,7 @@ use Sanjab\Helpers\WidgetHandler;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Sanjab\Models\Setting;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Cache;
@@ -63,6 +63,9 @@ abstract class SettingController extends SanjabController
                     'name'        => $widget->property("name"),
                 ]);
             $items[$widget->property("name")]->translation = $widget->property("translation");
+            foreach ($this->combinedSetting(collect([$items[$widget->property("name")]]))->getAttributes() as $attributeName => $attributeValue) {
+                $items[$widget->property("name")]->{ $attributeName } = $attributeValue;
+            }
             $this->widgetsPreStore([$widget], $request, $items[$widget->property("name")]);
         }
         $this->widgetsValidate($this->widgets, $request, "edit");
@@ -181,6 +184,8 @@ abstract class SettingController extends SanjabController
                     MenuItem::create(route('sanjab.settings.'.static::property('key')))
                     ->title(static::property('title'))
                     ->icon(static::property('icon'))
+                    ->badge(static::property('badge'))
+                    ->badgeVariant(static::property('badgeVariant'))
                     ->hidden(function () {
                         return Auth::user()->cannot('update_setting_'.static::property('key'));
                     })

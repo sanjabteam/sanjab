@@ -94,6 +94,8 @@ abstract class DashboardController extends SanjabController
             MenuItem::create(route('sanjab.dashboards.'.static::property('key')))
                     ->title(static::property('title'))
                     ->icon(static::property('icon'))
+                    ->badge(static::property('badge'))
+                    ->badgeVariant(static::property('badgeVariant'))
                     ->active(function () {
                         return Route::is('sanjab.dashboards.'.static::property('key'));
                     })
