@@ -19,10 +19,14 @@
                     <b-button v-if="! readonly" class="uppy-remove-button" size="small" variant="danger" @click="removeFile(index)"><i class="material-icons">delete</i></b-button>
                 </div>
                 <div v-else-if="fileType(file.type) == 'video'">
-                    <video controls>
+                    <video width="100%" controls>
                         <source :src="file.preview" :type="file.type">
                         Your browser does not support the video element.
                     </video>
+                    <b-button v-if="! readonly" class="uppy-remove-button" size="small" variant="danger" @click="removeFile(index)"><i class="material-icons">delete</i></b-button>
+                </div>
+                <div v-else>
+                    <b-button :href="file.link ? file.link : file.value" target="_blank" block>{{ sanjabTrans('file') }}</b-button>
                     <b-button v-if="! readonly" class="uppy-remove-button" size="small" variant="danger" @click="removeFile(index)"><i class="material-icons">delete</i></b-button>
                 </div>
             </b-col>

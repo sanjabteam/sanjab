@@ -49,6 +49,7 @@ return [
     'more_or_eqaul' => 'بیشتر یا مساوی',
     'between' => 'بین',
     'upload' => 'آپلود',
+    'file' => 'فایل',
 
 
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',
