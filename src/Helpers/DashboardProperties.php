@@ -9,7 +9,6 @@ namespace Sanjab\Helpers;
  * @method $this route (string $val)        Path of dashboard.
  * @method $this title (string $val)        Title of dashboard.
  * @method $this description (string $val)  Description about dashboard.
- * @method $this badge (string $val)        badge to show beside menu.
  * @method $this badgeVariant (string $val) menu badge bootstrap variant.
  */
 class DashboardProperties extends PropertiesHolder
@@ -34,5 +33,17 @@ class DashboardProperties extends PropertiesHolder
         }
 
         return $out;
+    }
+
+    /**
+     * Badge to show beside menu.
+     *
+     * @param callable $callback
+     * @return $this
+     */
+    public function badge(callable $badgeCallback)
+    {
+        $this->setProperty('badge', $badgeCallback);
+        return $this;
     }
 }

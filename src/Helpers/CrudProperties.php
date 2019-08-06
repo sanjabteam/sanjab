@@ -27,7 +27,6 @@ use Illuminate\Support\Str;
  * @method $this defaultDashboardCards(bool $val)    Should default dashboard cards added to dashboard.
  * @method $this globalSearch(bool $val)             Should be present in global search or not.
  * @method $this itemFormat(string $val)             Format to show as item id. (example: "%id. %name")
- * @method $this badge (string $val)                 badge to show beside menu.
  * @method $this badgeVariant (string $val)          menu badge bootstrap variant.
  */
 class CrudProperties extends PropertiesHolder
@@ -70,5 +69,17 @@ class CrudProperties extends PropertiesHolder
         $out->titles(Str::title($route));
 
         return $out;
+    }
+
+    /**
+     * Badge to show beside menu.
+     *
+     * @param callable $callback
+     * @return $this
+     */
+    public function badge(callable $badgeCallback)
+    {
+        $this->setProperty('badge', $badgeCallback);
+        return $this;
     }
 }

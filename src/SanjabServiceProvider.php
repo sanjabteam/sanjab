@@ -42,31 +42,30 @@ class SanjabServiceProvider extends ServiceProvider
         $this->loadViewGlobalVariables();
         $this->validationRules();
 
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('sanjab.php'),
-            ], 'config');
+        $this->publishes([
+            __DIR__.'/../config/config.php' => config_path('sanjab.php'),
+        ], 'config');
 
-            // Publishing the views.
-            $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/sanjab'),
-            ], 'views');
+        // Publishing the views.
+        $this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/sanjab'),
+        ], 'views');
 
-            // Publishing assets.
-            $this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/sanjab'),
-            ], 'assets');
+        // Publishing assets.
+        $this->publishes([
+            __DIR__.'/../resources/assets' => public_path('vendor/sanjab'),
+        ], 'assets');
 
-            // Publishing the translation files.
-            $this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/sanjab'),
-            ], 'lang');
+        // Publishing the translation files.
+        $this->publishes([
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/sanjab'),
+        ], 'lang');
 
-            // Registering package commands.
-            $this->commands($this->commands);
-        }
+        // Registering package commands.
+        $this->commands($this->commands);
 
         Gate::policy(\Silber\Bouncer\Database\Role::class, \Sanjab\Policies\RolePolicy::class);
+        Gate::policy(config('auth.providers.users.model'), \Sanjab\Policies\UserPolicy::class);
         Bouncer::runAfterPolicies();
         Bouncer::tables([
             'abilities'      => 'bouncer_abilities',

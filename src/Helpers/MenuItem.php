@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Request;
  * @method $this hidden (callable $value)   callback to hide or show.
  * @method $this target (string $value)     menu target.
  * @method $this order (int $value)         order of menu item.
- * @method $this badge (string $val)        badge to show beside menu.
+ * @method $this badge (mixed $val)         badge to show beside menu value or callback.
  * @method $this badgeVariant (string $val) bootstrap badge variant.
  */
 class MenuItem extends PropertiesHolder
@@ -114,6 +114,19 @@ class MenuItem extends PropertiesHolder
     {
         $this->children = array_merge($this->children, $childItems);
         return $this;
+    }
+
+    /**
+     * Get badge value.
+     *
+     * @return mixed
+     */
+    public function getBadgeValue()
+    {
+        if (is_callable($this->property('badge'))) {
+            return $this->property('badge')();
+        }
+        return $this->property('badge');
     }
 
     /**

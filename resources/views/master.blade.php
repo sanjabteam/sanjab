@@ -49,8 +49,8 @@
                                                         <a class="nav-link" href="{{ $childMenu->url }}">
                                                             <i class="material-icons">{{ $childMenu->icon }}</i>
                                                             <span class="sidebar-normal">{{ $childMenu->title }}</span>
-                                                            @if(! empty($childMenu->badge))
-                                                                <span class="badge badge-{{ $childMenu->badgeVariant }}">{{ $childMenu->badge }}</span>
+                                                            @if(! empty($childMenu->getBadgeValue()))
+                                                                <span class="badge badge-{{ $childMenu->badgeVariant }}">{{ $childMenu->getBadgeValue() }}</span>
                                                             @endif
                                                         </a>
                                                     </li>
@@ -64,8 +64,8 @@
                                     <a class="nav-link" href="{{  $menuItem->url }}" @if($menuItem->target) target="{{ $menuItem->target }}" @endif>
                                         <i class="material-icons">{{ $menuItem->icon }}</i>
                                         <p>{{ $menuItem->title }}</p>
-                                        @if($menuItem->badge)
-                                            <span class="badge badge-{{ $menuItem->badgeVariant }}">{{ $menuItem->badge }}</span>
+                                        @if(! empty($menuItem->getBadgeValue()))
+                                            <span class="badge badge-{{ $menuItem->badgeVariant }}">{{ $menuItem->getBadgeValue() }}</span>
                                         @endif
                                     </a>
                                 </li>
