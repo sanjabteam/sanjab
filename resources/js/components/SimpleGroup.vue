@@ -8,7 +8,7 @@
             </div>
             <small v-else tabindex="-1" class="form-text text-muted">{{ widget.description }}</small>
         </div>
-        <b-form-group v-else :label="widget.title" :label-for="widget.name" :description="widget.description" :state="fieldError && fieldError.length > 0 ? false : true" :invalid-feedback="fieldError">
+        <b-form-group v-else class="non-float-label-group" :label="widget.title" :label-for="widget.name" :description="widget.description" :state="fieldError && fieldError.length > 0 ? false : true" :invalid-feedback="fieldError">
             <component :is="widget.tag" :errors.sync="errors" v-model="mutableValue" v-bind="widget">{{ widget.content ? widget.content : '' }}</component>
         </b-form-group>
     </div>
@@ -79,3 +79,9 @@
         }
     }
 </script>
+
+<style lang="scss">
+    .non-float-label-group .bmd-label-static {
+        top: 0.2rem !important;
+    }
+</style>

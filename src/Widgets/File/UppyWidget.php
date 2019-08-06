@@ -1,16 +1,17 @@
 <?php
 
-namespace Sanjab\Widgets;
+namespace Sanjab\Widgets\File;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File;
-use Illuminate\Http\UploadedFile;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 use stdClass;
 use Sanjab\Sanjab;
+use Sanjab\Widgets\Widget;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Uppy upload widget.

@@ -55,6 +55,13 @@ class Sanjab
     protected static $dashboardCards = null;
 
     /**
+     * Fontawesome icons.
+     *
+     * @var string[]
+     */
+    protected static $fontawesomeIcons = null;
+
+    /**
      * Array of controllers.
      *
      * @return array
@@ -319,5 +326,18 @@ class Sanjab
             $controllerResult = "'controllers' => [\n        ".implode(",\n        ", $controllerResult).",\n    ]";
             file_put_contents(config_path('sanjab.php'), preg_replace($regex, $controllerResult, $config));
         }
+    }
+
+    /**
+     * Get font awesome icons as array.
+     *
+     * @return string[]
+     */
+    public static function fontawesomeIcons()
+    {
+        if (static::$fontawesomeIcons == null) {
+            static::$fontawesomeIcons = json_decode(file_get_contents(sanjab_path('/resources/json/fontawesome.json')), true);
+        }
+        return static::$fontawesomeIcons;
     }
 }
