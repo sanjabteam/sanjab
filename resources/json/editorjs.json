@@ -1,0 +1,177 @@
+{
+    "tools": {
+        "header": {
+            "text": {
+                "type": "string",
+                "allowedTags": ""
+            },
+            "level": {
+                "type": "int",
+                "canBeOnly": [1, 2, 3, 4, 5, 6]
+            }
+        },
+        "paragraph": {
+            "text": {
+                "type": "string",
+                "allowedTags": "i,b,u,a[href]"
+            }
+        },
+        "list": {
+            "style": {
+                "type": "string",
+                "canBeOnly": [
+                    "ordered",
+                    "unordered"
+                ]
+            },
+            "items": {
+                "type": "array",
+                "data": {
+                    "-": {
+                        "type": "string",
+                        "allowedTags": "i,b,u"
+                    }
+                }
+            }
+        },
+        "quote": {
+            "text": {
+                "type": "string",
+                "allowedTags": "i,b,u"
+            },
+            "caption": {
+                "type": "string"
+            },
+            "alignment": {
+                "type": "string",
+                "canBeOnly": [
+                    "left",
+                    "center"
+                ]
+            }
+        },
+        "table": {
+            "content": {
+                "type": "array",
+                "data": {
+                    "-": {
+                        "type": "array",
+                        "data": {
+                            "-": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "raw": {
+            "html": {
+                "type": "string",
+                "allowedTags": "*"
+            }
+        },
+        "code": {
+            "code": {
+                "type": "string"
+            }
+        },
+        "checklist": {
+            "items": {
+                "type": "array",
+                "data": {
+                    "-": {
+                        "type": "array",
+                        "data": {
+                            "text": {
+                                "type": "string",
+                                "required": false
+                            },
+                            "checked": {
+                                "type": "boolean",
+                                "required": false
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "link": {
+            "link": {
+                "type": "string"
+            },
+            "meta": {
+                "type": "array",
+                "data": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "image": {
+                        "required": false,
+                        "type": "array",
+                        "data": {
+                            "url": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "image": {
+            "file": {
+                "type": "array",
+                "data": {
+                    "url": {
+                        "type": "string"
+                    }
+                }
+            },
+            "caption": {
+                "type": "string"
+            },
+            "withBorder": {
+                "type": "boolean"
+            },
+            "stretched": {
+                "type": "boolean"
+            },
+            "withBackground": {
+                "type": "boolean"
+            }
+        },
+        "warning": {
+            "title": {
+                "type": "string"
+            },
+            "message": {
+                "type": "string"
+            }
+        },
+        "embed": {
+            "service": {
+                "type": "string"
+            },
+            "source": {
+                "type": "string"
+            },
+            "embed": {
+                "type": "string"
+            },
+            "width": {
+                "type": "int"
+            },
+            "height": {
+                "type": "int"
+            },
+            "caption": {
+                "type": "string",
+                "required": false
+            }
+        },
+        "delimiter": {}
+    }
+}

@@ -11,6 +11,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 - [Bootstrap vue](https://bootstrap-vue.js.org)
 - [Bouncer](https://github.com/JosephSilber/bouncer)
+- [Editor.js](https://editorjs.io)
 - [Google recaptcha](https://github.com/google/recaptcha)
 - [Laravel](https://laravel.com/)
 - [Laravel package boilerplate](https://laravelpackageboilerplate.com)
@@ -28,8 +29,10 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 - [Uppy](https://uppy.io)
 - [Vue.js](https://vuejs.org/)
 - [Vue bootstrap typeahead](https://github.com/alexurquhart/vue-bootstrap-typeahead)
+- [Vue editor.js](https://github.com/changjoo-park/vue-editor-jse)
 - [Vue quill editor](https://github.com/surmon-china/vue-quill-editor)
 - [Vue select](https://github.com/sagalbot/vue-select)
+- [Vue tags input](https://github.com/voerro/vue-tagsinput)
 - [Vue2 leaflet](https://github.com/KoRiGaN/Vue2Leaflet)
 
 ## License

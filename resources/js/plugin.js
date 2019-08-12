@@ -17,5 +17,6 @@ SanjabPlugin.install = function (Vue, options) {
     files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
     Vue.component('vue-bootstrap-typeahead', require('vue-bootstrap-typeahead').default);
+    Vue.component('tags-input', require('@voerro/vue-tagsinput').default);
 }
 export default SanjabPlugin;

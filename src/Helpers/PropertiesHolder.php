@@ -44,8 +44,8 @@ class PropertiesHolder implements Arrayable, JsonSerializable
 
     public function __get($name)
     {
-        if (method_exists($this, 'get'.title_case($name))) {
-            return call_user_func_array([$this, 'get'.title_case($name)], []);
+        if (method_exists($this, 'get'.str_replace(['-', '_'], '', title_case($name)))) {
+            return call_user_func_array([$this, 'get'.str_replace(['-', '_'], '', title_case($name))], []);
         }
         if (isset($this->properties[$name])) {
             return $this->properties[$name];

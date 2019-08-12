@@ -18,6 +18,7 @@
         "php": "^7.1",
         "ankitpokhrel/tus-php": "^1.0",
         "astrotomic/laravel-translatable": "^11.1",
+        "codex-team/editor.js": "^2.0",
         "google/recaptcha": "^1.2",
         "illuminate/support": "5.8.*",
         "intervention/image": "^2.5",

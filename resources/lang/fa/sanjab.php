@@ -50,6 +50,7 @@ return [
     'between' => 'بین',
     'upload' => 'آپلود',
     'file' => 'فایل',
+    'add_a_tag' => 'اضافه کردن برچسب',
 
 
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',

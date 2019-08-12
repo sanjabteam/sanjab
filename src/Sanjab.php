@@ -12,6 +12,8 @@ use Sanjab\Helpers\SearchResult;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use EditorJS\EditorJS;
+use EditorJS\EditorJSException;
 
 class Sanjab
 {
@@ -19,6 +21,7 @@ class Sanjab
         \Sanjab\Controllers\AuthController::class,
         \Sanjab\Controllers\RoleController::class,
         \Sanjab\Controllers\QuillController::class,
+        \Sanjab\Controllers\EditorJsController::class,
         \Sanjab\Controllers\UppyWidgetController::class,
         \Sanjab\Controllers\RelationWidgetController::class,
         \Sanjab\Controllers\CheckboxWidgetController::class,
@@ -339,5 +342,27 @@ class Sanjab
             static::$fontawesomeIcons = json_decode(file_get_contents(sanjab_path('/resources/json/fontawesome.json')), true);
         }
         return static::$fontawesomeIcons;
+    }
+
+    /**
+     * Convert editor.js data to html.
+     *
+     * @return string
+     */
+    public static function editorJsToHtml(array $data)
+    {
+        $out = "";
+        try {
+            $editor = new EditorJS(json_encode($data), file_get_contents(sanjab_path('resources/json/editorjs.json')));
+
+            $blocks = $editor->getBlocks();
+            foreach ($blocks as $block) {
+                $out .= view('sanjab::helpers.editorjs.'.$block['type'], ['data' => $block['data']]);
+            }
+            $out = view('sanjab::helpers.editorjs.base', ['data' => $out])->render();
+        } catch (EditorJSException $exception) {
+            throw $exception;
+        }
+        return $out;
     }
 }
