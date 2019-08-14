@@ -39,18 +39,6 @@ class SelectWidget extends Widget
         return $this;
     }
 
-    protected function search(Builder $query, string $type = null, $search = null)
-    {
-        $filteredOptions = array_filter($this->selectOptions, function ($selectOption) use ($search) {
-            return preg_match('/.*'.preg_quote($search).'.*/i', $selectOption);
-        });
-        switch ($type) {
-            default:
-                $query->whereIn($this->property('name'), array_keys($filteredOptions));
-                break;
-        }
-    }
-
     /**
      * Add multiple options
      *
@@ -63,6 +51,20 @@ class SelectWidget extends Widget
             $this->selectOptions[$key] = $title;
         }
         return $this;
+    }
+
+    protected function search(Builder $query, string $type = null, $search = null)
+    {
+        $filteredOptions = array_filter($this->selectOptions, function ($selectOption) use ($search) {
+            return preg_match('/.*'.preg_quote($search).'.*/i', $selectOption);
+        });
+        if (count($filteredOptions) > 0) {
+            switch ($type) {
+                default:
+                    $query->whereIn($this->property('name'), array_keys($filteredOptions));
+                    break;
+            }
+        }
     }
 
     /**

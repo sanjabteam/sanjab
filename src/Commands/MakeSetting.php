@@ -58,7 +58,7 @@ class MakeSetting extends GeneratorCommand
     protected function buildClass($name)
     {
         $stub = parent::buildClass($name);
-        $className = str_ireplace("controller", "", str_ireplace("SettingController", "", class_basename($name)));
+        $className = str_ireplace("controller", "", str_ireplace(["SettingController", "SettingController"], "", class_basename($name)));
         $stub = str_replace("DummyKey", mb_strtolower($className), $stub);
         $stub = str_replace("DummyTitle", $className.' Settings', $stub);
         return $stub;

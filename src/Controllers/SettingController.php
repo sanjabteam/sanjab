@@ -123,7 +123,7 @@ abstract class SettingController extends SanjabController
     }
 
     /**
-     * Combine multiple setting into once.
+     * Combine multiple setting into one.
      *
      * @param Collection $settings
      * @return Setting
@@ -144,8 +144,10 @@ abstract class SettingController extends SanjabController
                 }
             } else {
                 if (is_array($setting->value) && isset($setting->value['__sanjab_multiple_attrs']) && $setting->value['__sanjab_multiple_attrs'] == true) {
-                    foreach ($out->{$setting->name} as $key => $value) {
-                        $out->{$key} = $setting->value[$key];
+                    foreach ($setting->value as $key => $value) {
+                        if ($key != '__sanjab_multiple_attrs') {
+                            $out->{$key} = $setting->value[$key];
+                        }
                     }
                 } else {
                     $out->{$setting->name} = $setting->value;

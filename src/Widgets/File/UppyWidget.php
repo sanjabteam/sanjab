@@ -92,7 +92,7 @@ class UppyWidget extends Widget
                     $image->heighten($this->property("height"));
                 }
                 $fileContent = $image->encode($extension);
-                $filename = trim($this->property('directory'), '\\/') . "/" . $file->hashName();
+                $filename = trim(trim($this->property('directory'), '\\/') . "/" . $file->hashName(), '\\/');
                 Storage::disk($this->property("disk"))->put($filename, $fileContent);
                 return $filename;
             }
@@ -138,6 +138,7 @@ class UppyWidget extends Widget
             }
         }
         foreach ($files as $key => $value) {
+            $value = trim($value, '\\/');
             $files[$key] = [
                 'type' => Storage::disk($this->property('disk'))->mimeType($value),
                 'preview' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk'), 'thumb' => 'true']),
@@ -158,6 +159,9 @@ class UppyWidget extends Widget
                 } else {
                     $oldValues = [$oldValues];
                 }
+            }
+            foreach ($oldValues as $key => $oldValue) {
+                $oldValues[$key] = trim($oldValue, '/\\');
             }
             $uploadedFiles = [];
             foreach ($request->input($this->property('name')) as $fileInfo) {

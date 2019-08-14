@@ -1,7 +1,7 @@
 # Laravel admin panel
 
-## Installation
-
+## [Installation](https://sanjabteam.github.io/install.html)
+Read installation manual [here](https://sanjabteam.github.io/install.html).
 
 ### Changelog
 

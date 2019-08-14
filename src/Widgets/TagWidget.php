@@ -128,6 +128,22 @@ class TagWidget extends Widget
     }
 
     /**
+     * Returns validation attributes.
+     *
+     * @param Request $request
+     * @param string $type 'create' or 'edit'.
+     * @param Model|null $item
+     * @return array
+     */
+    public function validationAttributes(Request $request, string $type, Model $item = null): array
+    {
+        return [
+            $this->name             => $this->title,
+            $this->name.'.*.value'  => $this->title,
+        ];
+    }
+
+    /**
      * Get existing tags formated for vue tags input.
      *
      * @return array

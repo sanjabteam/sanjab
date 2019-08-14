@@ -26,7 +26,7 @@
                 <div class="screen-saver-content">
                     <div>
                         <h1>@if(time() - Session::get('sanjab_hide_lock_screen') > 7200) @lang('sanjab::sanjab.welcome_back') @endif</h1>
-                        @if($sanjabImage)<a class="image-author" href="{{ $sanjabImage['link'] }}" title="@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])" target="_blank">@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])</a>@endif
+                        @if($sanjabImage && isset($sanjabImage['author']))<a class="image-author" href="{{ isset($sanjabImage['link']) ? $sanjabImage['link'] : '#' }}" title="@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])" target="_blank">@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])</a>@endif
                     </div>
                 </div>
                 <div class="sidebar-wrapper">

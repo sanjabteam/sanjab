@@ -139,11 +139,26 @@
                 }
             },
             fixFormData() {
+                for (var i in this.widgets) {
+                    if (this.widgets[i].translation == false) {
+                        if (this.form[this.widgets[i].name] == undefined) {
+                            this.form[this.widgets[i].name] = this.widgets[i].value;
+                        }
+                    }
+                }
                 if (typeof this.form.sanjab_translations !== 'object') {
                     this.form.sanjab_translations = {};
-                    this.form.sanjab_translations[this.mainLocale.locale] = {};
-                    for (var i in this.locales) {
+                    for (var i in this.allLocales) {
                         this.form.sanjab_translations[i] = {};
+                    }
+                }
+                for (var i in this.allLocales) {
+                    for (var j in this.widgets) {
+                        if (this.widgets[j].translation) {
+                            if (this.form.sanjab_translations[i][this.widgets[j].name] == undefined) {
+                                this.form.sanjab_translations[i][this.widgets[j].name] = this.widgets[j].value;
+                            }
+                        }
                     }
                 }
             },
@@ -162,6 +177,9 @@
             translatableWidgets() {
                 return this.widgets.filter((widget) => widget.translation == true);
             },
+            allLocales() {
+                return window.sanjab.config.locales;
+            },
             locales() {
                 var locales = {};
                 for (var i in window.sanjab.config.locales) {
@@ -173,7 +191,7 @@
             },
             mainLocale() {
                 if (typeof window.sanjab.config.locales[window.sanjab.app.locale] === 'undefined') {
-                    return {locale: window.sanjab.config.locales.keys()[0], name: window.sanjab.config.locales[window.sanjab.config.locales.keys()[0]]};
+                    return {locale: Object.keys(window.sanjab.config.locales)[0], name: window.sanjab.config.locales[Object.keys(window.sanjab.config.locales)[0]]};
                 }
                 return {locale: window.sanjab.app.locale, name: window.sanjab.config.locales[window.sanjab.app.locale]};
             }

@@ -2,16 +2,15 @@
 
 namespace Sanjab\Widgets;
 
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
 use stdClass;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Map marker input.
  *
- * @property string $latitudeName(string $val)  latitude field name
- * @property string $longitudeName(string $val) longitude field name
+ * @method $this latitudeName(string $val)  latitude field name
+ * @method $this longitudeName(string $val) longitude field name
  */
 class MapWidget extends Widget
 {
@@ -57,6 +56,6 @@ class MapWidget extends Widget
     {
         $this->setProperty('name', $name);
         $this->latitudeName($name.'_lat');
-        $this->latitudeName($name.'_lng');
+        $this->longitudeName($name.'_lng');
     }
 }

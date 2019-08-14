@@ -2,6 +2,7 @@
 
 namespace Sanjab\Widgets;
 
+use stdClass;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +30,15 @@ class CheckboxGroupWidget extends Widget
 
     protected function store(Request $request, Model $item)
     {
-        $item->{ $this->option("name") } = $request->input($this->option("name")) == "true";
+        $values = array_combine(array_keys($this->checkOptions), array_fill(0, count($this->checkOptions), false));
+        if (is_array($request->input($this->property("name")))) {
+            foreach ($request->input($this->property("name")) as $checked) {
+                if (isset($values[$checked])) {
+                    $values[$checked] = true;
+                }
+            }
+        }
+        $item->{ $this->property('name') } = $values;
     }
 
     protected function search(Builder $query, string $type = null, $search = null)
@@ -81,5 +90,25 @@ class CheckboxGroupWidget extends Widget
             $out[] = ['text' => $optionTitle, 'value' => $optionKey];
         }
         return $out;
+    }
+
+    /**
+     * To modifying model response.
+     *
+     * @param object $respones
+     * @param Model $item
+     * @return void
+     */
+    protected function modifyResponse(stdClass $response, Model $item)
+    {
+        $values = [];
+        if (is_array($item->{ $this->property("name") })) {
+            foreach ($item->{ $this->property("name") } as $name => $value) {
+                if ($value) {
+                    $values[] = $name;
+                }
+            }
+        }
+        $response->{ $this->property("name") } = $values;
     }
 }

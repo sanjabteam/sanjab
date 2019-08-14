@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Auth;
  *
  * @method $this fastChange (boolean $val)                          change checkbox on index.
  * @method $this fastChangeTimestamps (boolean $val)                should timestamp update on fast change.
- * @method $this fastChangeBefore(callable $callback)               callback call before fast change happen.
- * @method $this fastChangeAfter(callable $callback)                callback call after fast change happened.
- * @method $this fastChangeController(callable $callback)           controller to use with fast change.
- * @method $this fastChangeControllerAuthorize(callable $callback)  authorize fast change.
+ * @method $this fastChangeBefore(callable $callback)               callback call before fast change happen. parameters(Model $item)
+ * @method $this fastChangeAfter(callable $callback)                callback call after fast change happened. parameters(Model $item)
+ * @method $this fastChangeController(string $val)                  controller to use with fast change.
+ * @method $this fastChangeControllerAuthorize(callable $callback)  authorize fast change. parameters(Model $item)
  * @method $this fastChangeControllerAction(callable $callback)     controller to use with fast change.
  * @method $this fastChangeControllerItem(callable $callback)       controller action parameter working with fast change.
  */

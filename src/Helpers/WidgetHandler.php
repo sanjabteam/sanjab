@@ -109,11 +109,12 @@ trait WidgetHandler
      * Validation after callback.
      *
      * @param \Illuminate\Validation\Validator  $validator
+     * @param \Illuminate\Http\Request $request
      * @param string $type  create|edit
      * @param Model|null  $item
      * @return array
      */
-    public function validationAfter(Validator $validator, string $type, Model $item = null)
+    public function validationAfter(Validator $validator, Request $request, string $type, Model $item = null)
     {
         return [];
     }
@@ -292,8 +293,8 @@ trait WidgetHandler
         $messages = array_dot($messages);
         $attributes = array_dot($attributes);
         $validator = \Validator::make($request->all(), $rules, $messages, $attributes);
-        $validator->after(function ($validator) use ($type, $item) {
-            $this->validationAfter($validator, $type, $item);
+        $validator->after(function ($validator) use ($type, $item, $request) {
+            $this->validationAfter($validator, $request, $type, $item);
         });
         $validator->validate();
     }
@@ -339,6 +340,7 @@ trait WidgetHandler
      * Get request only for translated part using for translation widgets.
      *
      * @param Request $request
+     * @param string $locale
      * @return Request
      */
     protected function translatedRequest(Request $request, string $locale)
@@ -369,7 +371,6 @@ trait WidgetHandler
         foreach (array_keys(config('sanjab.locales')) as $locale) {
             $responseItem->sanjab_translations[$locale] = new stdClass;
         }
-        $this->modifyResponse($responseItem, $item);
         foreach ($this->widgets as $widget) {
             if ($widget->property('translation')) {
                 $widget->doModifyResponse($responseItem, $item);
@@ -382,6 +383,7 @@ trait WidgetHandler
                 $widget->doModifyResponse($responseItem, $item);
             }
         }
+        $this->modifyResponse($responseItem, $item);
         if (isset($this->actions)) {
             $responseItem->__can = [];
             $responseItem->__action_url = [];

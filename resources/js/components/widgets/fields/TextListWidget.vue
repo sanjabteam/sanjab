@@ -2,7 +2,7 @@
     <div>
         <b-row>
             <b-col cols="9">
-                <b-form-input v-model="newItem" :placeholder="title" v-bind="inputOptions" />
+                <b-form-input ref="newItemInput" v-model="newItem" :placeholder="title" v-bind="inputOptions" @keydown.enter.prevent='addOption' />
             </b-col>
             <b-col cols="3">
                 <b-button @click="addOption" :block="true" variant="success">{{ sanjabTrans('add') }}</b-button>
@@ -61,15 +61,17 @@
                     if (!(this.items instanceof Array)) {
                         this.items = [];
                     }
-                    if (this.unique) {
-                        if (this.items.indexOf(this.newItem) != -1) {
-                            sanjabError(sanjabTrans('this_item_added_before'));
-                            return;
+                    if (this.$refs.newItemInput.reportValidity()) {
+                        if (this.unique) {
+                            if (this.items.map((txt) => txt.toLowerCase()).indexOf(this.newItem.toLowerCase()) != -1) {
+                                sanjabError(sanjabTrans('this_item_added_before'));
+                                return;
+                            }
                         }
+                        this.items.push(this.newItem);
+                        this.newItem = "";
+                        this.$emit("input", this.items);
                     }
-                    this.items.push(this.newItem);
-                    this.newItem = "";
-                    this.$emit("input", this.items);
                 }
             },
             removeOption(index) {

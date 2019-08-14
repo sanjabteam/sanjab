@@ -14,10 +14,10 @@ use Sanjab\Helpers\SearchType;
 /**
  * Base class for all widgets ( form fields and table cells and view )
  *
- * @method $this    onIndex(boolean $val)                       is this element avilble on index.
- * @method $this    onView(boolean $val)                        is this element avilble on view.
- * @method $this    onCreate(boolean $val)                      is this element avilble on create.
- * @method $this    onEdit(boolean $val)                        is this element avilble on edit.
+ * @method $this    onIndex(boolean $val)                       is this element availble on index.
+ * @method $this    onView(boolean $val)                        is this element availble on view.
+ * @method $this    onCreate(boolean $val)                      is this element availble on create form.
+ * @method $this    onEdit(boolean $val)                        is this element availble on edit form.
  * @method $this    onStore(boolean $val)                       should this store in database.
  * @method $this    sortable(boolean $val)                      is this widget sortable.
  * @method $this    searchable(boolean $val)                    is this widget searchable.
@@ -576,6 +576,11 @@ abstract class Widget extends PropertiesHolder
     {
     }
 
+    /**
+     * Returns getters.
+     *
+     * @return array
+     */
     public function getGetters()
     {
         return array_merge(['tableColumns', 'searchTypes'], $this->getters);
