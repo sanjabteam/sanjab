@@ -16,8 +16,8 @@ class CreateSanjabSettingsTable extends Migration
         Schema::create('sanjab_settings', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('translation')->default('0');
-            $table->string('key')->nullable();
-            $table->string('name');
+            $table->string('key', 100)->nullable();
+            $table->string('name', 100);
             $table->text('value')->nullable();
             $table->timestamps();
 
@@ -28,7 +28,7 @@ class CreateSanjabSettingsTable extends Migration
             $table->text('translated_value')->nullable();
 
             $table->unsignedInteger('setting_id');
-            $table->string('locale')->index();
+            $table->string('locale', 10)->index();
             $table->unique(['setting_id', 'locale']);
             $table->foreign('setting_id')->references('id')->on('sanjab_settings')->onDelete('cascade')->onUpdate('cascade');
         });
