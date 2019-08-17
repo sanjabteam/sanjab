@@ -11,6 +11,10 @@ if (! function_exists('sanjab_mix')) {
      */
     function sanjab_mix($path)
     {
+        try {
+            return mix('vendor/sanjab/'.ltrim($path, '\\/'));
+        } catch (Exception $exception) {
+        }
         return mix($path, "vendor/sanjab");
     }
 }

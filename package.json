@@ -1,7 +1,15 @@
 {
-    "private": true,
     "name": "sanjab",
-    "version": "0.0.12",
+    "description": "Laravel package to create admin panel.",
+    "version": "0.0.11",
+    "license": "MIT",
+    "private": false,
+    "author": "Amir Alizadeh <amiralizadeh9480@gmail.com>",
+    "main": "./resources/js/bootstrap",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sanjabteam/sanjab.git"
+    },
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -17,12 +25,12 @@
         "axios": "^0.19.0",
         "bootstrap": "^4.3.1",
         "bootstrap-material-design": "^4.1.2",
-        "bootstrap-vue": "^2.0.0-rc.26",
+        "bootstrap-vue": "^2.0.0-rc.28",
         "cross-env": "^5.2.0",
         "jquery": "^3.4.1",
         "laravel-mix": "^4.1.2",
         "leaflet": "^1.5.1",
-        "lodash": "^4.17.14",
+        "lodash": "^4.17.15",
         "material-dashboard": "^2.1.0",
         "material-design-icons": "^3.0.1",
         "moment": "^2.24.0",
@@ -30,10 +38,10 @@
         "popper.js": "^1.15.0",
         "quill-image-upload": "^0.1.3",
         "resolve-url-loader": "^3.1.0",
-        "sass": "^1.22.4",
-        "sass-loader": "^7.1.0",
+        "sass": "^1.22.10",
+        "sass-loader": "^7.2.0",
         "shabnam-font": "^4.0.0",
-        "sweetalert2": "^8.13.5",
+        "sweetalert2": "^8.16.1",
         "uppy": "^1.3.0",
         "vue": "^2.6.10",
         "vue-bootstrap-typeahead": "^0.2.6",
@@ -41,6 +49,6 @@
         "vue-quill-editor": "^3.0.6",
         "vue-select": "^3.1.0",
         "vue-template-compiler": "^2.6.10",
-        "vue2-leaflet": "^2.1.1"
+        "vue2-leaflet": "^2.2.1"
     }
 }
