@@ -2,8 +2,6 @@
 /.idea
 /.vscode
 /build
-/composer.json
-/composer.lock
 /config
 /database
 /node_modules
@@ -21,5 +19,6 @@
 .styleci.yml
 .travis.yml
 composer.json
+composer.lock
 CHANGELOG.md
 phpunit.xml.dist
