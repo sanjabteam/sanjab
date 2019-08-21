@@ -13,4 +13,3 @@ echo shell_exec("git add resources/assets/mix-manifest.json --force");
 echo shell_exec("git add resources/assets/css/sanjab.css --force");
 echo shell_exec("git add resources/assets/js/sanjab.js --force");
 echo shell_exec("git add resources/assets/*");
-echo shell_exec("npm version patch");

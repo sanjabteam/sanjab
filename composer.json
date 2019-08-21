@@ -44,7 +44,12 @@
     },
     "scripts": {
         "test": "\"vendor/bin/phpunit\"",
-        "test-coverage": "\"vendor/bin/phpunit\" --coverage-html coverage"
+        "test-coverage": "\"vendor/bin/phpunit\" --coverage-html coverage",
+        "publish": [
+            "npm version patch",
+            "npm publish",
+            "git push origin master --tags"
+        ]
     },
     "config": {
         "sort-packages": true

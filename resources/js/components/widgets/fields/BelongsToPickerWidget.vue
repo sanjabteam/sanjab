@@ -78,7 +78,7 @@
                         loading(true);
                         self.searchTimeout = null;
                         axios.post(sanjabUrl('helpers/relation-widgets/options'), {
-                            selected: self.mutableValue,
+                            selected: self.mutableValue instanceof Array ? self.mutableValue : (self.mutableValue ? [self.mutableValue] : []),
                             controller: self.controller,
                             action: self.controllerAction,
                             widget: self.name,

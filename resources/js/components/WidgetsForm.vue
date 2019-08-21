@@ -6,7 +6,7 @@
         <b-form @submit.prevent="onSubmit">
             <b-row>
                 <b-col v-for="(widget, index) in nonTranslatableWidgets" :key="index" :cols="widget.cols">
-                    <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="item == null ? 'create' : 'edit'" v-model="form[widget.name]" :data="form" />
+                    <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="readonly ? 'show' : (item == null ? 'create' : 'edit')" v-model="form[widget.name]" :data="form" />
                 </b-col>
             </b-row>
 
@@ -17,7 +17,7 @@
                             <b-tab @click="onShowTranslationButton" :title="mainLocale.name">
                                 <b-row>
                                     <b-col v-for="(widget, index) in translatableWidgets" :key="'tr' + mainLocale.locale + '_' + index" :cols="widget.cols">
-                                        <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="item == null ? 'create' : 'edit'" :field-locale="mainLocale.locale" v-model="form.sanjab_translations[mainLocale.locale][widget.name]" />
+                                        <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="readonly ? 'show' : (item == null ? 'create' : 'edit')" :field-locale="mainLocale.locale" v-model="form.sanjab_translations[mainLocale.locale][widget.name]" />
                                     </b-col>
                                 </b-row>
                             </b-tab>
@@ -28,7 +28,7 @@
                             <b-tab v-for="(localeName, locale) in locales" :key="locale" :title="localeName">
                                 <b-row>
                                     <b-col v-for="(widget, index) in translatableWidgets" :key="'tr' + locale + '_' + index" :cols="widget.cols">
-                                        <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="item == null ? 'create' : 'edit'" :field-locale="locale" v-model="form.sanjab_translations[locale][widget.name]" :data="form.sanjab_translations[locale]" />
+                                        <component v-if="showWidget(widget)" :is="readonly ? widget.viewGroupTag : widget.groupTag" :widget="widget" :properties="properties" :errors.sync="errors" :crud-type="readonly ? 'show' : (item == null ? 'create' : 'edit')" :field-locale="locale" v-model="form.sanjab_translations[locale][widget.name]" :data="form.sanjab_translations[locale]" />
                                     </b-col>
                                 </b-row>
                             </b-tab>

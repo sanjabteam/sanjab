@@ -19,10 +19,7 @@ class RelationWidgetController extends SanjabController
             'selected.*' => 'numeric',
         ]);
         $relationWidget = $this->getInteractionInfo()[1];
-        $model = $relationWidget->model;
-        $format = $relationWidget->format;
-
-        preg_match_all("/%([A-Za-z0-9_]+)/", $format, $matches);
+        $model = $relationWidget->relatedModel;
 
         $items = $model::limit(100);
         $items->where(function ($query) use ($relationWidget) {
@@ -48,10 +45,20 @@ class RelationWidgetController extends SanjabController
         });
         $items = $items->get();
         $out = [];
+        $format = $relationWidget->format;
+        $matches = [[], []];
+        if (is_string($format)) {
+            preg_match_all("/%([A-Za-z0-9_]+)/", $format, $matches);
+        }
         foreach ($items as $item) {
-            $text = $format;
-            foreach ($matches[1] as $match) {
-                $text = str_replace("%".$match, $item->{ $match }, $text);
+            $text = null;
+            if (is_callable($format)) {
+                $text = $format($item);
+            } else {
+                $text = $format;
+                foreach ($matches[1] as $match) {
+                    $text = str_replace("%".$match, $item->{ $match }, $text);
+                }
             }
             $out[] = ['label' => $text, 'value' => $item->id];
         }

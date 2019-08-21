@@ -87,7 +87,7 @@
             </div>
 
             <template v-for="tableColumn in tableColumns" :slot="tableColumn.key" slot-scope="row">
-                <component :key="tableColumn.key" :is="tableColumn.tag" :widget="tableColumn.widget" :data="row.item" />
+                <component :key="tableColumn.key" crud-type="index" :is="tableColumn.tag" :widget="tableColumn.widget" :data="row.item" />
             </template>
         </b-table>
         <b-pagination

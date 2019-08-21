@@ -18,12 +18,15 @@ use Exception;
  * @method $this    optionsLabelKey(string $val)    options label key.
  * @method $this    relationKey(string $val)        relation key.
  * @method $this    model(string $val)              model to handle
- * @method $this    format(string $val)             show format. example: ('%id - %name')
+ * @method $this    format(string|callable $val)    show format. example: ('%id - %name')
  */
 abstract class RelationWidget extends Widget
 {
     protected $getters = [
-        'options'
+        'options',
+        'controller',
+        'controllerAction',
+        'controllerItem',
     ];
 
     protected $tempModelInstance = null;
@@ -32,6 +35,7 @@ abstract class RelationWidget extends Widget
     {
         $this->query(function ($query) {
         });
+        $this->ajax(false);
         $this->tag('select-widget');
         $this->setProperty("format", '%id');
         $this->optionsLabelKey('label');
@@ -77,8 +81,8 @@ abstract class RelationWidget extends Widget
     protected function order(Builder $query, string $key, string $direction = 'asc')
     {
         $query->select($this->table.".*")
-            ->leftJoin($this->relatedTable. " as __".$this->relatedTable, $this->tempModel->getTable().".".$this->foreignKey, "=", "__".$this->relatedTable.".".$this->ownerKey)
-            ->orderBy("__".$this->relatedTable.".".$this->property("orderColumn"), $direction);
+            ->leftJoin($this->relatedModelTable. " as __".$this->relatedModelTable, $this->getModelInstance()->getTable().".".$this->foreignKey, "=", "__".$this->relatedModelTable.".".$this->ownerKey)
+            ->orderBy("__".$this->relatedModelTable.".".$this->property("orderColumn"), $direction);
     }
 
     /**
@@ -110,6 +114,16 @@ abstract class RelationWidget extends Widget
             $this->tempModelInstance = new $this->model;
         }
         return $this->tempModelInstance;
+    }
+
+    /**
+     * Get model table name.
+     *
+     * @return string
+     */
+    public function getTable()
+    {
+        return $this->modelInstance->getTable();
     }
 
     /**
@@ -149,7 +163,7 @@ abstract class RelationWidget extends Widget
      */
     public function getForeignKey()
     {
-        return $this->modelInstance->{ $this->property("name") }()->getForeignKey();
+        return $this->modelInstance->{ $this->property("name") }()->getForeignKeyName();
     }
     /**
      * Get model owner key.
@@ -175,11 +189,20 @@ abstract class RelationWidget extends Widget
         $options = $this->relatedModel::query();
         $this->property("query")($options);
         $options = $options->get();
+        $format = $this->property("format");
+        $matches = [[], []];
+        if (is_string($format)) {
+            preg_match_all("/%([A-Za-z0-9_]+)/", $format, $matches);
+        }
         foreach ($options as $option) {
-            $text = $this->property("format");
-            preg_match_all("/%([A-Za-z0-9_]+)/", $text, $matches);
-            foreach ($matches[1] as $match) {
-                $text = str_replace("%".$match, $option->{ $match }, $text);
+            $text = null;
+            if (is_callable($format)) {
+                $text = $format($option);
+            } else {
+                $text = $format;
+                foreach ($matches[1] as $match) {
+                    $text = str_replace("%".$match, $option->{ $match }, $text);
+                }
             }
             $out[] = [$this->property('optionsLabelKey') => $text, 'value' => $option->{ $this->{$this->relationKey} }];
         }

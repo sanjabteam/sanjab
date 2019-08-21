@@ -4,7 +4,7 @@
             <b>{{ widget.title }}:</b>
         </b-col>
         <b-col cols="10">
-            <component :is="widget.viewTag" :data="data" :widget="widget" />
+            <component :is="widget.viewTag" :data="data" :widget="widget" :crud-type="crudType" />
         </b-col>
     </b-row>
 </template>
@@ -20,6 +20,10 @@
                 type: Object,
                 default: () => {}
             },
+            crudType: {
+                type: String,
+                default: "index"
+            }
         },
     }
 </script>

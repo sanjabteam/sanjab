@@ -1,6 +1,6 @@
 <template>
     <b-row>
-        <b-col v-for="(card, index) in cards" :key="index" :cols="card.cols">
+        <b-col v-for="(card, index) in cards" :key="index" :cols="12" :md="card.cols > 6 ? 12 : 6" :lg="card.cols">
             <component :is="card.tag" :data="typeof data[index] != 'undefined' ? data[index] : null" v-bind="card" />
         </b-col>
     </b-row>

@@ -32,10 +32,9 @@ class BelongsToManyPickerWidget extends RelationWidget
         $this->sortable(false);
         $this->ajax(false);
         $this->tag("belongs-to-picker-widget");
-        $this->viewTag("belongs-to-many-picker-view");
+        $this->viewTag("belongs-to-picker-view");
         $this->setProperty("multiple", true);
         $this->setProperty("tagging", true);
-        $this->relationKey('relatedKey');
     }
 
     public function getController()
@@ -94,7 +93,7 @@ class BelongsToManyPickerWidget extends RelationWidget
 
     public function getOptions()
     {
-        if ($this->property('ajax') && $this->controllerProperties['type'] != 'show') {
+        if ($this->property('ajax') && !in_array($this->controllerProperties['type'], ['index', 'show'])) {
             return [];
         }
         return parent::getOptions();

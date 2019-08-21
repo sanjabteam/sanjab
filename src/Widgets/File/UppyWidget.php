@@ -91,6 +91,9 @@ class UppyWidget extends Widget
                 } elseif ($this->property("height")) {
                     $image->heighten($this->property("height"));
                 }
+                if ($this->property('watermark')) {
+                    $image->insert($this->property('watermark'), $this->property('watermarkPosition'), $this->property('watermarkX'), $this->property('watermarkY'));
+                }
                 $fileContent = $image->encode($extension);
                 $filename = trim(trim($this->property('directory'), '\\/') . "/" . $file->hashName(), '\\/');
                 Storage::disk($this->property("disk"))->put($filename, $fileContent);
@@ -266,6 +269,24 @@ class UppyWidget extends Widget
     public function multiple($val = true)
     {
         $this->setProperty('multiple', $val);
+        return $this;
+    }
+
+    /**
+     * Set watermark for images only.
+     *
+     * @param mixed $watermark      watermark image
+     * @param string $position      position of watermark
+     * @param int $x                watermark position x
+     * @param int $y                watermark position y
+     * @return $this
+     */
+    public function watermark($watermark, string $position = 'top-left', int $x = 0, int $y = 0)
+    {
+        $this->setProperty('watermark', $watermark);
+        $this->setProperty('watermarkPosition', $position);
+        $this->setProperty('watermarkX', $x);
+        $this->setProperty('watermarkY', $y);
         return $this;
     }
 }
