@@ -27,6 +27,7 @@ class Sanjab
         \Sanjab\Controllers\CheckboxWidgetController::class,
         \Sanjab\Controllers\TranslationController::class,
         \Sanjab\Controllers\SearchController::class,
+        \Sanjab\Controllers\ElfinderController::class,
     ];
 
     /**

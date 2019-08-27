@@ -7,7 +7,7 @@ function sanjabTrans(key, replaces)
     }
     var out = __stransHelper('sanjab::sanjab.' + key, replaces, __sanjab_translations, '');
     for(var replace in replaces){
-        out = out.replace(new RegExp("\:"+parameter), replaces[replace]);
+        out = out.replace(new RegExp("\:"+replace), replaces[replace]);
     }
     return out;
 }

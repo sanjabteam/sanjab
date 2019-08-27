@@ -119,5 +119,35 @@ return [
             ['title' => 'CREATIVE TIM', 'link' => 'https://www.creative-tim.com/'],
             ['title' => 'SANJAB', 'link' => 'https://sanjabteam.github.io/'],
         ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Elfinder filemanager settings.
+    |--------------------------------------------------------------------------
+    */
+    'elfinder' => [
+        /*
+        |--------------------------------------------------------------------------
+        | Is elfinder availble in sidebar menu.
+        |--------------------------------------------------------------------------
+        */
+        'enabled' => true,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Disks available in el finder file manager.
+        |--------------------------------------------------------------------------
+        |
+        | Array of disks with their alias.
+        | Example: [
+        |    'public' => 'Uploads',
+        |    'local' => 'Private storage'
+        | ]
+        |
+        */
+        'disks' => [
+            'public' => 'Uploads'
+        ]
     ]
 ];

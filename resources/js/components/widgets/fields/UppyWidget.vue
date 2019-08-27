@@ -3,34 +3,7 @@
         <hr />
         <b-button v-if="! readonly" ref="uppyButton" class="mb-3" variant="primary" :disabled="max <= files.length">{{ sanjabTrans('upload') }}</b-button>
         <div ref="uppyContainer"></div>
-        <b-row>
-            <b-col v-for="(file, index) in files" :key="index" :cols="fileType(file.type) == 'image' ? 2 : 6">
-                <div v-if="fileType(file.type) == 'image'">
-                    <a :href="file.link ? file.link : file.value" target="_blank">
-                        <b-img :src="file.preview" width="128" height="128" thumbnail fluid />
-                    </a>
-                    <b-button v-if="! readonly" class="uppy-image-remove-button" size="small" variant="danger" @click="removeFile(index)"><i class="material-icons">delete</i></b-button>
-                </div>
-                <div v-else-if="fileType(file.type) == 'audio'">
-                    <audio controls>
-                        <source :src="file.preview" :type="file.type">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <b-button v-if="! readonly" class="uppy-remove-button" size="small" variant="danger" @click="removeFile(index)"><i class="material-icons">delete</i></b-button>
-                </div>
-                <div v-else-if="fileType(file.type) == 'video'">
-                    <video width="100%" controls>
-                        <source :src="file.preview" :type="file.type">
-                        Your browser does not support the video element.
-                    </video>
-                    <b-button v-if="! readonly" class="uppy-remove-button" size="small" variant="danger" @click="removeFile(index)"><i class="material-icons">delete</i></b-button>
-                </div>
-                <div v-else>
-                    <b-button :href="file.link ? file.link : file.value" target="_blank" block>{{ sanjabTrans('file') }}</b-button>
-                    <b-button v-if="! readonly" class="uppy-remove-button" size="small" variant="danger" @click="removeFile(index)"><i class="material-icons">delete</i></b-button>
-                </div>
-            </b-col>
-        </b-row>
+        <file-preview v-model="files" :readonly="readonly" @onRemove="$emit('input', files)" />
     </div>
 </template>
 
@@ -40,6 +13,23 @@
     const Webcam = require("@uppy/webcam");
     const Url = require('@uppy/url');
     const Tus = require("@uppy/tus");
+    const UppyLocales = {
+        "ar": require('@uppy/locales/src/ar_SA'),
+        "de": require('@uppy/locales/src/de_DE'),
+        "en": require('@uppy/locales/src/en_US'),
+        "es": require('@uppy/locales/src/es_ES'),
+        "fa": require('@uppy/locales/src/fa_IR'),
+        "fi": require('@uppy/locales/src/fi_FI'),
+        "fr": require('@uppy/locales/src/fr_FR'),
+        "hu": require('@uppy/locales/src/hu_HU'),
+        "it": require('@uppy/locales/src/it_IT'),
+        "ja": require('@uppy/locales/src/ja_JP'),
+        "nl": require('@uppy/locales/src/nl_NL'),
+        "pt": require('@uppy/locales/src/pt_BR'),
+        "ru": require('@uppy/locales/src/ru_RU'),
+        "tr": require('@uppy/locales/src/tr_TR'),
+        "zn": require('@uppy/locales/src/zh_CN'),
+    };
 
     export default {
         data() {
@@ -82,6 +72,7 @@
             var self = this;
             this.uppy = Uppy({
                 autoProceed: true,
+                locale: (UppyLocales[document.documentElement.lang] != undefined) ? UppyLocales[document.documentElement.lang] : UppyLocales['en'],
                 restrictions: {
                     maxFileSize: this.maxSize * 1024,
                     maxNumberOfFiles: 1,
@@ -135,19 +126,6 @@
             delete this.uppy;
         },
         methods: {
-            removeFile(index) {
-                this.files.splice(index, 1);
-                this.$emit("input", this.files);
-            },
-            fileType(type) {
-                if (type.match(/image\/.*/)) {
-                    return 'image';
-                } else if (type.match(/video\/.*/)) {
-                    return 'video';
-                } else if (type.match(/audio\/.*/)) {
-                    return 'audio';
-                }
-            },
             validValues(values) {
                 var newFiles = [];
                 if (values instanceof Array) {
@@ -168,27 +146,3 @@
     };
 </script>
 
-<style lang="scss" scoped>
-    .btn.uppy-remove-button {
-        bottom: 20px;
-    }
-
-    .btn.uppy-image-remove-button {
-        position: absolute;
-        display: inline-block;
-        bottom: 10px;
-    }
-
-    html[dir="rtl"] {
-        .btn.uppy-image-remove-button {
-            right: 38px;
-        }
-    }
-
-    html[dir="ltr"] {
-        .btn.uppy-image-remove-button {
-            left: 38px;
-        }
-    }
-
-</style>

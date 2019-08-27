@@ -16,16 +16,16 @@ use Illuminate\Support\Facades\Storage;
 /**
  * Uppy upload widget.
  *
- * @method $this    max(integer $val)               max number of files.
- * @method $this    min(integer $val)               min number of files.
- * @method $this    maxSize(integer $val)           max size of file.
- * @method $this    disk(string $val)               disk to upload.
- * @method $this    directory(string $val)          directory to save to.
- * @method $this    fileRules(string $val)          file validation rules.
- * @method $this    fileStoreCallBack(callable)     callback to store file. parameters(\Illuminate\Http\UploadedFile $file) and returns relative file path.
- * @method $this    width(integer $val)             width to resize images only.
- * @method $this    height(integer $val)            height to resize images only.
- * @method $this    extension(integer $val)         change all image extensions to this.
+ * @method $this    max(integer $val)                   max number of files.
+ * @method $this    min(integer $val)                   min number of files.
+ * @method $this    maxSize(integer $val)               max size of file.
+ * @method $this    disk(string $val)                   disk to upload.
+ * @method $this    directory(string $val)              directory to save to.
+ * @method $this    fileRules(string $val)              file validation rules.
+ * @method $this    fileStoreCallBack(callable $val)    callback to store file. parameters(\Illuminate\Http\UploadedFile $file) and returns relative file path.
+ * @method $this    width(integer $val)                 width to resize images only.
+ * @method $this    height(integer $val)                height to resize images only.
+ * @method $this    extension(string $val)              change all image extensions to this.
  */
 class UppyWidget extends Widget
 {
@@ -65,7 +65,6 @@ class UppyWidget extends Widget
         $this->directory('/');
         $this->multiple(false);
         $this->onIndex(false);
-        $this->all(false);
         $this->tag("uppy-widget");
         $this->viewTag("uppy-view");
         $this->mimeTypes(["image/*", "video/*", "audio/*"]);

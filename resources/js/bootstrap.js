@@ -13,9 +13,14 @@ try {
         },
         buttonsStyling: false,
     });
+    window.requirejs = require('shebang-loader!requirejs');
 
     require('bootstrap');
     require('bootstrap-material-design');
+    require('jquery-ui-bundle');
+    window.ace = require('ace-builds');
+    ace.config.set("basePath", "/vendor/sanjab");
+    require('ace-builds/webpack-resolver');
 } catch (e) {
     console.error(e);
 }

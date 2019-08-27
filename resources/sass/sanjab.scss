@@ -12,7 +12,10 @@
 @import '~vue-bootstrap-typeahead/dist/VueBootstrapTypeahead.css';
 @import '~uppy/dist/uppy.min.css';
 @import '~@voerro/vue-tagsinput/dist/style.css';
+@import '~jquery-ui-bundle/jquery-ui.min.css';
 @import '~shabnam-font/dist/font-face.css';
+@import '../assets/thirdparty/elfinder/css/elfinder.min.css';
+@import '~elfinder-material-theme/Material/css/theme-light.min.css';
 @import '~material-dashboard/assets/scss/material-dashboard.scss';
 @import './variables.scss';
 @import './material-dashboard-rtl.css';
@@ -28,6 +31,7 @@
 
 .screen-saver .sidebar {
     width: 100%;
+    z-index: 4000000000;
 }
 
 .screen-saver .main-panel {
@@ -134,6 +138,19 @@ a.image-author {
     }
 }
 
+.elfinder.elfinder-rtl div.elfinder-bottomtray {
+    z-index: 1000;
+}
+
+.elfinder-dialog-info, .ui-dialog, .elfinder-frontmost {
+    z-index: 100000 !important;
+}
+
+.CodeMirror, .elfinder-file-edit, .elfinder-quicklook-preview-text-wrapper {
+    text-align: left;
+    direction: ltr;
+}
+
 @media (max-width: 991px) {
     .screen-saver .sidebar {
         transform: translate3d(0, 0, 0);
@@ -188,7 +205,8 @@ html[dir="rtl"] {
 }
 
 html[lang="fa"] {
-    body, h4, .dz-message, .swal2-title, .tooltip-inner, .screen-saver-content h1 {
+    body, h4, .dz-message, .swal2-title, .tooltip-inner, .screen-saver-content h1,
+    #sanjab_elfinder, .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
         font-family: Shabnam;
     }
 }

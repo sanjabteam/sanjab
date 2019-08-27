@@ -18,11 +18,15 @@
         "php": "^7.1",
         "ankitpokhrel/tus-php": "^1.0",
         "astrotomic/laravel-translatable": "^11.1",
+        "barryvdh/elfinder-flysystem-driver": "^0.2",
         "codex-team/editor.js": "^2.0",
         "google/recaptcha": "^1.2",
         "illuminate/support": "5.8.*",
         "intervention/image": "^2.5",
-        "silber/bouncer": "v1.0.0-rc.5"
+        "league/flysystem": "^1.0",
+        "league/flysystem-ziparchive": "^1.0",
+        "silber/bouncer": "v1.0.0-rc.5",
+        "studio-42/elfinder": "^2.1"
     },
     "require-dev": {
         "orchestra/testbench": "^3.8",

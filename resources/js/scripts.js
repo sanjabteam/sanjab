@@ -12,22 +12,24 @@ window.sanjabUrl = function (url = '') {
  * Show a success message.
  */
 window.sanjabSuccess = function (title, message = '') {
-    return Swal.fire(
-        title,
-        message,
-        'success'
-    );
+    return Swal.fire({
+        title: title,
+        text: message,
+        confirmButtonText: sanjabTrans('ok'),
+        type: 'success'
+    });
 }
 
 /**
  * Show a error message.
  */
 window.sanjabError = function (title, message = '') {
-    return Swal.fire(
-        title,
-        message,
-        'error'
-    );
+    return Swal.fire({
+        title: title,
+        text: message,
+        confirmButtonText: sanjabTrans('ok'),
+        type: 'error'
+    });
 }
 
 /**
