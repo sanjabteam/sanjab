@@ -151,6 +151,10 @@ a.image-author {
     direction: ltr;
 }
 
+.elfinder-quicklook-titlebar-icon.elfinder-titlebar-button-right {
+    background: red;
+}
+
 @media (max-width: 991px) {
     .screen-saver .sidebar {
         transform: translate3d(0, 0, 0);

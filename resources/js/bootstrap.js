@@ -13,13 +13,18 @@ try {
         },
         buttonsStyling: false,
     });
-    window.requirejs = require('shebang-loader!requirejs');
+    window.require = window.requirejs = require('shebang-loader!requirejs');
+    window.ace = require('ace-builds');
+    window.define = ace.define;
+    require('ace-builds/src-noconflict/theme-monokai');
+    ace.config.set(
+        "basePath",
+        "https://cdn.jsdelivr.net/npm/ace-builds@1.4.5/src-noconflict/"
+    );
 
     require('bootstrap');
     require('bootstrap-material-design');
     require('jquery-ui-bundle');
-    window.ace = require('ace-builds');
-    ace.config.set("basePath", "/vendor/sanjab");
 } catch (e) {
     console.error(e);
 }

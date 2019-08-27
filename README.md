@@ -9,6 +9,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 ## Credits
 
+- [Ace](https://ace.c9.io)
 - [Bootstrap vue](https://bootstrap-vue.js.org)
 - [Bouncer](https://github.com/JosephSilber/bouncer)
 - [Editor.js](https://editorjs.io)
