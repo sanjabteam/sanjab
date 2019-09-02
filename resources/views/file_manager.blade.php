@@ -65,8 +65,14 @@
                             @endif
                         }
                         window.postMessage({type: 'sanjab-elfinder-file-selected', files: files}, '*');
-                        parent.window.close();
-                        window.close();
+                        window.addEventListener("message", function (e) {
+                            if (typeof e.data === 'object' && e.data.type == 'sanjab-elfinder-file-selected' && typeof e.data.files == 'object' ) {
+                                setTimeout(function () {
+                                    parent.window.close();
+                                    window.close();
+                                }, 200);
+                            }
+                        });
                     }
                 @endif
             });

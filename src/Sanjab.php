@@ -96,11 +96,13 @@ class Sanjab
         if (static::$menuItems == null) {
             static::$menuItems = [];
             if (Auth::check()) {
+                $index = 0;
                 foreach (static::controllers() as $controller) {
-                    foreach ($controller::menus() as $menuItem) {
+                    foreach ($controller::menus() as $menuItemKey => $menuItem) {
                         if (! $menuItem instanceof MenuItem) {
                             throw new Exception("Some menu item in '$controller' is not a MenuItem type.");
                         }
+                        $menuItem->key = $index++;
                         if ($menuItem->hasChildren() == false || ! isset(static::$menuItems[$menuItem->title])) {
                             static::$menuItems[$menuItem->title] = $menuItem;
                         } else {
@@ -115,7 +117,10 @@ class Sanjab
                     return !$menuItem->isHidden();
                 });
                 usort(static::$menuItems, function ($a, $b) {
-                    return $a->order > $b->order;
+                    if ($a->order == $b->order) {
+                        return $a->key > $b->key ? 1 : -1;
+                    }
+                    return $a->order > $b->order ? 1 : -1;
                 });
                 static::$menuItems = array_values(static::$menuItems);
             }

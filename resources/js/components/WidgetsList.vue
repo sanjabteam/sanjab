@@ -61,6 +61,7 @@
             :current-page="page"
             :per-page="perPage"
             :filter="filter"
+            class="sanjab-crud-table"
             striped
             hover
             responsive
@@ -157,6 +158,7 @@
                 })
                 .catch(function (error) {
                     console.error(error);
+                    sanjabError(sanjabTrans('some_error_happend'));
                 });
             },
             onFilterChanged(event) {

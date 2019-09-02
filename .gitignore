@@ -7,3 +7,4 @@
 /resources/assets/mix-manifest.json
 /composer.lock
 /build
+/npm-debug.log

@@ -130,7 +130,7 @@
                                         @endif
                                     </div>
                                     <div class="card-footer justify-content-center">
-                                        <button type="submit" class="btn btn-sanjab btn-link btn-lg">@lang('sanjab::sanjab.login')</button>
+                                        <button type="submit" class="btn btn-primary btn-block btn-lg">@lang('sanjab::sanjab.login')</button>
                                     </div>
                                 </div>
                             </form>
