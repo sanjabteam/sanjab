@@ -410,6 +410,10 @@ abstract class Widget extends PropertiesHolder
      */
     final public function rules($rules, $type = null)
     {
+        if (empty($rules)) {
+            return $this;
+        }
+
         if ($type != 'create' && $type != 'edit') {
             $this->rules($rules, 'create');
             return $this->rules($rules, 'edit');

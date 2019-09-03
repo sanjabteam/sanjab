@@ -68,7 +68,7 @@
                                 return;
                             }
                         }
-                        this.items.push(this.newItem);
+                        this.items.unshift(this.newItem);
                         this.newItem = "";
                         this.$emit("input", this.items);
                     }
