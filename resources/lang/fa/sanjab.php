@@ -48,6 +48,7 @@ return [
     'more' => 'بیشتر',
     'more_or_eqaul' => 'بیشتر یا مساوی',
     'between' => 'بین',
+    'not_between' => 'نبودن بین',
     'upload' => 'آپلود',
     'file' => 'فایل',
     'add_a_tag' => 'اضافه کردن برچسب',

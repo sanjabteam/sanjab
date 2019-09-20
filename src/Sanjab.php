@@ -47,9 +47,16 @@ class Sanjab
     /**
      * Permission items
      *
-     * @var MenuItem[]
+     * @var PermissionItem[]
      */
-    protected static $permissionItems = null;
+    protected static $permissionItems = [];
+
+    /**
+     * User provided permission items.
+     *
+     * @var PermissionItem[]
+     */
+    protected static $customPermissionItems = [];
 
     /**
      * Dashboard cards
@@ -159,6 +166,17 @@ class Sanjab
     }
 
     /**
+     * Add custom permission to role permissions.
+     *
+     * @param PermissionItem $permissionItem
+     * @return void
+     */
+    public static function addPermission(PermissionItem $permissionItem)
+    {
+        static::$customPermissionItems[] = $permissionItem;
+    }
+
+    /**
      * All controllers permission items.
      *
      * @return PermissionItem[]
@@ -167,7 +185,7 @@ class Sanjab
     public static function permissionItems(): array
     {
         if (static::$permissionItems == null) {
-            static::$permissionItems = [];
+            static::$permissionItems = static::$customPermissionItems;
             foreach (static::controllers() as $controller) {
                 foreach ($controller::permissions() as $permissionItem) {
                     if (! $permissionItem instanceof PermissionItem) {

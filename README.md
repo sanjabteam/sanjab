@@ -1,5 +1,9 @@
 # Laravel admin panel
 
+![Panel](./images/screenshots/crud.jpg)
+![Login](./images/screenshots/login.jpg)
+![Screen Saver](./images/screenshots/screensaver.jpg)
+
 ## [Installation](https://sanjabteam.github.io/install.html)
 Read installation manual [here](https://sanjabteam.github.io/install.html).
 

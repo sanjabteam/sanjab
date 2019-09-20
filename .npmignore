@@ -12,6 +12,7 @@
 /src
 /tests
 /vendor
+/images
 .editorconfig
 .gitignore
 .gitattributes

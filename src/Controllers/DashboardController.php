@@ -105,6 +105,7 @@ abstract class DashboardController extends SanjabController
     public static function permissions(): array
     {
         $permission = PermissionItem::create(trans('sanjab::sanjab.dashboard'))
+                        ->order(50)
                         ->addPermission(trans('sanjab::sanjab.access_to_admin_panel'), 'access_sanjab');
         return [$permission];
     }
