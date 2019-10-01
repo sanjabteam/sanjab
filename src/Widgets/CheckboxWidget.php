@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Sanjab\Helpers\SearchType;
 
 /**
  * Single check box widget
@@ -50,16 +51,6 @@ class CheckboxWidget extends Widget
         $item->{ $this->property("name") } = $request->input($this->property("name")) == "true";
     }
 
-    protected function search(Builder $query, string $type = null, $search = null): void
-    {
-        if ($search == "true") {
-            $query->where($this->property('name'), 1);
-        }
-        if ($search == "false") {
-            $query->where($this->property('name'), 0);
-        }
-    }
-
     /**
      * Title of checkbox
      *
@@ -98,5 +89,40 @@ class CheckboxWidget extends Widget
             return optional($this->controllerProperties['item'])->id;
         }
         return optional($this->property('fastChangeControllerItem'))->id;
+    }
+
+
+
+    /**
+     * Get search types.
+     *
+     * @return array|SearchType[]
+     */
+    protected function searchTypes(): array
+    {
+        return [
+            SearchType::create('checked', '✅'),
+            SearchType::create('unchecked', '❌'),
+        ];
+    }
+
+    /**
+     * To override search query modify.
+     *
+     * @param Builder $query
+     * @param string $type
+     * @param mixed $search
+     * @return void
+     */
+    protected function search(Builder $query, string $type = null, $search = null)
+    {
+        switch ($type) {
+            case 'checked':
+                $query->where($this->property('name'), true);
+                break;
+            case 'unchecked':
+                $query->where($this->property('name'), false);
+                break;
+        }
     }
 }

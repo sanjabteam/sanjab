@@ -57,7 +57,7 @@
 }
 
 .sidebar-background {
-    filter: blur(3px);
+    filter: blur(4px);
 }
 
 .screen-saver {
@@ -165,6 +165,10 @@ a.image-author {
 
 .elfinder-quicklook-titlebar-icon.elfinder-titlebar-button-right {
     background: red;
+}
+
+.sanjab-crud-table.table-responsive {
+    overflow-y: hidden;
 }
 
 @media (max-width: 991px) {

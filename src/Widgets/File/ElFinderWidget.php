@@ -57,6 +57,7 @@ class ElFinderWidget extends Widget
     {
         $this->multiple(false);
         $this->onIndex(false);
+        $this->searchable(false);
         $this->tag("elfinder-widget");
         $this->viewTag("uppy-view");
         $this->mimeTypes(["image/*", "video/*", "audio/*"]);

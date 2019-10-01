@@ -21,11 +21,12 @@
         "barryvdh/elfinder-flysystem-driver": "^0.2",
         "codex-team/editor.js": "^2.0",
         "google/recaptcha": "^1.2",
-        "illuminate/support": "5.8.*",
+        "illuminate/support": "^5.8|^6.0",
         "intervention/image": "^2.5",
+        "laravel/helpers": "^1.1",
         "league/flysystem": "^1.0",
         "league/flysystem-ziparchive": "^1.0",
-        "silber/bouncer": "v1.0.0-rc.5",
+        "silber/bouncer": "v1.0.0-rc.5|v1.0.0-rc.6",
         "studio-42/elfinder": "^2.1"
     },
     "require-dev": {

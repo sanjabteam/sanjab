@@ -30,6 +30,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 - [Material design icons](https://github.com/google/material-design-icons)
 - [Open street map](https://www.openstreetmap.org)
 - [Orchestral testbench](https://github.com/orchestral/testbench)
+- [QS](https://github.com/ljharb/qs)
 - [Quill](https://quilljs.com)
 - [Shabnam font](https://github.com/rastikerdar/shabnam-font)
 - [Tus](https://tus.io)

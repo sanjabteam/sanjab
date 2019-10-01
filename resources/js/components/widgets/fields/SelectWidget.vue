@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-select ref="vueSelect" v-model="mutableValue" :multiple="multiple" :dir="dir" :options="options" v-on="$listeners" v-bind="$attrs">
+        <v-select ref="vueSelect" v-model="mutableValue" :multiple="multiple" :dir="dir" :searchable="searchEnabled" :options="options" v-on="$listeners" v-bind="$attrs">
             <template v-for="(_, slot) of $scopedSlots" v-slot:[slot]="scope">
                 <slot :name="slot" v-bind="scope"/>
             </template>
@@ -22,6 +22,10 @@
             multiple: {
                 type: Boolean,
                 default: false
+            },
+            searchEnabled: {
+                type: Boolean,
+                default: true
             }
         },
         data() {

@@ -23,11 +23,11 @@
         },
         computed: {
             val() {
-                var out = this.widget.options.filter((opt) => { return opt.value == this.data[this.widget.name] });
-                if (out.length > 0) {
-                    return out[0].label;
+                var value = this.data[this.widget.name];
+                if (! (value instanceof Array)) {
+                    value = [value];
                 }
-                return null;
+                return this.widget.options.filter((opt) => value.includes(opt.value)).map((opt) => opt.label).join(',');
             }
         },
     }

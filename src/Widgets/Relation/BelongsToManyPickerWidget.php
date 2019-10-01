@@ -6,6 +6,9 @@ use stdClass;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Sanjab\Helpers\SearchType;
+use Sanjab\Widgets\TextWidget;
 
 /**
  * Belongs to many select box.
@@ -93,9 +96,65 @@ class BelongsToManyPickerWidget extends RelationWidget
 
     public function getOptions()
     {
-        if ($this->property('ajax') && !in_array($this->controllerProperties['type'], ['index', 'show'])) {
+        if ($this->property('ajax') &&
+            (!in_array($this->controllerProperties['type'], ['index', 'show']) || $this->property('searchWidget') == true)
+        ) {
             return [];
         }
         return parent::getOptions();
+    }
+
+    protected function searchTypes(): array
+    {
+        return [
+            SearchType::create('empty', trans('sanjab::sanjab.is_empty')),
+            SearchType::create('not_empty', trans('sanjab::sanjab.is_not_empty')),
+            SearchType::create('similar', trans('sanjab::sanjab.similar'))
+                        ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.similar'))),
+            SearchType::create('not_similar', trans('sanjab::sanjab.not_similar'))
+                        ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.not_similar'))),
+            SearchType::create('in', trans('sanjab::sanjab.is_in'))
+                        ->addWidget($this->copy()->title(trans('sanjab::sanjab.is_in'))->setProperty('searchWidget', true)),
+            SearchType::create('not_in', trans('sanjab::sanjab.is_not_in'))
+                        ->addWidget($this->copy()->title(trans('sanjab::sanjab.is_not_in'))->setProperty('searchWidget', true)),
+        ];
+    }
+
+    protected function search(Builder $query, string $type = null, $search = null)
+    {
+        switch ($type) {
+            case 'empty':
+                $query->whereHas($this->property('name'));
+                break;
+            case 'not_empty':
+                $query->whereDoesntHave($this->property('name'));
+                break;
+            case 'not_similar':
+                foreach ($this->property('searchFields') as $searchField) {
+                    $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property("name").'.'.$searchField);
+                    $field = str_replace($relation.'.', '', $this->property("name").'.'.$searchField);
+                    $query->orWhereHas($relation, function (Builder $query) use ($field, $search) {
+                        $query->where($query->getQuery()->from.'.'.$field, "NOT LIKE", "%".$search."%");
+                    });
+                }
+                break;
+            case 'in':
+                if (is_array($search) && count($search) > 0) {
+                    $query->whereHas($this->name, function (Builder $query) use ($search) {
+                        $query->whereIn($query->getQuery()->from.'.'.$this->getRelatedKey(), $search);
+                    });
+                }
+                break;
+            case 'not_in':
+                if (is_array($search) && count($search) > 0) {
+                    $query->whereHas($this->name, function (Builder $query) use ($search) {
+                        $query->whereNotIn($query->getQuery()->from.'.'.$this->getRelatedKey(), $search);
+                    });
+                }
+                break;
+            default:
+                parent::search($query, $type, $search);
+                break;
+        }
     }
 }

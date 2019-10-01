@@ -140,14 +140,16 @@ abstract class Widget extends PropertiesHolder
     protected function searchTypes(): array
     {
         return [
+            SearchType::create('empty', trans('sanjab::sanjab.is_empty')),
+            SearchType::create('not_empty', trans('sanjab::sanjab.is_not_empty')),
             SearchType::create('equal', trans('sanjab::sanjab.equal'))
-                        ->addWidget(TextWidget::create('equal', trans('sanjab::sanjab.equal'))),
+                        ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.equal'))),
             SearchType::create('not_equal', trans('sanjab::sanjab.not_equal'))
-                        ->addWidget(TextWidget::create('not_equal', trans('sanjab::sanjab.not_equal'))),
+                        ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.not_equal'))),
             SearchType::create('similar', trans('sanjab::sanjab.similar'))
-                        ->addWidget(TextWidget::create('similar', trans('sanjab::sanjab.similar'))),
+                        ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.similar'))),
             SearchType::create('not_similar', trans('sanjab::sanjab.not_similar'))
-                        ->addWidget(TextWidget::create('not_similar', trans('sanjab::sanjab.not_similar'))),
+                        ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.not_similar'))),
         ];
     }
 
@@ -181,8 +183,20 @@ abstract class Widget extends PropertiesHolder
     protected function search(Builder $query, string $type = null, $search = null)
     {
         switch ($type) {
-            case 'exact':
+            case 'empty':
+                $query->whereNull($this->property('name'))->orWhere($this->property('name'), '=', '');
+                break;
+            case 'not_empty':
+                $query->whereNotNull($this->property('name'))->where($this->property('name'), '!=', '');
+                break;
+            case 'equal':
                 $query->where($this->property('name'), 'LIKE', $search);
+                break;
+            case 'not_equal':
+                $query->where($this->property('name'), 'NOT LIKE', $search);
+                break;
+            case 'not_similar':
+                $query->where($this->property('name'), 'NOT LIKE', '%'.$search.'%');
                 break;
             default:
                 $query->where($this->property('name'), 'LIKE', '%'.$search.'%');
@@ -623,5 +637,15 @@ abstract class Widget extends PropertiesHolder
     {
         $this->rules('nullable');
         return $this;
+    }
+
+    /**
+     * Clone current widget.
+     *
+     * @return static
+     */
+    public function copy()
+    {
+        return clone $this;
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <select-widget v-model="value" :options="options">
+        <select-widget v-model="value" :options="options" :multiple="multiple">
             <template slot="option" slot-scope="option">
                 <i :class="option.value"></i>
                 {{ option.label }}
@@ -21,6 +21,10 @@
                 type: Array,
                 default: () => []
             },
+            multiple: {
+                type: Boolean,
+                default: false
+            }
         },
         data() {
             return {

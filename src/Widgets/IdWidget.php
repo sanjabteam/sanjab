@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Widget to show item id
  */
-class IdWidget extends Widget
+class IdWidget extends NumberWidget
 {
     public function postInit()
     {

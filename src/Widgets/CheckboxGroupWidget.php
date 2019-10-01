@@ -22,6 +22,7 @@ class CheckboxGroupWidget extends Widget
 
     public function init(): void
     {
+        $this->searchable(false);
         $this->onIndex(false);
         $this->all(false);
         $this->tag("checkbox-group-widget");

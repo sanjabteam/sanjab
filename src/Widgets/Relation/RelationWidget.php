@@ -73,7 +73,7 @@ abstract class RelationWidget extends Widget
             $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property("name").'.'.$searchField);
             $field = str_replace($relation.'.', '', $this->property("name").'.'.$searchField);
             $query->orWhereHas($relation, function (Builder $query) use ($field, $search) {
-                $query->where($field, "LIKE", "%".$search."%");
+                $query->where($query->getQuery()->from.'.'.$field, "LIKE", "%".$search."%");
             });
         }
     }

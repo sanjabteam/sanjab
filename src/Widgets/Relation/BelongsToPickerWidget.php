@@ -2,9 +2,12 @@
 
 namespace Sanjab\Widgets\Relation;
 
+use Illuminate\Database\Eloquent\Builder;
 use stdClass;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Sanjab\Helpers\SearchType;
+use Sanjab\Widgets\TextWidget;
 
 /**
  * Belongs to relation picker.
@@ -74,9 +77,71 @@ class BelongsToPickerWidget extends RelationWidget
 
     public function getOptions()
     {
-        if ($this->property('ajax') && !in_array($this->controllerProperties['type'], ['index', 'show'])) {
+        if ($this->property('ajax') &&
+            (!in_array($this->controllerProperties['type'], ['index', 'show']) || $this->property('searchWidget') == true)
+        ) {
             return [];
         }
         return parent::getOptions();
+    }
+
+    protected function searchTypes(): array
+    {
+        return [
+            SearchType::create('empty', trans('sanjab::sanjab.is_empty')),
+            SearchType::create('not_empty', trans('sanjab::sanjab.is_not_empty')),
+            SearchType::create('equal', trans('sanjab::sanjab.equal'))
+                        ->addWidget($this->copy()->title(trans('sanjab::sanjab.equal'))->setProperty('searchWidget', true)),
+            SearchType::create('not_equal', trans('sanjab::sanjab.not_equal'))
+                        ->addWidget($this->copy()->title(trans('sanjab::sanjab.not_equal'))->setProperty('searchWidget', true)),
+            SearchType::create('similar', trans('sanjab::sanjab.similar'))
+                        ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.similar'))),
+            SearchType::create('not_similar', trans('sanjab::sanjab.not_similar'))
+                        ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.not_similar'))),
+            SearchType::create('in', trans('sanjab::sanjab.is_in'))
+                        ->addWidget($this->copy()->title(trans('sanjab::sanjab.is_in'))->setProperty('multiple', true)->setProperty('searchWidget', true)),
+            SearchType::create('not_in', trans('sanjab::sanjab.is_not_in'))
+                        ->addWidget($this->copy()->title(trans('sanjab::sanjab.is_not_in'))->setProperty('multiple', true)->setProperty('searchWidget', true)),
+        ];
+    }
+
+    protected function search(Builder $query, string $type = null, $search = null)
+    {
+        switch ($type) {
+            case 'empty':
+                $query->whereNull($query->getQuery()->from.'.'.$this->getForeignKey());
+                break;
+            case 'not_empty':
+                $query->whereNotNull($query->getQuery()->from.'.'.$this->getForeignKey());
+                break;
+            case 'equal':
+                $query->where($query->getQuery()->from.'.'.$this->getForeignKey(), $search);
+                break;
+            case 'not_equal':
+                $query->where($query->getQuery()->from.'.'.$this->getForeignKey(), '!=', $search);
+                break;
+            case 'not_similar':
+                foreach ($this->property('searchFields') as $searchField) {
+                    $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property("name").'.'.$searchField);
+                    $field = str_replace($relation.'.', '', $this->property("name").'.'.$searchField);
+                    $query->orWhereHas($relation, function (Builder $query) use ($field, $search) {
+                        $query->where($query->getQuery()->from.'.'.$field, "NOT LIKE", "%".$search."%");
+                    });
+                }
+                break;
+            case 'in':
+                if (is_array($search) && count($search) > 0) {
+                    $query->whereIn($query->getQuery()->from.'.'.$this->getForeignKey(), $search);
+                }
+                break;
+            case 'not_in':
+                if (is_array($search) && count($search) > 0) {
+                    $query->whereNotIn($query->getQuery()->from.'.'.$this->getForeignKey(), $search);
+                }
+                break;
+            default:
+                parent::search($query, $type, $search);
+                break;
+        }
     }
 }

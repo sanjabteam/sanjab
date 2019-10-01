@@ -6,6 +6,7 @@ try {
     window.$ = window.jQuery = require('jquery');
     window.PerfectScrollbar = require('perfect-scrollbar').default;
     window.moment = require('moment');
+    window.qs = require('qs');
     window.Swal = require('sweetalert2').mixin({
         customClass: {
             confirmButton: 'btn btn-success',

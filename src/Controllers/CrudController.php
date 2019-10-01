@@ -55,7 +55,31 @@ abstract class CrudController extends SanjabController
             $model = $this->property('model');
             $items = $model::query();
             // Do search
-            $this->querySearch($items, $request->input('filter'));
+            if (is_array($request->input('searchTypes')) &&
+                count(array_filter($request->input('searchTypes'), function ($searchType) {
+                    return $searchType != null;
+                })) > 0
+            ) {
+                // advanced search
+                foreach ($this->widgets as $widget) {
+                    if ($request->input('searchTypes.'.$widget->name) &&
+                        $searchType = array_first(array_filter($widget->getSearchTypes(), function ($searchType) use ($request, $widget) {
+                            return $searchType->type == $request->input('searchTypes.'.$widget->name);
+                        }))
+                    ) {
+                        $items->where(function (Builder $query) use ($widget, $request, $searchType) {
+                            if (count($searchType->getWidgets()) > 1) {
+                                $widget->doSearch($query, $request->input('searchTypes.'.$widget->name), $request->input('search.'.$widget->name.'.'.$searchType->type));
+                            } else {
+                                $widget->doSearch($query, $request->input('searchTypes.'.$widget->name), array_first($request->input('search.'.$widget->name.'.'.$searchType->type)));
+                            }
+                        });
+                    }
+                }
+            } else {
+                // normal filter
+                $this->querySearch($items, $request->input('filter'));
+            }
             // Do sort
             $this->querySort($items, $request->input('sortBy'), $request->input('sortDesc') == 'true' ? true : false);
             // Customize query by query scope

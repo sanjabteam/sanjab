@@ -65,6 +65,7 @@ class UppyWidget extends Widget
         $this->directory('/');
         $this->multiple(false);
         $this->onIndex(false);
+        $this->searchable(false);
         $this->tag("uppy-widget");
         $this->viewTag("uppy-view");
         $this->mimeTypes(["image/*", "video/*", "audio/*"]);
