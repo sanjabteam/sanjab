@@ -42,6 +42,13 @@ abstract class Widget extends PropertiesHolder
 {
     public $controllerProperties = [];
 
+    /**
+     * Search types cache.
+     *
+     * @var null|SearchType[]
+     */
+    private $searchTypes = null;
+
     public function __construct(array $properties = [])
     {
         $this->onCreate(true)->onEdit(true)->onIndex(true)->onStore(true)
@@ -89,6 +96,21 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
+     * Call post init for search widgets.
+     *
+     * @return void
+     */
+    final public function postInitSearchWidgets()
+    {
+        $this->getSearchTypes();
+        if (is_array($this->searchTypes)) {
+            foreach ($this->searchTypes as $key => $searchType) {
+                $this->searchTypes[$key]->postInitWidgets();
+            }
+        }
+    }
+
+    /**
      * Get table columns.
      *
      * @return TableColumn[]
@@ -123,13 +145,13 @@ abstract class Widget extends PropertiesHolder
      */
     final public function getSearchTypes()
     {
-        if ($this->property('searchable')) {
-            $searchTypes = $this->searchTypes();
-            if (count($searchTypes) != 0) {
-                return $searchTypes;
-            }
+        if ($this->searchTypes == null && $this->property('searchable')) {
+            $this->searchTypes = $this->searchTypes();
         }
-        return null;
+        if (is_array($this->searchTypes) && count($this->searchTypes) == 0) {
+            return null;
+        }
+        return $this->searchTypes;
     }
 
     /**

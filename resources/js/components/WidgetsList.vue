@@ -1,7 +1,7 @@
 <template>
     <div>
         <cards-list :cards="cards" :data="cardsData" />
-        <b-row ref="beforeTable">
+        <b-row>
             <b-col md="5" class="my-1">
                 <b-button v-for="(action, index) in generalActions" @click="onActionClick(action)" :variant="action.variant" :href="action.url ? action.url : 'javascript:void(0);'" :key="index" :title="action.title" v-b-tooltip><i class="material-icons">{{ action.icon }}</i>{{ action.title }}</b-button>
             </b-col>
@@ -54,6 +54,7 @@
         </b-collapse>
         <!-- END Bulk actions -->
 
+        <div ref="beforeTable"></div>
         <b-table
             ref="table"
             :items="items"

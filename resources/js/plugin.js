@@ -12,6 +12,7 @@ SanjabPlugin.install = function (Vue, options) {
     Vue.use(require('vue-quill-editor').default);
 
     Vue.prototype.sanjabTrans = sanjabTrans;
+    Vue.prototype.numberFormat = numberFormat;
 
     const files = require.context('./components/', true, /\.vue$/i);
     files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));

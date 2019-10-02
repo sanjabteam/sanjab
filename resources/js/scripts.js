@@ -67,6 +67,13 @@ window.sanjabSuccessToast = function (title = '') {
 }
 
 /**
+ * Number format.
+ */
+window.numberFormat = function (number, seperator=',') {
+    return String(number).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + seperator);
+};
+
+/**
  * Screen saver setup.
  */
 function loadScreenSaver() {
@@ -93,10 +100,13 @@ function loadScreenSaver() {
 
 $('body').on('focus', '.bmd-form-group > input.form-control', (e) =>  $(e.target).parent().addClass("is-focused"));
 $('body').on('blur', '.bmd-form-group > input.form-control', (e) =>  $(e.target).parent().removeClass("is-focused"));
+$('body').on('focus', '.bmd-form-group > div > input.form-control', (e) =>  $(e.target).parent().parent().addClass("is-focused"));
+$('body').on('blur', '.bmd-form-group > div > input.form-control', (e) =>  $(e.target).parent().parent().removeClass("is-focused"));
 $('body').on('focus', '.bmd-form-group > textarea.form-control', (e) =>  $(e.target).parent().addClass("is-focused"));
 $('body').on('blur', '.bmd-form-group > textarea.form-control', (e) =>  $(e.target).parent().removeClass("is-focused"));
 
 $('body').on('change', '.bmd-form-group > input.form-control', (e) =>  e.target.value.length > 0 ? $(e.target).parent().addClass("is-filled") : $(e.target).parent().removeClass("is-filled"));
+$('body').on('change', '.bmd-form-group > div > input.form-control', (e) =>  e.target.value.length > 0 ? $(e.target).parent().parent().addClass("is-filled") : $(e.target).parent().parent().removeClass("is-filled"));
 $('body').on('change', '.bmd-form-group > textarea.form-control', (e) => e.target.value.length > 0 ? $(e.target).parent().addClass("is-filled") : $(e.target).parent().parent().removeClass("is-filled"));
 
 $(document).ready(function () {

@@ -30,9 +30,9 @@ try {
     console.error(e);
 }
 
-Vue.use(require('./plugin').default);
 require('./material-dashboard');
 require('./scripts');
+Vue.use(require('./plugin').default);
 
 window.axios = require('axios');
 

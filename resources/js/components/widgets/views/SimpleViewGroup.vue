@@ -1,5 +1,5 @@
 <template>
-    <b-row>
+    <b-row class="sanjab-simple-view-group">
         <b-col cols="2">
             <b>{{ widget.title }}:</b>
         </b-col>

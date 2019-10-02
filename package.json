@@ -50,6 +50,7 @@
     "shebang-loader": "0.0.1",
     "sweetalert2": "^8.16.3",
     "uppy": "^1.3.0",
+    "v-money": "^0.8.1",
     "vue": "^2.6.10",
     "vue-bootstrap-typeahead": "^0.2.6",
     "vue-editor-js": "^0.4.0",

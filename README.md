@@ -37,6 +37,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 - [Tus php](https://github.com/ankitpokhrel/tus-php)
 - [Unsplash](https://unsplash.com)
 - [Uppy](https://uppy.io)
+- [V-money](https://github.com/vuejs-tips/v-money)
 - [Vue.js](https://vuejs.org)
 - [Vue bootstrap typeahead](https://github.com/alexurquhart/vue-bootstrap-typeahead)
 - [Vue editor.js](https://github.com/changjoo-park/vue-editor-jse)

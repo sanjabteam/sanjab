@@ -16,7 +16,7 @@ class SearchType extends PropertiesHolder
     /**
      * Search Widgets.
      *
-     * @var array|Widget
+     * @var array|Widget[]
      */
     protected $widgets = [];
 
@@ -36,11 +36,23 @@ class SearchType extends PropertiesHolder
     /**
      * Get widgets of search type.
      *
-     * @return array
+     * @return array|Widget[]
      */
     public function getWidgets()
     {
         return $this->widgets;
+    }
+
+    /**
+     * Call post init for search widgets.
+     *
+     * @return void
+     */
+    public function postInitWidgets()
+    {
+        foreach ($this->widgets as $key => $widget) {
+            $this->widgets[$key]->postInit();
+        }
     }
 
     /**

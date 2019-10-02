@@ -76,10 +76,12 @@
             addOption() {
                 this.items.unshift({});
                 this.$emit("input", this.items);
+                setTimeout(() => $(".bmd-form-group input").trigger('change'), 250);
             },
             removeOption(index) {
                 this.items.splice(index, 1);
                 this.$emit("input", this.items);
+                setTimeout(() => $(".bmd-form-group input").trigger('change'), 250);
             },
             widgetErrors(widget, itemIndex) {
                 var errors = {};

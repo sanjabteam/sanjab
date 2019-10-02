@@ -63,6 +63,7 @@ trait WidgetHandler
             $this->widgets[$key]->controllerProperties['type'] = $type;
             $this->widgets[$key]->controllerProperties['item'] = $item;
             $this->widgets[$key]->postInit();
+            $this->widgets[$key]->postInitSearchWidgets();
         }
     }
 

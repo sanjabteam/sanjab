@@ -171,6 +171,10 @@ a.image-author {
     overflow-y: hidden;
 }
 
+.sanjab-simple-view-group {
+    word-break: keep-all;
+}
+
 @media (max-width: 991px) {
     .screen-saver .sidebar {
         transform: translate3d(0, 0, 0);
@@ -213,6 +217,7 @@ html[dir="rtl"] {
 
     .vbt-autcomplete-list.list-group {
         padding: 0 !important;
+        margin-top: 40px;
 
         .list-group-item :first-child {
             margin-right: 0 !important;
