@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Storage;
 
 class UppyWidgetController extends SanjabController
 {
+    /**
+     * Save uploaded files by Uppy widget.
+     *
+     * @param Request $request
+     * @param string $any  any unique key
+     * @return \Illuminate\Http\Response
+     */
     public function upload(Request $request, $any = null)
     {
         if ($request->isMethod('get') && $any && is_array(Session::get("sanjab_uppy_files.".$any))) {
@@ -31,6 +38,12 @@ class UppyWidgetController extends SanjabController
         return response('', $response->getStatusCode());
     }
 
+    /**
+     * Preview uploaded file.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function preview(Request $request)
     {
         $disk = $request->input('disk', 'public');

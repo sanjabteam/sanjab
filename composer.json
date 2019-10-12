@@ -26,6 +26,7 @@
         "laravel/helpers": "^1.1",
         "league/flysystem": "^1.0",
         "league/flysystem-ziparchive": "^1.0",
+        "jenssegers/agent": "^2.6",
         "silber/bouncer": "v1.0.0-rc.5|v1.0.0-rc.6",
         "studio-42/elfinder": "^2.1"
     },

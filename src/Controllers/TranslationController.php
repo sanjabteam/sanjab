@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Cache;
 
 class TranslationController extends SanjabController
 {
+    /**
+     * Javascript translation loader.
+     *
+     * @param string $locale
+     * @return \Illuminate\Http\Response
+     */
     public function js(string $locale)
     {
         $translationPath = sanjab_path('resources/lang/'.$locale.'/sanjab.php');

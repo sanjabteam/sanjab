@@ -76,15 +76,19 @@
                 var value = null;
                 if (this.multiple) {
                     value = [];
-                    for (var i in this.options) {
-                        if (newValue.includes(this.options[i].value)) {
-                            value.push(this.options[i]);
+                    if (newValue instanceof Array) {
+                        for (var i in this.options) {
+                            if (newValue.includes(this.options[i].value)) {
+                                value.push(this.options[i]);
+                            }
                         }
                     }
                 } else {
-                    for (var i in this.options) {
-                        if (this.options[i].value == newValue) {
-                            value = this.options[i];
+                    if (!(newValue instanceof Array)) {
+                        for (var i in this.options) {
+                            if (this.options[i].value == newValue) {
+                                value = this.options[i];
+                            }
                         }
                     }
                 }

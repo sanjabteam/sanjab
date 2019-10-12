@@ -62,6 +62,8 @@ return [
     'file_manager' => 'مدیریت فایل',
     'select_file' => 'انتخاب فایل',
     'access_to_file_manager' => 'دسترسی به مدیریت فایل',
+    'unsupported_browser' => 'مرورگر پشتیبانی نشده',
+    'download' => 'دانلود',
 
 
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',
@@ -79,4 +81,5 @@ return [
     'this_item_added_before' => 'این آیتم قبلا اضافه شده است.',
     'the_maximum_number_of_files_is_:count' => 'حداکثر تعداد فایل مجاز :count است.',
     'the_maximum_size_of_files_is_:size' => 'حداکثر حجم مجاز فایل :size کیلوبایت است.',
+    'your_browser_is_unsupported_use_another_one_from_down_below_instead' => 'مرورگر شما پشتیبانی نمیشود. لطفا از یکی از مرورگر های پایین استفاده کنید.',
 ];

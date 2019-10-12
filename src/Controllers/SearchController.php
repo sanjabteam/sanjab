@@ -8,6 +8,12 @@ use Sanjab\Sanjab;
 
 class SearchController extends SanjabController
 {
+    /**
+     * Perform global search.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function search(Request $request)
     {
         $searchResults = [];

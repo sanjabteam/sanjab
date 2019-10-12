@@ -164,7 +164,6 @@ abstract class SettingController extends SanjabController
      */
     abstract protected function init(): void;
 
-
     public static function routes(): void
     {
         Route::prefix("settings")->name("settings.")->group(function () {

@@ -62,6 +62,8 @@ return [
     'file_manager' => 'File manager',
     'select_file' => 'Select file',
     'access_to_file_manager' => 'Access to file manager',
+    'unsupported_browser' => 'Unsupported browser',
+    'download' => 'Download',
 
 
     'are_you_sure_you_want_to_delete?' => 'Are you sure you want to delete?',
@@ -79,4 +81,5 @@ return [
     'this_item_added_before' => 'This item added before.',
     'the_maximum_number_of_files_is_:count' => 'The maximum number of files is :count',
     'the_maximum_size_of_files_is_:size' => 'The maximum size of files is :size',
+    'your_browser_is_unsupported_use_another_one_from_down_below_instead' => 'Your browser is unsupported. use another one from down below instead.',
 ];

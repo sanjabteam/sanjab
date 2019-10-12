@@ -14,15 +14,14 @@
         @yield('header')
     </head>
 
-    <body class="@if(time() - Session::get('sanjab_hide_lock_screen') > 300) screen-saver @endif">
+    <body class="@if(!Route::is('sanjab.unsupported-browser') && time() - Session::get('sanjab_hide_lock_screen') > 300) screen-saver @endif">
         <div class="wrapper">
             @if(!isset($simple) || !$simple)
                 <div class="sidebar"
                     data-background-color="black"
                     data-image="@if($sanjabImage){{ $sanjabImage['image'] }}@else{{ 'https://source.unsplash.com/daily' }}@endif">
                     <div class="logo">
-                        <a href="{{ url('/') }}" target="_blank" class="simple-text
-                            logo-normal">
+                        <a href="{{ url('/') }}" target="_blank" class="simple-text logo-normal">
                             {{ config('app.name') }}
                         </a>
                     </div>
