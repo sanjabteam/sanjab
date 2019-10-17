@@ -6,7 +6,6 @@ use stdClass;
 use Sanjab\Widgets\Widget;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,8 +17,6 @@ use Illuminate\Support\Facades\Storage;
  * @method $this    maxSize(integer $val)           max size of file.
  * @method $this    disk(string $val)               default disk.
  * @method $this    fileRules(string $val)          file validation rules.
- * @method $this    width(integer $val)             width to resize images only.
- * @method $this    height(integer $val)            height to resize images only.
  */
 class ElFinderWidget extends Widget
 {

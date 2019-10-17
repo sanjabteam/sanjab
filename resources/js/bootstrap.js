@@ -4,7 +4,6 @@ try {
     window.Vue = require('vue');
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
-    window.PerfectScrollbar = require('perfect-scrollbar').default;
     window.moment = require('moment');
     window.qs = require('qs');
     window.Swal = require('sweetalert2').mixin({

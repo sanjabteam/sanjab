@@ -1,11 +1,11 @@
 <template>
     <div>
-        <select-widget v-model="value" :options="options" :multiple="multiple">
-            <template slot="option" slot-scope="option">
+        <select-widget v-model="mutableValue" :options="options" :multiple="multiple">
+            <template v-slot:option="option">
                 <i :class="option.value"></i>
                 {{ option.label }}
             </template>
-            <template slot="selected-option" slot-scope="option">
+            <template v-slot:selected-option="option">
                 <i :class="option.value"></i>
                 {{ option.label }}
             </template>
@@ -36,10 +36,10 @@
         },
         watch: {
             value (newValue, oldValue) {
-                this.$emit("input", newValue);
+                this.mutableValue = newValue;
             },
             mutableValue (newValue, oldValue) {
-                this.value = newValue;
+                this.$emit("input", newValue);
             },
         },
     }

@@ -9,7 +9,7 @@
                 :max-matches="50"
                 @hit="onItemHit"
             >
-                <template slot="suggestion" slot-scope="{ data }">
+                <template v-slot:suggestion="{ data }">
                     <small>
                         <i class="material-icons">{{ data.icon }}</i><span v-html="data.title.replace(new RegExp('(' + search + ')', 'g'), '<strong>$1</strong>')"></span>
                     </small>

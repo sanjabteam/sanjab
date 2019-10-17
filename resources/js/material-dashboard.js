@@ -15,21 +15,6 @@
 
  */
 
-(function() {
-    isWindows = navigator.platform.indexOf("Win") > -1 ? true : false;
-
-    if (isWindows && document.querySelector(".sidebar .sidebar-wrapper, .main-panel")) {
-        // if we are on windows OS we activate the perfectScrollbar function
-        window.perfectScrollBarSideBar = new PerfectScrollbar(document.querySelector(".sidebar .sidebar-wrapper, .main-panel"), {
-            suppressScrollX: false
-        });
-
-        $("html").addClass("perfect-scrollbar-on");
-    } else {
-        $("html").addClass("perfect-scrollbar-off");
-    }
-})();
-
 var breakCards = true;
 
 var searchVisible = 0;
@@ -514,9 +499,9 @@ md = {
 
             // insert the navbar form before the sidebar list
             $nav_content = $(nav_content);
-            $navbar_form = $(navbar_form);
+            $navbar_form = $("<div></div>");
             $nav_content.insertBefore($sidebar_nav);
-            $navbar_form.insertBefore($nav_content);
+            // $navbar_form.insertBefore($nav_content);
 
             $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").click(
                 function(event) {
@@ -531,8 +516,8 @@ md = {
         } else {
             if ($(window).width() > 991) {
                 // reset all the additions that we made for the sidebar wrapper only if the screen is bigger than 991px
-                $sidebar_wrapper.find(".navbar-form").remove();
-                $sidebar_wrapper.find(".nav-mobile-menu").remove();
+                // $sidebar_wrapper.find(".navbar-form").remove();
+                // $sidebar_wrapper.find(".nav-mobile-menu").remove();
 
                 mobile_menu_initialized = false;
             }
@@ -835,13 +820,7 @@ $(document).ready(function() {
             if (md.misc.sidebar_mini_active == true) {
                 $("body").removeClass("sidebar-mini");
                 md.misc.sidebar_mini_active = false;
-
-                window.perfectScrollBarMain = new PerfectScrollbar(document.querySelector(".sidebar .sidebar-wrapper, .main-panel"), {
-                    suppressScrollX: false
-                });
             } else {
-                window.perfectScrollBarMain.destroy();
-
                 setTimeout(function() {
                     $("body").addClass("sidebar-mini");
 

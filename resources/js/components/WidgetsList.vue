@@ -68,27 +68,30 @@
             responsive
             show-empty
         >
-            <div slot="table-busy" class="text-center text-danger my-2">
-                <b-spinner variant="default" class="align-middle"></b-spinner>
-            </div>
-            <template slot="empty">
+            <template #table-busy>
+                <div class="text-center text-danger my-2">
+                    <b-spinner variant="default" class="align-middle">
+                    </b-spinner>
+                </div>
+            </template>
+            <template #empty>
                 <center>{{ sanjabTrans('there_are_no_records_to_show') }}</center>
             </template>
-            <template slot="emptyfiltered">
+            <template #emptyfiltered>
                 <center>{{ sanjabTrans('no_records_found') }}</center>
             </template>
-            <div slot="bulk" slot-scope="row">
+            <template v-slot:cell(bulk)="row">
                 <b-form-checkbox :id="'bulk_select_'+ row.index" v-model="selectedBulk" :value="row.item" />
-            </div>
-            <div slot="actions" slot-scope="row">
+            </template>
+            <template v-slot:cell(actions)="row">
                 <b-button-group>
                     <b-button v-for="(action) in perItemActions" :key="action.index" v-if="row.item.__can[action.index] == true" @click="onActionClick(action, row.item)" :variant="action.variant" :href="row.item.__action_url[action.index] ? row.item.__action_url[action.index] : 'javascript:void(0);'" size="sm" :title="action.title" v-b-tooltip>
                         <i class="material-icons">{{ action.icon }}</i>
                     </b-button>
                 </b-button-group>
-            </div>
+            </template>
 
-            <template v-for="tableColumn in tableColumns" :slot="tableColumn.key" slot-scope="row">
+            <template v-for="tableColumn in tableColumns" v-slot:[tableColumn.slotName]="row" >
                 <component :key="tableColumn.key" crud-type="index" :is="tableColumn.tag" :widget="tableColumn.widget" :data="row.item" />
             </template>
         </b-table>
@@ -103,7 +106,7 @@
         />
         <b-modal ref="actionModal" :title="currentAction.title" :size="currentAction.modalSize">
             <component :is="currentAction.tag" :widgets="widgets" :item="this.actionItem" :items="this.actionItems" :properties="properties" v-bind="currentAction.tagAttributes">{{ currentAction.tagContent }}</component>
-            <div slot="modal-footer"></div>
+            <template #modal-footer></template>
         </b-modal>
     </div>
 </template>
@@ -293,6 +296,7 @@
                 for (var i in this.widgets) {
                     for (var j in this.widgets[i].tableColumns) {
                         this.widgets[i].tableColumns[j].widget = this.widgets[i];
+                        this.widgets[i].tableColumns[j].slotName = "cell(" + this.widgets[i].tableColumns[j].key + ')';
                         columns.push(this.widgets[i].tableColumns[j]);
                     }
                 }

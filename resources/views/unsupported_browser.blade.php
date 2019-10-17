@@ -16,7 +16,7 @@
                             <p class="unsupported-description">@lang('sanjab::sanjab.your_browser_is_unsupported_use_another_one_from_down_below_instead')</p>
                         </div>
                         <div class="row w-100">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-sm-4">
                                 <img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/58.1.3/archive/chrome_1-11/chrome_1-11.svg" class="card-img-top p-5">
                                 <div class="card-body">
                                     <h5 class="card-title">Google chrome</h5>
@@ -27,7 +27,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-sm-4">
                                 <img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/58.1.3/archive/opera_10-14/opera_10-14.svg" class="card-img-top p-5">
                                 <div class="card-body">
                                     <h5 class="card-title">Opera</h5>
@@ -38,7 +38,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-sm-4">
                                 <img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/58.1.3/archive/firefox_1.5-3/firefox_1.5-3.svg" class="card-img-top p-5">
                                 <div class="card-body">
                                     <h5 class="card-title">Firefox</h5>
@@ -75,6 +75,10 @@
 
         .unsupported-browser .card-title {
             text-align: center;
+        }
+
+        .unsupported-browser .row {
+            overflow: hidden;
         }
     </style>
 @endsection

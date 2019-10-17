@@ -187,7 +187,7 @@ abstract class Widget extends PropertiesHolder
     {
         if ($this->property("searchable") &&
             (
-                ($type == null && is_string($search) && !empty($search)) || ($type != null)
+                ($type == null && is_string($search) && !empty($search)) || ($type != null && !empty($search))
             )
         ) {
             $this->search($query, $type, $search);
