@@ -9,7 +9,7 @@ use Sanjab\Helpers\PropertiesHolder;
  * Base class for all cards.
  *
  * @method $this tag(string $val)           tag of card.
- * @method $this cols(string $val)          bootstrap based column width.
+ * @method $this cols(int $val)             bootstrap based column width.
  * @method $this title(string $val)         title of card.
  * @method $this order(int $val)            order of card.
  */

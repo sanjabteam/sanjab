@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Sanjab\Helpers\SearchType;
 
 /**
- * @method $this min(int $val)      minimum value.
- * @method $this max(int $val)      maximum value.
+ * @method $this min(number $val)      minimum value.
+ * @method $this max(number $val)      maximum value.
+ * @method $this step(number $val)     step value.
  */
 class NumberWidget extends TextWidget
 {

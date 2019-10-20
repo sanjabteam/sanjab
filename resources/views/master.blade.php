@@ -14,7 +14,7 @@
         @yield('header')
     </head>
 
-    <body class="@if(!Route::is('sanjab.unsupported-browser') && time() - Session::get('sanjab_hide_lock_screen') > 300) screen-saver @endif">
+    <body class="@if(!Route::is('sanjab.unsupported-browser') && time() - Session::get('sanjab_hide_screen_saver') > 300) screen-saver @endif">
         <div class="wrapper">
             @if(!isset($simple) || !$simple)
                 <div class="sidebar"
@@ -27,7 +27,7 @@
                     </div>
                     <div class="screen-saver-content">
                         <div>
-                            <h1>@if(time() - Session::get('sanjab_hide_lock_screen') > 7200) @lang('sanjab::sanjab.welcome_back') @endif</h1>
+                            <h1>@if(time() - Session::get('sanjab_hide_screen_saver') > 7200) @lang('sanjab::sanjab.welcome_back') @endif</h1>
                             @if($sanjabImage && isset($sanjabImage['author']))<a class="image-author" href="{{ isset($sanjabImage['link']) ? $sanjabImage['link'] : '#' }}" title="@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])" target="_blank">@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])</a>@endif
                         </div>
                     </div>

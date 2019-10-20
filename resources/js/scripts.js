@@ -88,7 +88,7 @@ function loadScreenSaver() {
             ['mousemove', 'keypress', 'touchstart', 'touchmove']
             .forEach((e) => document.addEventListener(e, function () {
                 if (screenSaverTimer >= 300) {
-                    // To refresh lock screen session.
+                    // To refresh screen saver session.
                     fetch(sanjabUrl());
                 }
                 screenSaverTimer = 0;
@@ -113,10 +113,14 @@ $(document).ready(function () {
     $(document).on("click", ".screen-saver-content h1", function () {
         $("body").removeClass("screen-saver");
         loadScreenSaver();
-        // To refresh lock screen session.
+        // To refresh screen saver session.
         fetch(sanjabUrl());
     });
     if ($(".screen-saver-content h1").text().length == 0) {
         loadScreenSaver();
+    }
+
+    if ($(".sidebar-wrapper").length > 0 && $(".nav-item.active").length > 0) {
+        $(".sidebar-wrapper").animate({scrollTop: $(".nav-item.active").offset().top - ($(".sidebar-wrapper").height() / 2.5) }, 25);
     }
 });

@@ -116,6 +116,7 @@ return [
         |
         */
         'footer_links' => [
+            ['title' => 'LARAVEL', 'link' => 'https://laravel.com/'],
             ['title' => 'CREATIVE TIM', 'link' => 'https://www.creative-tim.com/'],
             ['title' => 'SANJAB', 'link' => 'https://sanjabteam.github.io/'],
         ]

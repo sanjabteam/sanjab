@@ -81,4 +81,9 @@ class RoleController extends CrudController
                         ->addPermission(trans('sanjab::sanjab.access_to_admin_panel'), 'access_sanjab');
         return $permissions;
     }
+
+    protected function onChanged(Model $item)
+    {
+        Bouncer::refresh();
+    }
 }
