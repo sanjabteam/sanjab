@@ -185,9 +185,15 @@ abstract class Widget extends PropertiesHolder
      */
     final public function doSearch(Builder $query, string $type = null, $search = null)
     {
+        $searchType = null;
+        if ($type != null) {
+            $searchType = array_first(array_filter($this->searchTypes(), function (SearchType $searchType) use ($type) {
+                return $searchType->type == $type;
+            }));
+        }
         if ($this->property("searchable") &&
             (
-                ($type == null && is_string($search) && !empty($search)) || ($type != null && !empty($search))
+                ($type == null && is_string($search) && !empty($search)) || ($type != null && (($searchType && count($searchType->getWidgets()) == 0) || !empty($search)))
             )
         ) {
             $this->search($query, $type, $search);

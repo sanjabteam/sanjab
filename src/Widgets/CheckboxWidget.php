@@ -36,6 +36,7 @@ class CheckboxWidget extends Widget
         $this->viewTag("checkbox-view");
         $this->fastChange(false);
         $this->fastChangeTimestamps(false);
+        $this->hideGroupLabel(true);
         $this->fastChangeBefore(function (Model $item) {
         });
         $this->fastChangeAfter(function (Model $item) {
