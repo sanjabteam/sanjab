@@ -26,7 +26,7 @@
                 if (this.data[this.widget.name] instanceof Array) {
                     for (var i in this.widget.options) {
                         if (this.data[this.widget.name].includes(this.widget.options[i].value)) {
-                            out.push(this.widget.options[i].label);
+                            out.push(this.widget.options[i].text);
                         }
                     }
                     if (out.length == 0 && typeof this.data[this.widget.name] == 'string') {
@@ -35,7 +35,7 @@
                 } else {
                     for (var i in this.widget.options) {
                         if (this.data[this.widget.name] == this.widget.options[i].value) {
-                            out.push(this.widget.options[i].label);
+                            out.push(this.widget.options[i].text);
                         }
                     }
                     if (out.length == 0 && typeof this.data[this.widget.name] == 'string') {

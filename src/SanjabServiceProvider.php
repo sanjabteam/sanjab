@@ -32,9 +32,6 @@ class SanjabServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*
-         * Optional methods to load your package assets
-         */
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'sanjab');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'sanjab');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');

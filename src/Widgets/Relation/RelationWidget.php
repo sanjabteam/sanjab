@@ -3,11 +3,13 @@
 namespace Sanjab\Widgets\Relation;
 
 use stdClass;
+use Exception;
 use Sanjab\Widgets\Widget;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Exception;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Belongs to relation picker.
@@ -80,6 +82,10 @@ abstract class RelationWidget extends Widget
 
     protected function order(Builder $query, string $key, string $direction = 'asc')
     {
+        if (config('database.default') == 'mysql') {
+            Config::set('database.connections.mysql.strict', false);
+            DB::reconnect();
+        }
         $query->select($this->table.".*")
             ->leftJoin($this->relatedModelTable. " as __".$this->relatedModelTable, $this->getModelInstance()->getTable().".".$this->foreignKey, "=", "__".$this->relatedModelTable.".".$this->ownerKey)
             ->orderBy("__".$this->relatedModelTable.".".$this->property("orderColumn"), $direction);

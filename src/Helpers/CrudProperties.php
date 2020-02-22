@@ -23,11 +23,13 @@ use Illuminate\Support\Str;
  * @method $this defaultOrderDirection (string $val) Default column order direction.
  * @method $this permissionsKey (string $val)        Permission key if you use more than one crud controller for one model.
  * @method $this bulk (bool $val)                    Is bulk actions allowed or not.
- * @method $this defaultCards(bool $val)             Should default cards added to cards.
- * @method $this defaultDashboardCards(bool $val)    Should default dashboard cards added to dashboard.
- * @method $this globalSearch(bool $val)             Should be present in global search or not.
- * @method $this itemFormat(string $val)             Format to show as item id. (example: "%id. %name")
+ * @method $this defaultCards (bool $val)            Should default cards added to cards.
+ * @method $this defaultDashboardCards (bool $val)   Should default dashboard cards added to dashboard.
+ * @method $this globalSearch (bool $val)            Should be present in global search or not.
+ * @method $this itemFormat (string $val)            Format to show as item id. (example: "%id. %name")
  * @method $this badgeVariant (string $val)          menu badge bootstrap variant.
+ * @method $this menuParentText(string $val)         menu parent text
+ * @method $this menuParentIcon(string $val)         menu parent material icon
  */
 class CrudProperties extends PropertiesHolder
 {
@@ -51,6 +53,7 @@ class CrudProperties extends PropertiesHolder
         $this->defaultCards(true);
         $this->defaultDashboardCards(true);
         $this->globalSearch(true);
+        $this->menuParentIcon(MaterialIcons::ADD);
         parent::__construct($options);
     }
 

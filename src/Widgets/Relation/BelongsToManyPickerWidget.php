@@ -18,6 +18,7 @@ use Sanjab\Widgets\TextWidget;
  * @method $this    ajaxController(string $val)         controller holding widget working with ajax options.
  * @method $this    ajaxControllerAction(string $val)   controller action working with ajax options.
  * @method $this    ajaxControllerItem(string $val)     controller action parameter working with ajax options.
+ * @method $this    pivotValues(array $val)             pivot values.
  */
 class BelongsToManyPickerWidget extends RelationWidget
 {
@@ -73,7 +74,15 @@ class BelongsToManyPickerWidget extends RelationWidget
     protected function postStore(Request $request, Model $item)
     {
         if (is_array($request->input($this->property("name")))) {
-            $item->{ $this->property("name") }()->sync($request->input($this->property("name")));
+            $values = $request->input($this->property("name"));
+            if (is_array($this->property('pivotValues'))) {
+                $valuesWithPivot = [];
+                foreach ($values as $key => $value) {
+                    $valuesWithPivot[$value] = $this->property('pivotValues');
+                }
+                $values = $valuesWithPivot;
+            }
+            $item->{ $this->property("name") }()->sync($values);
         }
     }
 

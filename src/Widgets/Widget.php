@@ -37,6 +37,7 @@ use Sanjab\Helpers\SearchType;
  * @method $this    groupTag(string $val)                       field group tag.
  * @method $this    class(string $val)                          class of input field.
  * @method $this    cols(string $val)                           bootstrap based column width.
+ * @method $this    showIf(string $val)                         javascript condition to show widget.
  */
 abstract class Widget extends PropertiesHolder
 {

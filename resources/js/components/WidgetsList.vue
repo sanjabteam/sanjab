@@ -104,9 +104,8 @@
             variant="warning"
             align="center"
         />
-        <b-modal ref="actionModal" :title="currentAction.title" :size="currentAction.modalSize">
+        <b-modal ref="actionModal" :title="currentAction.title" :size="currentAction.modalSize" hide-footer>
             <component :is="currentAction.tag" :widgets="widgets" :item="this.actionItem" :items="this.actionItems" :properties="properties" v-bind="currentAction.tagAttributes">{{ currentAction.tagContent }}</component>
-            <template #modal-footer></template>
         </b-modal>
     </div>
 </template>

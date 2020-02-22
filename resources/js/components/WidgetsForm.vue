@@ -125,7 +125,12 @@
                 });
             },
             showWidget (widget) {
-                return (this.readonly && widget.onView) || (this.readonly == false && ((this.item == null && widget.onCreate) || (this.item != null && widget.onEdit)));
+                if (this.form.__sanjab_last_time_refreshed == null || Math.floor(Date.now() / 1000) > this.form.__sanjab_last_time_refreshed) {
+                    this.form.__sanjab_last_time_refreshed = Math.floor(Date.now() / 1000);
+                    this.form = Object.assign({}, this.form);
+                }
+                return ((this.readonly && widget.onView) || (this.readonly == false && ((this.item == null && widget.onCreate) || (this.item != null && widget.onEdit))))
+                        && (widget.showIf == null || eval(widget.showIf.replace(/([^this\.]|^)form/g, '$1this.form')));
             },
             loadForm() {
                 if (this.item) {

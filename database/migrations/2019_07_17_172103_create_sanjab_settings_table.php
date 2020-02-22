@@ -18,14 +18,14 @@ class CreateSanjabSettingsTable extends Migration
             $table->boolean('translation')->default('0');
             $table->string('key', 100)->nullable();
             $table->string('name', 100);
-            $table->text('value')->nullable();
+            $table->longText('value')->nullable();
             $table->timestamps();
 
             $table->unique(['key', 'name']);
         });
         Schema::create('sanjab_setting_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('translated_value')->nullable();
+            $table->longText('translated_value')->nullable();
 
             $table->unsignedInteger('setting_id');
             $table->string('locale', 10)->index();

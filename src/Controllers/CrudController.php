@@ -507,7 +507,7 @@ abstract class CrudController extends SanjabController
 
     public static function menus(): array
     {
-        return [
+        $menu = [
             MenuItem::create(route('sanjab.modules.'.static::property('route').'.index'))
                     ->title(static::property('titles'))
                     ->icon(static::property('icon'))
@@ -520,6 +520,15 @@ abstract class CrudController extends SanjabController
                         return Auth::user()->cannot('viewAny'.static::property('permissionsKey'), static::property('model'));
                     })
         ];
+        if (static::property('menuParentText')) {
+            return [
+                MenuItem::create('javascript:void(0);')
+                    ->title(static::property('menuParentText'))
+                    ->icon(static::property('menuParentIcon'))
+                    ->addChildren($menu)
+            ];
+        }
+        return $menu;
     }
 
     public static function permissions(): array
