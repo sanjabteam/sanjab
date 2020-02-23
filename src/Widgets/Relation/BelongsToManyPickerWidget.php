@@ -4,6 +4,7 @@ namespace Sanjab\Widgets\Relation;
 
 use stdClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,8 @@ use Sanjab\Widgets\TextWidget;
  * @method $this    ajaxControllerAction(string $val)   controller action working with ajax options.
  * @method $this    ajaxControllerItem(string $val)     controller action parameter working with ajax options.
  * @method $this    pivotValues(array $val)             pivot values.
+ * @method $this    creatable(callable $val)            create new if does not exists.
+ * @method $this    creatableText(string $val)          creatable text.
  */
 class BelongsToManyPickerWidget extends RelationWidget
 {
@@ -39,6 +42,7 @@ class BelongsToManyPickerWidget extends RelationWidget
         $this->viewTag("belongs-to-picker-view");
         $this->setProperty("multiple", true);
         $this->setProperty("tagging", true);
+        $this->creatableText(trans('sanjab::sanjab.create'));
     }
 
     public function getController()
@@ -75,6 +79,16 @@ class BelongsToManyPickerWidget extends RelationWidget
     {
         if (is_array($request->input($this->property("name")))) {
             $values = $request->input($this->property("name"));
+            if ($this->property('creatable')) {
+                foreach ($values as $key => $value) {
+                    if (is_array($value) && Arr::get($value, 'create_new') == 'true' && !empty(Arr::get($value, 'value'))) {
+                        $values[$key] = $this->property('creatable')(Arr::get($value, 'value'));
+                        if ($values[$key] instanceof Model) {
+                            $values[$key] = $values[$key]->{ $this->relatedKey };
+                        }
+                    }
+                }
+            }
             if (is_array($this->property('pivotValues'))) {
                 $valuesWithPivot = [];
                 foreach ($values as $key => $value) {
@@ -96,6 +110,17 @@ class BelongsToManyPickerWidget extends RelationWidget
         $arrayRule = ['array'];
         if ($this->property("max")) {
             $arrayRule[] = 'max:'.$this->property("max");
+        }
+        if ($this->property('creatable')) {
+            if (is_array($request->input($this->property("name")))) {
+                $rules = [$this->property("name") => array_merge($arrayRule, $this->property('rules.'.$type, []))];
+                foreach ($request->input($this->property("name")) as $key => $value) {
+                    if (!is_array($value) || Arr::get($value, 'create_new') != 'true' || empty(Arr::get($value, 'value'))) {
+                        $rules[$key] = ['numeric', 'exists:'.$this->relatedModelTable.",".$this->relatedKey];
+                    }
+                }
+                return $rules;
+            }
         }
         return [
             $this->property("name")       => array_merge($arrayRule, $this->property('rules.'.$type, [])),
@@ -133,10 +158,10 @@ class BelongsToManyPickerWidget extends RelationWidget
     {
         switch ($type) {
             case 'empty':
-                $query->whereHas($this->property('name'));
+                $query->whereDoesntHave($this->property('name'));
                 break;
             case 'not_empty':
-                $query->whereDoesntHave($this->property('name'));
+                $query->whereHas($this->property('name'));
                 break;
             case 'not_similar':
                 foreach ($this->property('searchFields') as $searchField) {

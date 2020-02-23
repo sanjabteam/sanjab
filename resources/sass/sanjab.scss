@@ -245,9 +245,25 @@ html[dir="rtl"] {
     }
 }
 
+.sanjab-seperator-widget {
+    width: 100%;
+    text-align: center;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+    padding-top: 24px;
+ }
+
+ .sanjab-seperator-widget span {
+    background:#fff;
+    color: #AAAAAA;
+    font-weight: bold;
+    padding:0 10px;
+ }
+
 html[lang="fa"] {
     body, h4, .dz-message, .swal2-title, .tooltip-inner, .screen-saver-content h1,
-    #sanjab_elfinder, .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    #sanjab_elfinder, .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button,
+    .ql-editor p, .ql-editor ol, .ql-editor ul, .ql-editor pre, .ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6, .ql-editor.ql-blank::before {
         font-family: Shabnam;
     }
 }
@@ -362,6 +378,10 @@ html, .sidebar-wrapper {
 
         .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
             background-color: map-get($material-colors, $theme) !important;
+        }
+
+        .sanjab-seperator-widget {
+            border-bottom: 1px solid  map-get($material-colors, $theme);
         }
     }
 }

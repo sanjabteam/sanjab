@@ -17,6 +17,8 @@ use Sanjab\Widgets\TextWidget;
  * @method $this    ajaxController(string $val)         controller holding widget working with ajax options.
  * @method $this    ajaxControllerAction(string $val)   controller action working with ajax options.
  * @method $this    ajaxControllerItem(string $val)     controller action parameter working with ajax options.
+ * @method $this    creatable(callable $val)            create new if does not exists.
+ * @method $this    creatableText(string $val)          creatable text.
  */
 class BelongsToPickerWidget extends RelationWidget
 {
@@ -27,17 +29,16 @@ class BelongsToPickerWidget extends RelationWidget
         $this->ajax(false);
         $this->indexTag("belongs-to-picker-view")->viewTag("belongs-to-picker-view");
         $this->orderColumn("id");
-    }
-
-    public function postInit()
-    {
-        parent::postInit();
-        $this->rules('exists:'.$this->getRelatedModelTable().','.$this->getOwnerKey());
+        $this->creatableText(trans('sanjab::sanjab.create'));
     }
 
     protected function store(Request $request, Model $item)
     {
-        $item->{ $this->property("name") }()->associate($request->input($this->property("name")));
+        if ($this->property('creatable') && is_array($request->input($this->name)) && $request->input($this->name.'.create_new') == 'true' && !empty($this->name.'.value')) {
+            $item->{ $this->property("name") }()->associate($this->property('creatable')($request->input($this->name.'.value')));
+        } else {
+            $item->{ $this->property("name") }()->associate($request->input($this->property("name")));
+        }
     }
 
     protected function modifyResponse(stdClass $response, Model $item)
@@ -83,6 +84,17 @@ class BelongsToPickerWidget extends RelationWidget
             return [];
         }
         return parent::getOptions();
+    }
+
+    public function validationRules(Request $request, string $type, Model $item = null): array
+    {
+        return [
+            $this->name =>
+                array_merge(
+                    $this->property('rules.'.$type, []),
+                    $this->property('creatable') && is_array($request->input($this->name)) && $request->input($this->name.'.create_new') == 'true' && !empty($this->name.'.value') ? [] : ['exists:'.$this->getRelatedModelTable().','.$this->getOwnerKey()]
+                ),
+        ];
     }
 
     protected function searchTypes(): array

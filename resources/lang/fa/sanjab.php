@@ -82,4 +82,6 @@ return [
     'the_maximum_number_of_files_is_:count' => 'حداکثر تعداد فایل مجاز :count است.',
     'the_maximum_size_of_files_is_:size' => 'حداکثر حجم مجاز فایل :size کیلوبایت است.',
     'your_browser_is_unsupported_use_another_one_from_down_below_instead' => 'مرورگر شما پشتیبانی نمیشود. لطفا از یکی از مرورگر های پایین استفاده کنید.',
+    'insert_text_here' => 'متن خود را وارد کنید...',
+    'sorry_no_matching_options' => 'متاسفانه گزینه مرتبطی یافت نشد.',
 ];

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <span>{{ widget.prefix }}{{ numberFormat(data[widget.name], widget.decimal) }}{{ widget.postfix }}</span>
+        <span v-if="data[widget.name]">{{ widget.prefix }}{{ numberFormat(data[widget.name], widget.decimal) }}{{ widget.postfix }}</span>
     </div>
 </template>
 

@@ -15,6 +15,7 @@
             return {
                 mutableValue: "",
                 editorOptions: {
+                    placeholder: sanjabTrans('insert_text_here'),
                     modules: {
                         imageUpload: {
                             url: sanjabUrl('helpers/quill/image-upload'),

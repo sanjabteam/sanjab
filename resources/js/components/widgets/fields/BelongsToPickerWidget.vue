@@ -1,6 +1,6 @@
 <template>
     <div>
-        <select-widget v-bind="allAttributes" :name="name" :options.sync="options" @search="onSearch" v-model="mutableValue" />
+        <select-widget v-bind="allAttributes" :name="name" :options.sync="allOptions" @search="onSearch" v-model="mutableValue" />
     </div>
 </template>
 
@@ -8,6 +8,11 @@
     export default {
         props: {
             value: null,
+            creatable: null,
+            creatableText: {
+                type: String,
+                default: sanjabTrans('create')
+            },
             ajax: {
                 type: Boolean,
                 default: false
@@ -33,7 +38,8 @@
             return {
                 mutableValue: null,
                 options: [],
-                searchTimeout: null
+                searchTimeout: null,
+                searchText: '',
             };
         },
         mounted () {
@@ -61,6 +67,31 @@
                     return out;
                 }
                 return this.$attrs;
+            },
+            allOptions() {
+                let options = this.creatableOptions.concat(this.options);
+                if (
+                    this.creatable &&
+                    this.searchText &&
+                    this.searchText.trim().length > 0 &&
+                    this.options.filter((opt) => opt.label == this.searchText.trim()).length == 0 &&
+                    this.creatableOptions.filter((opt) => opt.value.value == this.searchText.trim()).length == 0) {
+                    options.push({value: {create_new: true, value: this.searchText}, label: this.creatableText + ': ' + this.searchText});
+                }
+                return options;
+            },
+            creatableOptions() {
+                var result = [];
+                if (this.mutableValue instanceof Array) {
+                    for (let i in this.mutableValue) {
+                        if (this.mutableValue[i] instanceof Object && this.mutableValue[i].create_new == true) {
+                            result.push({value: this.mutableValue[i], label: this.creatableText + ': ' + this.mutableValue[i].value});
+                        }
+                    }
+                } else if (this.mutableValue instanceof Object && this.mutableValue.create_new == true) {
+                    result.push({value: this.mutableValue, label: this.creatableText + ': ' + this.mutableValue.value});
+                }
+                return result;
             }
         },
         methods: {
@@ -77,8 +108,18 @@
                     self.searchTimeout = setTimeout(function () {
                         loading(true);
                         self.searchTimeout = null;
+                        let selectValues = [];
+                        if (self.mutableValue instanceof Array) {
+                            for (let i in self.mutableValue) {
+                                if (self.mutableValue[i] && !(self.mutableValue[i] instanceof Object)) {
+                                    selectValues.push(self.mutableValue[i]);
+                                }
+                            }
+                        } else if (self.mutableValue && !(self.mutableValue instanceof Object)) {
+                            selectValues.push(self.mutableValue);
+                        }
                         axios.post(sanjabUrl('helpers/relation-widgets/options'), {
-                            selected: self.mutableValue instanceof Array ? self.mutableValue : (self.mutableValue ? [self.mutableValue] : []),
+                            selected: selectValues,
                             controller: self.controller,
                             action: self.controllerAction,
                             widget: self.name,
@@ -87,6 +128,7 @@
                         })
                         .then(function (response) {
                             self.options = response.data;
+                            self.searchText = search;
                             loading(false);
                             self.$forceUpdate();
                         }).catch(function (error) {

@@ -4,6 +4,7 @@
             <template v-for="(_, slot) of $scopedSlots" v-slot:[slot]="scope">
                 <slot :name="slot" v-bind="scope"/>
             </template>
+            <template v-slot:no-options>{{ sanjabTrans('sorry_no_matching_options') }}</template>
         </v-select>
     </div>
 </template>

@@ -142,12 +142,14 @@ class UppyWidget extends Widget
         }
         foreach ($files as $key => $value) {
             $value = trim($value, '\\/');
-            $files[$key] = [
-                'type' => Storage::disk($this->property('disk'))->mimeType($value),
-                'preview' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk'), 'thumb' => 'true']),
-                'link' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk')]),
-                'value' => $value
-            ];
+            if (Storage::disk($this->property('disk'))->exists($value)) {
+                $files[$key] = [
+                    'type' => Storage::disk($this->property('disk'))->mimeType($value),
+                    'preview' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk'), 'thumb' => 'true']),
+                    'link' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk')]),
+                    'value' => $value
+                ];
+            }
         }
         $response->{ $this->property('name') } = $files;
     }

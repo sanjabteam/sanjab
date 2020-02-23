@@ -82,4 +82,6 @@ return [
     'the_maximum_number_of_files_is_:count' => 'The maximum number of files is :count',
     'the_maximum_size_of_files_is_:size' => 'The maximum size of files is :size',
     'your_browser_is_unsupported_use_another_one_from_down_below_instead' => 'Your browser is unsupported. use another one from down below instead.',
+    'insert_text_here' => 'Insert text here ...',
+    'sorry_no_matching_options' => 'Sorry, no matching options.',
 ];
