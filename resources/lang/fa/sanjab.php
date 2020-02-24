@@ -64,6 +64,7 @@ return [
     'access_to_file_manager' => 'دسترسی به مدیریت فایل',
     'unsupported_browser' => 'مرورگر پشتیبانی نشده',
     'download' => 'دانلود',
+    'filter' => 'فیلتر کردن',
 
 
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',

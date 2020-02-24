@@ -8,9 +8,18 @@
             <b-col md="5" class="my-1">
                 <b-input-group>
                     <b-form-input @keyup="onFilterChanged" :value="filter" :placeholder="sanjabTrans('search') + '...'"></b-form-input>
-                    <b-button v-b-toggle.advanced_search_collapse variant="primary" :title="sanjabTrans('advanced_search')" v-b-tooltip>
-                        <i class="material-icons">search</i>
-                    </b-button>
+                    <b-button-group>
+                        <b-button v-b-toggle.advanced_search_collapse variant="primary" size="sm" :title="sanjabTrans('advanced_search')" v-b-tooltip>
+                            <i class="material-icons">search</i>
+                        </b-button>
+                    </b-button-group>
+                    <b-dropdown v-if="filterOptions.length > 0" variant="primary" size="sm" :title="sanjabTrans('filter')" v-b-tooltip no-caret>
+                        <template v-slot:button-content>
+                            <i class="material-icons">filter_list</i>
+                        </template>
+                        <b-dropdown-item :active="typeof filterOptions[filterOption] === 'undefined'" @click="changeFilterOption(null)">{{ sanjabTrans('all') }}</b-dropdown-item>
+                        <b-dropdown-item v-for="(fOption, fOptionIndex) in filterOptions" :key="fOptionIndex" :active="filterOption == fOptionIndex" @click="changeFilterOption(fOptionIndex)">{{ fOption.title }}</b-dropdown-item>
+                    </b-dropdown>
                 </b-input-group>
             </b-col>
             <b-col md="2" class="my-1">
@@ -121,6 +130,10 @@
                 type: Array,
                 default:() => []
             },
+            filterOptions: {
+                type: Array,
+                default:() => []
+            },
             cards: {
                 type: Array,
                 default:() => []
@@ -136,6 +149,7 @@
                 perPage: this.properties.perPage,
                 total: 0,
                 filter: "",
+                filterOption: null,
                 filterTimer: null,
                 search: {},
                 searchTypes: {},
@@ -151,6 +165,7 @@
             items(info) {
                 info.page = info.currentPage;
                 info.searchTypes = this.searchTypes;
+                info.filterOption = this.filterOption;
                 info.search = this.search;
                 var self = this;
                 return axios.get(sanjabUrl("/modules/" + this.properties.route), {
@@ -178,6 +193,11 @@
                     self.page = 1;
                     self.filterTimer = null;
                 }, 700);
+            },
+            changeFilterOption(value) {
+                this.filterOption = value;
+                this.page = 1;
+                this.$refs.table.refresh();
             },
             onActionClick(action, item = null) {
                 var self = this;
@@ -218,7 +238,7 @@
                     }).then(function (result) {
                         if (result.value) {
                             Swal.fire({
-                                type: 'success',
+                                icon: 'success',
                                 title: result.value.message ? result.value.message : sanjabTrans('success'),
                                 confirmButtonText: action.confirmOk,
                             });
@@ -230,6 +250,7 @@
             },
             onSearch() {
                 this.filter = "";
+                this.filterOption = null;
                 this.$refs.table.refresh();
             },
             searchTypeOptions(widget) {

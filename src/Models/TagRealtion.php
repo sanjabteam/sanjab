@@ -60,6 +60,9 @@ trait TagRelation
         if (is_string($tags)) {
             $tags = explode(',', $tags);
         }
+        $tags = array_filter($tags, function ($tag) {
+            return !empty($tag);
+        });
         if (is_array($tags) && count($tags) > 0) {
             $this->cachedTags = $tags;
             if (! static::$tagEventHandlerInit) {

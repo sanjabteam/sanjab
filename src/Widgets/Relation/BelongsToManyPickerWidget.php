@@ -102,7 +102,12 @@ class BelongsToManyPickerWidget extends RelationWidget
 
     protected function modifyResponse(stdClass $response, Model $item)
     {
-        $response->{ $this->property("name") } = $item->{ $this->property("name") }()->get()->pluck($this->relatedKey)->toArray();
+        if (!in_array($this->controllerProperties['type'], ['index', 'show']) ||
+            ($this->controllerProperties['type'] == 'index' && $this->property('onIndex')) ||
+            ($this->controllerProperties['type'] == 'show' && $this->property('onView'))
+        ) {
+            $response->{ $this->property("name") } = $item->{ $this->property("name") }()->get()->pluck($this->relatedKey)->toArray();
+        }
     }
 
     public function validationRules(Request $request, string $type, Model $item = null): array

@@ -33,6 +33,13 @@ abstract class CrudController extends SanjabController
     protected $actions = [];
 
     /**
+     * Array of actions.
+     *
+     * @var \Sanjab\Helpers\FilterOption[]
+     */
+    protected $filters = [];
+
+    /**
      * Array of cards.
      *
      * @var \Sanjab\Cards\Card[]
@@ -79,6 +86,9 @@ abstract class CrudController extends SanjabController
             } else {
                 // normal filter
                 $this->querySearch($items, $request->input('filter'));
+                if (isset($this->filters[$request->input('filterOption')])) {
+                    $this->filters[$request->input('filterOption')]->property('query')($items);
+                }
             }
             // Do sort
             $this->querySort($items, $request->input('sortBy'), $request->input('sortDesc') == 'true' ? true : false);
@@ -108,6 +118,7 @@ abstract class CrudController extends SanjabController
             [
                 'widgets' => $this->widgets,
                 'actions' => $this->actions,
+                'filterOptions' => $this->filters,
                 'cards' => $this->cards,
                 'properties' => $this->properties()
             ]

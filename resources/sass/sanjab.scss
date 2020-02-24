@@ -325,7 +325,7 @@ html, .sidebar-wrapper {
             @include shadow-big-color(map-get($material-colors, $theme));
         }
 
-        .btn.btn-primary {
+        .btn.btn-primary, .btn.btn-primary:active, .btn.btn-primary.active, .open > .btn.btn-primary.dropdown-toggle, .show > .btn.btn-primary.dropdown-toggle {
             @include bmd-raised-button-variant(white, map-get($material-colors, $theme), map-get($material-colors, $theme));
         }
 
@@ -359,13 +359,19 @@ html, .sidebar-wrapper {
             background-color: map-get($material-colors-400, $theme);
         }
 
-        .dropdown-menu .dropdown-item:hover,
-        .dropdown-menu .dropdown-item:focus,
-        .dropdown-menu a:hover,
-        .dropdown-menu a:focus,
-        .dropdown-menu a:active {
-            background-color: map-get($material-colors, $theme) !important;
-            @include shadow-small-color(map-get($material-colors, $theme));
+        .dropdown-menu {
+            z-index: 1100;
+
+            .dropdown-item:hover,
+            .dropdown-item:focus,
+            a:hover,
+            a:focus,
+            a:active,
+            a.active {
+                color: white;
+                background-color: map-get($material-colors, $theme) !important;
+                @include shadow-small-color(map-get($material-colors, $theme));
+            }
         }
 
         .bmd-form-group.is-focused .form-control {

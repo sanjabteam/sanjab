@@ -16,7 +16,7 @@ window.sanjabSuccess = function (title, message = '') {
         title: title,
         text: message,
         confirmButtonText: sanjabTrans('ok'),
-        type: 'success'
+        icon: 'success'
     });
 }
 
@@ -28,7 +28,7 @@ window.sanjabError = function (title, message = '') {
         title: title,
         text: message,
         confirmButtonText: sanjabTrans('ok'),
-        type: 'error'
+        icon: 'error'
     });
 }
 
@@ -58,7 +58,7 @@ window.sanjabHttpError = function (status) {
 window.sanjabSuccessToast = function (title = '') {
     return Swal.fire({
         title: title,
-        type: 'success',
+        icon: 'success',
         toast: true,
         position: document.dir == 'rtl' ? 'bottom-end' : 'bottom-start',
         showConfirmButton: false,

@@ -64,6 +64,7 @@ return [
     'access_to_file_manager' => 'Access to file manager',
     'unsupported_browser' => 'Unsupported browser',
     'download' => 'Download',
+    'filter' => 'Filter',
 
 
     'are_you_sure_you_want_to_delete?' => 'Are you sure you want to delete?',
