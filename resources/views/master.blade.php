@@ -185,7 +185,7 @@
         @if(Session::has('sanjab_success'))
             <script>
                 $(document).ready(function () {
-                    sanjabSuccessToast(@json(Session::get('sanjab_success')));
+                    sanjabToast(@json(Session::get('sanjab_success')));
                 });
             </script>
         @endif

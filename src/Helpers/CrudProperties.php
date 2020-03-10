@@ -30,6 +30,7 @@ use Illuminate\Support\Str;
  * @method $this badgeVariant (string $val)          menu badge bootstrap variant.
  * @method $this menuParentText(string $val)         menu parent text
  * @method $this menuParentIcon(string $val)         menu parent material icon
+ * @method $this autoRefresh(int $seconds)           automatically referesh every N seconds.
  */
 class CrudProperties extends PropertiesHolder
 {
@@ -47,13 +48,14 @@ class CrudProperties extends PropertiesHolder
         $this->editable(true);
         $this->deletable(true);
         $this->bulk(true);
-        $this->defaultOrder('id');
+        $this->defaultOrder('__TABLE__.id');
         $this->defaultOrderDirection('desc');
         $this->permissionsKey('');
         $this->defaultCards(true);
         $this->defaultDashboardCards(true);
         $this->globalSearch(true);
         $this->menuParentIcon(MaterialIcons::ADD);
+        $this->autoRefresh(null);
         parent::__construct($options);
     }
 

@@ -82,7 +82,7 @@ class NotificationItem extends PropertiesHolder
     {
         $out = new static;
         if ($icon) {
-            $out->url($icon);
+            $out->icon($icon);
         }
 
         return $out;

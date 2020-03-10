@@ -65,8 +65,10 @@ return [
     'unsupported_browser' => 'Unsupported browser',
     'download' => 'Download',
     'filter' => 'Filter',
+    'notification' => 'Notification',
+    'notifications' => 'Notifications',
 
-
+    'are_you_sure' => 'Are you sure?',
     'are_you_sure_you_want_to_delete?' => 'Are you sure you want to delete?',
     'deleted_successfully' => 'Deleted successfully.',
     'please_click_on_im_not_robot' => 'Please click on im not robot.',

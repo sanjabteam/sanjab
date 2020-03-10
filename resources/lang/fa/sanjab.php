@@ -65,8 +65,11 @@ return [
     'unsupported_browser' => 'مرورگر پشتیبانی نشده',
     'download' => 'دانلود',
     'filter' => 'فیلتر کردن',
+    'notification' => 'اعلان',
+    'notifications' => 'اعلانات',
 
 
+    'are_you_sure' => 'آیا مطمئن هستید؟',
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',
     'deleted_successfully' => 'با موفقیت حذف شد.',
     'please_click_on_im_not_robot' => 'لطفا بر روی گزینه من ربات نیستم کلیک کنید.',

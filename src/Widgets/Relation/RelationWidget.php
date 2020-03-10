@@ -8,6 +8,7 @@ use Sanjab\Widgets\Widget;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
@@ -32,6 +33,8 @@ abstract class RelationWidget extends Widget
     ];
 
     protected $tempModelInstance = null;
+
+    protected $cachedOptions = null;
 
     public function init()
     {
@@ -188,30 +191,45 @@ abstract class RelationWidget extends Widget
      */
     public function getOptions()
     {
-        $out = [];
-        if ($this->property('withNull')) {
-            $out[] = [$this->property('optionsLabelKey') => $this->property('withNull'), 'value' => null];
-        }
-        $options = $this->relatedModel::query();
-        $this->property("query")($options);
-        $options = $options->get();
-        $format = $this->property("format");
-        $matches = [[], []];
-        if (is_string($format)) {
-            preg_match_all("/%([A-Za-z0-9_]+)/", $format, $matches);
-        }
-        foreach ($options as $option) {
-            $text = null;
-            if (is_callable($format)) {
-                $text = $format($option);
-            } else {
-                $text = $format;
-                foreach ($matches[1] as $match) {
-                    $text = str_replace("%".$match, $option->{ $match }, $text);
-                }
+        if (! is_array($this->cachedOptions)) {
+            $this->cachedOptions = [];
+            if ($this->property('withNull')) {
+                $this->cachedOptions[] = [$this->property('optionsLabelKey') => $this->property('withNull'), 'value' => null];
             }
-            $out[] = [$this->property('optionsLabelKey') => $text, 'value' => $option->{ $this->{$this->relationKey} }];
+            $options = $this->relatedModel::query();
+            $this->property("query")($options);
+            $options = Cache::remember(
+                'sanjab_relation_options_cache_'.hash(
+                    'sha512',
+                    $options->getConnection()->getName()
+                    .preg_replace('/laravel_reserved_\d+/', 'laravel_reserved', $options->toSql())
+                    .json_encode($options->getBindings())
+                    .json_encode($options->getEagerLoads())
+                ),
+                20,
+                function () use ($options) {
+                    return $options->get();
+                }
+            );
+
+            $format = $this->property("format");
+            $matches = [[], []];
+            if (is_string($format)) {
+                preg_match_all("/%([A-Za-z0-9_]+)/", $format, $matches);
+            }
+            foreach ($options as $option) {
+                $text = null;
+                if (is_callable($format)) {
+                    $text = $format($option);
+                } else {
+                    $text = $format;
+                    foreach ($matches[1] as $match) {
+                        $text = str_replace("%".$match, $option->{ $match }, $text);
+                    }
+                }
+                $this->cachedOptions[] = [$this->property('optionsLabelKey') => $text, 'value' => $option->{ $this->{$this->relationKey} }];
+            }
         }
-        return $out;
+        return $this->cachedOptions;
     }
 }

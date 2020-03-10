@@ -83,6 +83,7 @@ class SanjabServiceProvider extends ServiceProvider
             return new Sanjab;
         });
         $this->registerTus();
+        $this->registerPluginsProvider();
     }
 
     /**
@@ -180,5 +181,19 @@ class SanjabServiceProvider extends ServiceProvider
 
             return $server;
         });
+    }
+
+    /**
+     * Register sanjab plugins provider.
+     *
+     * @return void
+     */
+    public function registerPluginsProvider()
+    {
+        if (is_array(config('sanjab.plugins.providers'))) {
+            foreach (config('sanjab.plugins.providers') as $provider) {
+                $this->app->register($provider);
+            }
+        }
     }
 }

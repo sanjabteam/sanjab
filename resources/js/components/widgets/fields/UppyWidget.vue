@@ -1,9 +1,10 @@
 <template>
     <div>
-        <hr />
-        <b-button v-if="! readonly" ref="uppyButton" class="mb-3" variant="primary" :disabled="max <= files.length">{{ sanjabTrans('upload') }}</b-button>
+        <hr v-if="!withoutUi" />
+        <b-button v-if="!withoutUi && !readonly" ref="uppyButton" class="mb-3" variant="primary" :disabled="max <= files.length">{{ sanjabTrans('upload') }}</b-button>
+        <slot v-if="withoutUi"></slot>
         <div ref="uppyContainer"></div>
-        <file-preview v-model="files" :readonly="readonly" @onRemove="$emit('input', files)" />
+        <file-preview v-if="!withoutUi" v-model="files" :readonly="readonly" @onRemove="$emit('input', files)" />
     </div>
 </template>
 
@@ -53,7 +54,7 @@
             },
             mimeTypes: {
                 type: Array,
-                default: ["image/*", "video/*", "audio/*"]
+                default: () => ["image/*", "video/*", "audio/*"]
             },
             multiple: {
                 type: Boolean,
@@ -64,6 +65,10 @@
                 default: () => []
             },
             readonly: {
+                type: Boolean,
+                default: false
+            },
+            withoutUi: {
                 type: Boolean,
                 default: false
             }
@@ -81,7 +86,7 @@
                 },
                 })
                 .use(Dashboard, {
-                    trigger: this.$refs.uppyButton,
+                    trigger: this.withoutUi ? this.$slots.default[0].elm : this.$refs.uppyButton,
                     target: this.$refs.uppyContainer,
                     inline: false,
                     replaceTargetContent: true,

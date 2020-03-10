@@ -30,6 +30,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 - [Flysystem](https://github.com/thephpleague/flysystem)
 - [Material dashboard](https://github.com/creativetimofficial/material-dashboard)
 - [Material design icons](https://github.com/google/material-design-icons)
+- [Notification Sound](https://www.zedge.net/ringtone/ecd91e5b-802b-3b88-834d-67c2f4534c5d)
 - [Open street map](https://www.openstreetmap.org)
 - [Orchestral testbench](https://github.com/orchestral/testbench)
 - [QS](https://github.com/ljharb/qs)

@@ -55,14 +55,15 @@ window.sanjabHttpError = function (status) {
 /**
  * Show Success toast.
  */
-window.sanjabSuccessToast = function (title = '') {
+window.sanjabToast = function (title = '', type = 'success') {
     return Swal.fire({
         title: title,
-        icon: 'success',
+        icon: type,
         toast: true,
         position: document.dir == 'rtl' ? 'bottom-end' : 'bottom-start',
         showConfirmButton: false,
-        timer: 3000
+        showCloseButton: true,
+        timer: 5000
     });
 }
 
@@ -71,6 +72,15 @@ window.sanjabSuccessToast = function (title = '') {
  */
 window.numberFormat = function (number, seperator=',') {
     return String(number).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + seperator);
+};
+
+/**
+ * Play sound notification.
+ */
+window.sanjabPlayNotificationSound = function () {
+    let audio = new Audio('/vendor/sanjab/sounds/notification.mp3');
+    audio.setAttribute('muted', 'muted');
+    audio.play();
 };
 
 /**

@@ -376,7 +376,6 @@ abstract class Widget extends PropertiesHolder
         $this->modifyResponse($response, $item);
     }
 
-
     /**
      * To override modifying request.
      *

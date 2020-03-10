@@ -158,28 +158,55 @@
                 actionItems: null,
                 selectedBulk: [],
                 bulkActionsVisible: false,
-                cardsData: []
+                cardsData: [],
+                autoRefreshing: false,
+                autoRefreshingTimer: null,
+                itemsCache: [],
             };
         },
         methods: {
-            items(info) {
+            items(info, callback) {
                 info.page = info.currentPage;
                 info.searchTypes = this.searchTypes;
                 info.filterOption = this.filterOption;
                 info.search = this.search;
+                info.autoRefreshing = this.autoRefreshing;
+                info.total = this.total;
                 var self = this;
-                return axios.get(sanjabUrl("/modules/" + this.properties.route), {
+                if (self.autoRefreshing) {
+                    callback(self.itemsCache);
+                } else if (self.autoRefreshingTimer) {
+                    clearTimeout(self.autoRefreshingTimer);
+                    self.autoRefreshingTimer = null;
+                }
+                axios.get(sanjabUrl("/modules/" + this.properties.route), {
                     params: info,
                     paramsSerializer: params => qs.stringify(params)
                 })
                 .then(function (response) {
+                    if (response.data.notification != false) {
+                        sanjabPlayNotificationSound();
+                        if (typeof response.data.notification == 'string') {
+                            sanjabToast(response.data.notification, 'info');
+                        }
+                    }
                     self.cardsData = response.data.cardsData;
                     self.total = response.data.items.total;
-                    return response.data.items.data;
+                    self.autoRefreshing = false;
+                    self.itemsCache = response.data.items.data;
+                    callback(response.data.items.data);
                 })
                 .catch(function (error) {
                     console.error(error);
                     sanjabError(sanjabTrans('some_error_happend'));
+                })
+                .then(function () {
+                    if (self.properties.autoRefresh > 0) {
+                        self.autoRefreshingTimer = setTimeout(function () {
+                            self.autoRefreshing = true;
+                            self.$refs.table.refresh();
+                        }, self.properties.autoRefresh * 1000);
+                    }
                 });
             },
             onFilterChanged(event) {

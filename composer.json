@@ -21,7 +21,7 @@
         "barryvdh/elfinder-flysystem-driver": "^0.2",
         "codex-team/editor.js": "^2.0",
         "google/recaptcha": "^1.2",
-        "illuminate/support": "^5.8|^6.0",
+        "illuminate/support": "^5.8|^6|^7",
         "intervention/image": "^2.5",
         "laravel/helpers": "^1.1",
         "league/flysystem": "^1.0",

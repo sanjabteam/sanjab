@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Base controller for CRUD controllers.
@@ -103,13 +104,15 @@ abstract class CrudController extends SanjabController
                 $items[$key] = $this->itemResponse($value);
             }
 
+            $notification = $this->notification($request, $items);
+
             // Add cards data to response
             $cardsData = [];
             foreach ($this->cards as $key => $card) {
                 $cardsData[$key] = new stdClass;
                 $card->doModifyResponse($cardsData[$key]);
             }
-            return compact("items", "cardsData");
+            return compact("items", "cardsData", "notification");
         }
 
         // view it self without items
@@ -435,6 +438,18 @@ abstract class CrudController extends SanjabController
     }
 
     /**
+     * Should play notification sound or not.
+     *
+     * @param Request $request
+     * @param LengthAwarePaginator $items
+     * @return bool|string
+     */
+    protected function notification(Request $request, LengthAwarePaginator $items)
+    {
+        return false;
+    }
+
+    /**
      * Perform search query by widgets.
      *
      * @param Builder $query
@@ -500,7 +515,7 @@ abstract class CrudController extends SanjabController
             }
         } else {
             // order by default
-            $query->orderBy($this->property('defaultOrder'), $this->property('defaultOrderDirection'));
+            $query->orderBy(str_replace('__TABLE__', app($this->property('model'))->getTable(), $this->property('defaultOrder')), $this->property('defaultOrderDirection'));
         }
     }
 

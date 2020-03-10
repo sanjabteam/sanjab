@@ -36,7 +36,7 @@
                     item: self.data.id
                 })
                 .then(function (response) {
-                    sanjabSuccessToast(sanjabTrans('updated_successfully'));
+                    sanjabToast(sanjabTrans('updated_successfully'));
                     self.loading = false;
                     self.$forceUpdate();
                 }).catch(function (error) {
