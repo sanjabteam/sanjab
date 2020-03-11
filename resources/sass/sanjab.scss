@@ -191,6 +191,10 @@ body > * {
     .screen-saver .sidebar {
         transform: translate3d(0, 0, 0);
     }
+
+    #sanjab_navbar_app {
+        display: none;
+    }
 }
 
 @media (min-width: 820px) {
@@ -251,14 +255,26 @@ html[dir="rtl"] {
     line-height: 0.1em;
     margin: 10px 0 20px;
     padding-top: 24px;
- }
+}
 
  .sanjab-seperator-widget span {
     background:#fff;
     color: #AAAAAA;
     font-weight: bold;
     padding:0 10px;
- }
+}
+
+#sanjab_navbar_app, #sanjab_navbar_mobile_app {
+    .dropdown-menu {
+        transition: none;
+    }
+}
+
+#sanjab_navbar_mobile_app {
+    .dropdown-menu {
+        transform: none !important;
+    }
+}
 
 html[lang="fa"] {
     body, h4, .dz-message, .swal2-title, .tooltip-inner, .screen-saver-content h1,

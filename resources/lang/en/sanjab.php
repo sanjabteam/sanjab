@@ -67,6 +67,9 @@ return [
     'filter' => 'Filter',
     'notification' => 'Notification',
     'notifications' => 'Notifications',
+    'i_read' => 'I read',
+    'readen' => 'Readen',
+    'text' => 'Text',
 
     'are_you_sure' => 'Are you sure?',
     'are_you_sure_you_want_to_delete?' => 'Are you sure you want to delete?',

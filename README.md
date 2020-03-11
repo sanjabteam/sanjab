@@ -42,6 +42,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 - [Uppy](https://uppy.io)
 - [V-money](https://github.com/vuejs-tips/v-money)
 - [Vue.js](https://vuejs.org)
+- [Vuex](https://vuex.vuejs.org)
 - [Vue bootstrap typeahead](https://github.com/alexurquhart/vue-bootstrap-typeahead)
 - [Vue editor.js](https://github.com/changjoo-park/vue-editor-jse)
 - [Vue quill editor](https://github.com/surmon-china/vue-quill-editor)

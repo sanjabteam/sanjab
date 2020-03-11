@@ -7,6 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' />
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="Powered By" content="Sanjab - http://sanjabteam.github.io/">
         <title>@if(! empty($__env->yieldContent('title'))) @yield('title') - @endif{{ config('app.name') }}</title>
 
         <link rel="stylesheet" href="{{ sanjab_mix('css/sanjab.css') }}">
@@ -32,6 +33,10 @@
                         </div>
                     </div>
                     <div class="sidebar-wrapper">
+                        <div id="sanjab_navbar_mobile_app">
+                            <navbar-search></navbar-search>
+                            <navbar-menu :items='@json($sanjabNotificationItems)' :mobile="true"></navbar-menu>
+                        </div>
                         <ul class="nav">
                             @foreach($sanjabMenuItems as $menuKey => $menuItem)
                                 @if($menuItem->hasChildren())
@@ -96,44 +101,12 @@
                                 <span class="navbar-toggler-icon icon-bar"></span>
                                 <span class="navbar-toggler-icon icon-bar"></span>
                             </button>
-                            <div class="collapse navbar-collapse justify-content-end">
-                                <div id="sanjab_search_app">
-                                    <nav-search />
-                                </div>
-                                <ul class="navbar-nav">
-                                    @foreach($sanjabNotificationItems as $notificationItem)
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link"
-                                                href="javascript:void(0);"
-                                                title="{{ $notificationItem->title }}"
-                                                id="navbarDropdownMenuLink"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="material-icons">{{ $notificationItem->icon }}</i>
-                                                @if (! empty((string)$notificationItem->badge))
-                                                    <span class="notification">{{ $notificationItem->badge }}</span>
-                                                @endif
-                                                <p class="d-lg-none d-md-block">
-                                                    {{ $notificationItem->title }}
-                                                </p>
-                                            </a>
-                                            <div class="dropdown-menu
-                                                dropdown-menu-right"
-                                                aria-labelledby="navbarDropdownMenuLink">
-                                                @foreach($notificationItem->getItems() as $item)
-                                                    @if ($item == 0)
-                                                        <div class="dropdown-divider"></div>
-                                                    @else
-                                                        <a class="dropdown-item" href="{{ $item['link'] }}" title="{{ $item['title'] }}">
-                                                            {{ $item['title'] }}
-                                                        </a>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
+
+                            <div id="sanjab_navbar_app">
+                                <b-collapse is-nav>
+                                    <navbar-search></navbar-search>
+                                    <navbar-menu :items='@json($sanjabNotificationItems)'></navbar-menu>
+                                </b-collapse>
                             </div>
                         </div>
                     </nav>
@@ -176,7 +149,9 @@
                 config: @json(config('sanjab')),
                 app: {
                     locale: @json(App::getLocale())
-                }
+                },
+                serverTimeDiff: parseInt(Date.now()/1000) - {{ now()->timestamp }},
+                notificationEventSourceEnabled: @json(Schema::hasTable('notifications') && in_array('Illuminate\Notifications\Notifiable', class_uses(Sanjab::userModel())))
             };
         </script>
         @yield('before_scripts')

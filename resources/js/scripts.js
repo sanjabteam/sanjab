@@ -55,16 +55,16 @@ window.sanjabHttpError = function (status) {
 /**
  * Show Success toast.
  */
-window.sanjabToast = function (title = '', type = 'success') {
-    return Swal.fire({
+window.sanjabToast = function (title = '', otherOptions = {}) {
+    return Swal.fire(Object.assign({
         title: title,
-        icon: type,
+        icon: 'success',
         toast: true,
         position: document.dir == 'rtl' ? 'bottom-end' : 'bottom-start',
         showConfirmButton: false,
         showCloseButton: true,
         timer: 5000
-    });
+    }, otherOptions));
 }
 
 /**
@@ -78,9 +78,11 @@ window.numberFormat = function (number, seperator=',') {
  * Play sound notification.
  */
 window.sanjabPlayNotificationSound = function () {
-    let audio = new Audio('/vendor/sanjab/sounds/notification.mp3');
-    audio.setAttribute('muted', 'muted');
-    audio.play();
+    if (window.sanjabLastTimeNotificationSound === undefined || window.sanjabLastTimeNotificationSound + 2 < parseInt(Date.now() / 1000)) {
+        window.sanjabLastTimeNotificationSound = parseInt(Date.now() / 1000);
+        let audio = new Audio('/vendor/sanjab/sounds/notification.mp3');
+        audio.play();
+    }
 };
 
 /**
@@ -130,7 +132,7 @@ $(document).ready(function () {
         loadScreenSaver();
     }
 
-    if ($(".sidebar-wrapper").length > 0 && $(".nav-item.active").length > 0) {
+    if ($(".sidebar-wrapper").length > 0 && $(".nav-item.active").length > 0 && window.height > 991) {
         $(".sidebar-wrapper").animate({scrollTop: $(".nav-item.active").offset().top - ($(".sidebar-wrapper").height() / 2.5) }, 25);
     }
 });

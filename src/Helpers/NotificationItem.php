@@ -18,6 +18,10 @@ class NotificationItem extends PropertiesHolder
         'order' => 100
     ];
 
+    protected $getters = [
+        'items'
+    ];
+
     /**
      * Items inside notification area.
      *
@@ -43,11 +47,12 @@ class NotificationItem extends PropertiesHolder
      *
      * @param string $title
      * @param string $link
+     * @param array $otherOptions
      * @return $this
      */
-    public function addItem($title, $link)
+    public function addItem($title, $link = '#', array $otherOptions = [])
     {
-        $this->items[] = compact('title', 'link');
+        $this->items[] = array_merge($otherOptions, compact('title', 'link'));
         return $this;
     }
 

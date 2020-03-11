@@ -67,6 +67,9 @@ return [
     'filter' => 'فیلتر کردن',
     'notification' => 'اعلان',
     'notifications' => 'اعلانات',
+    'i_read' => 'خواندم',
+    'readen' => 'خوانده شده',
+    'text' => 'متن',
 
 
     'are_you_sure' => 'آیا مطمئن هستید؟',

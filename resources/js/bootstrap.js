@@ -45,8 +45,14 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-if (document.querySelector('#sanjab_search_app')) {
+if (document.querySelector('#sanjab_navbar_app')) {
     window.sanjabSearchApp = new Vue({
-        el: '#sanjab_search_app',
+        el: '#sanjab_navbar_app',
+    });
+}
+
+if (document.querySelector('#sanjab_navbar_mobile_app')) {
+    window.sanjabSearchApp = new Vue({
+        el: '#sanjab_navbar_mobile_app',
     });
 }

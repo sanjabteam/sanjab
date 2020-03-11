@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
  * @method $this showable (boolean $val)             Can show items.
  * @method $this editable (boolean $val)             Can edit items.
  * @method $this deletable (boolean $val)            Can delete items.
+ * @method $this searchable (boolean $val)           Can search items.
  * @method $this perPage (integer $val)              Default per page.
  * @method $this perPages (array $val)               Array of per pages.
  * @method $this defaultOrder (string $val)          Default column order.
@@ -47,6 +48,7 @@ class CrudProperties extends PropertiesHolder
         $this->showable(true);
         $this->editable(true);
         $this->deletable(true);
+        $this->searchable(true);
         $this->bulk(true);
         $this->defaultOrder('__TABLE__.id');
         $this->defaultOrderDirection('desc');

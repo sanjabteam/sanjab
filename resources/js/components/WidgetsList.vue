@@ -6,7 +6,7 @@
                 <b-button v-for="(action, index) in generalActions" @click="onActionClick(action)" :variant="action.variant" :href="action.url ? action.url : 'javascript:void(0);'" :key="index" :title="action.title" v-b-tooltip><i class="material-icons">{{ action.icon }}</i>{{ action.title }}</b-button>
             </b-col>
             <b-col md="5" class="my-1">
-                <b-input-group>
+                <b-input-group v-if="properties.searchable">
                     <b-form-input @keyup="onFilterChanged" :value="filter" :placeholder="sanjabTrans('search') + '...'"></b-form-input>
                     <b-button-group>
                         <b-button v-b-toggle.advanced_search_collapse variant="primary" size="sm" :title="sanjabTrans('advanced_search')" v-b-tooltip>
@@ -187,7 +187,7 @@
                     if (response.data.notification != false) {
                         sanjabPlayNotificationSound();
                         if (typeof response.data.notification == 'string') {
-                            sanjabToast(response.data.notification, 'info');
+                            sanjabToast(response.data.notification, {icon: 'info'});
                         }
                     }
                     self.cardsData = response.data.cardsData;

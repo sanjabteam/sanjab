@@ -1,7 +1,8 @@
 import Quill from 'quill';
 import { ImageUpload } from 'quill-image-upload';
+import store from './store';
 
-var SanjabPlugin = {};
+var SanjabPlugin = {store};
 SanjabPlugin.install = function (Vue, options) {
     Quill.register('modules/imageUpload', ImageUpload);
     Quill.register(Quill.import('attributors/class/color'), true);
@@ -13,6 +14,7 @@ SanjabPlugin.install = function (Vue, options) {
 
     Vue.prototype.sanjabTrans = sanjabTrans;
     Vue.prototype.numberFormat = numberFormat;
+    Vue.prototype.$sanjabStore = store;
 
     const files = require.context('./components/', true, /\.vue$/i);
     files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));

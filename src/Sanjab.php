@@ -18,6 +18,7 @@ use EditorJS\EditorJSException;
 class Sanjab
 {
     const SANJAB_CONTROLLERS = [
+        \Sanjab\Controllers\NotificationController::class,
         \Sanjab\Controllers\AuthController::class,
         \Sanjab\Controllers\RoleController::class,
         \Sanjab\Controllers\QuillController::class,
@@ -138,12 +139,13 @@ class Sanjab
     /**
      * All controllers menu items.
      *
+     * @param bool $forceRefresh  force use lastest version instead of cached data.
      * @return NotificationItem[]
      * @throws Exception
      */
-    public static function notificationItems(): array
+    public static function notificationItems($forceRefresh = false): array
     {
-        if (static::$notificationItems == null) {
+        if (static::$notificationItems == null || $forceRefresh) {
             static::$notificationItems = [];
             if (Auth::check()) {
                 foreach (static::controllers() as $controller) {
@@ -154,8 +156,8 @@ class Sanjab
                         static::$notificationItems[] = $notificationItem;
                     }
                 }
-                static::$notificationItems = array_filter(static::$notificationItems, function ($menuItem) {
-                    return !$menuItem->isHidden();
+                static::$notificationItems = array_filter(static::$notificationItems, function ($notificationItem) {
+                    return !$notificationItem->isHidden();
                 });
                 usort(static::$notificationItems, function ($a, $b) {
                     return $a->order > $b->order;
@@ -388,5 +390,15 @@ class Sanjab
             throw $exception;
         }
         return $out;
+    }
+
+    /**
+     * Default user model class.
+     *
+     * @return string
+     */
+    public static function userModel()
+    {
+        return config('auth.providers.'.config('auth.guards.'.config('auth.defaults.guard').'.provider').'.model');
     }
 }
