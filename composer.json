@@ -55,6 +55,11 @@
             "npm version patch",
             "npm publish",
             "git push origin master --tags"
+        ],
+        "publish-minor": [
+            "npm version minor",
+            "npm publish",
+            "git push origin master --tags"
         ]
     },
     "config": {
