@@ -5,6 +5,8 @@
 /resources/assets/css/*
 /resources/assets/js/*
 /resources/assets/mix-manifest.json
-/composer.lock
 /build
 /npm-debug.log
+/composer.lock
+/package-lock.json
+.phpunit.result.cache

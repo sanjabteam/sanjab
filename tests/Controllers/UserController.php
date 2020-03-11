@@ -19,7 +19,7 @@ class UserController extends CrudController
     {
         return CrudProperties::create('users')
                 ->model(User::class)
-                ->icon(MaterialIcons::GROUP_WORK)
+                ->icon(MaterialIcons::PERSON)
                 ->title(trans('sanjab::sanjab.user'))
                 ->titles(trans('sanjab::sanjab.users'));
     }
@@ -44,8 +44,10 @@ class UserController extends CrudController
 
         $this->widgets[] = BelongsToManyWidget::create('roles', trans('sanjab::sanjab.roles'))
                 ->format('%title')
-                ->query(function (Builder $query) {
-                    $query->where('name', '!=', 'super_admin');
+                ->query(function (Builder $query) use ($type) {
+                    if ($type != 'show') {
+                        $query->where('name', '!=', 'super_admin');
+                    }
                 });
     }
 }

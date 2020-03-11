@@ -15,25 +15,26 @@
         }
     ],
     "require": {
-        "php": "^7.1",
-        "ankitpokhrel/tus-php": "^1.0",
-        "astrotomic/laravel-translatable": "^11.1",
+        "php": "^7.2.5",
+        "ankitpokhrel/tus-php": "^1.2|dev-symfony-5",
+        "astrotomic/laravel-translatable": "^11.8",
         "barryvdh/elfinder-flysystem-driver": "^0.2",
         "codex-team/editor.js": "^2.0",
         "google/recaptcha": "^1.2",
-        "illuminate/support": "^5.8|^6|^7",
+        "illuminate/support": "^6|^7",
         "intervention/image": "^2.5",
-        "laravel/helpers": "^1.1",
+        "jenssegers/agent": "^2.6",
+        "laravel/helpers": "^1",
+        "laravel/ui": "^2.0",
         "league/flysystem": "^1.0",
         "league/flysystem-ziparchive": "^1.0",
-        "jenssegers/agent": "^2.6",
-        "silber/bouncer": "v1.0.0-rc.5|v1.0.0-rc.6",
+        "silber/bouncer": "v1.0.0-rc.6|v1.0.0-rc.7",
         "studio-42/elfinder": "^2.1"
     },
     "require-dev": {
-        "orchestra/testbench": "^3.8",
-        "orchestra/testbench-dusk": "^3.8",
-        "phpunit/phpunit": "^7.0"
+        "orchestra/testbench": "^5.1",
+        "orchestra/testbench-dusk": "^5.1",
+        "phpunit/phpunit": "^8.4|^9.0"
     },
     "autoload": {
         "psr-4": {

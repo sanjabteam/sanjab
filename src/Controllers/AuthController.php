@@ -3,8 +3,6 @@
 namespace Sanjab\Controllers;
 
 use Illuminate\Support\Facades\Route;
-use Sanjab\Helpers\MenuItem;
-use Sanjab\Helpers\MaterialIcons;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Sanjab\Helpers\NotificationItem;
