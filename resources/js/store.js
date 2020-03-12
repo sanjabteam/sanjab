@@ -75,7 +75,7 @@ store.watch((state) => state.notificationItems, function (newValue, oldValue) {
                             sanjabPlayNotificationSound();
                         }
                         if (item.notificationToast === true) {
-                            notificationItems.push(item.title);
+                            notificationItems.push(item);
                         }
                     }
                 }
@@ -84,7 +84,7 @@ store.watch((state) => state.notificationItems, function (newValue, oldValue) {
     }
     notificationItems = notificationItems.slice(0, 3);
     for (let i in notificationItems) {
-        setTimeout(() => sanjabToast(notificationItems[i], {icon: 'info', position: 'top'}), (i == notificationItems.length-1 ? 6000 : 3000) * i);
+        setTimeout(() => sanjabToast(notificationItems[i].title, {icon: 'info', position: 'top', html: notificationItems[i].link ? '<a class="btn btn-primary" href="' + notificationItems[i].link + '">' + sanjabTrans('show') + '</a>' : null}), (i == notificationItems.length-1 ? 6000 : 3000) * i);
     }
 });
 
