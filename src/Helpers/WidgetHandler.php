@@ -113,11 +113,10 @@ trait WidgetHandler
      * @param \Illuminate\Http\Request $request
      * @param string $type  create|edit
      * @param Model|null  $item
-     * @return array
+     * @return void
      */
     public function validationAfter(Validator $validator, Request $request, string $type, Model $item = null)
     {
-        return [];
     }
 
     /**

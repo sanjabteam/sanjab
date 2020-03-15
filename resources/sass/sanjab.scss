@@ -182,7 +182,7 @@ a.image-author {
     opacity: 0.4;
 }
 
-body.swal2-shown > [aria-hidden="true"] {
+body.swal2-shown:not(.swal2-toast-shown) > [aria-hidden="true"] {
     filter: blur(3px);
 }
 
