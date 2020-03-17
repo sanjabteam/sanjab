@@ -25,6 +25,7 @@ class SanjabServiceProvider extends ServiceProvider
         \Sanjab\Commands\MakeDashboard::class,
         \Sanjab\Commands\MakeCrud::class,
         \Sanjab\Commands\MakeSetting::class,
+        \Sanjab\Commands\SettingsExport::class,
     ];
 
     /**
