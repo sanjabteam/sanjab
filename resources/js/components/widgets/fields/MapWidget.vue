@@ -1,8 +1,8 @@
 <template>
     <div style="height: 400px;">
-        <l-map ref="themap" :zoom="zoom" :zoomControl="false" :center="center">
-            <l-tile-layer :url="url"></l-tile-layer>
-            <l-marker ref="marker" :lat-lng.sync="markerLatLng" :draggable="true"></l-marker>
+        <l-map ref="mapInstance" :zoom="zoom" :center="center" @click="setMarkerPosition">
+            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-marker v-show="mutableValue.lat != null || mutableValue.lng != null" ref="mapMarker" :lat-lng.sync="mutableValue" :draggable="true"></l-marker>
         </l-map>
     </div>
 </template>
@@ -19,58 +19,59 @@
             LCircle
         },
         mounted () {
-            var self = this;
             if (this.value) {
-                this.markerLatLng = this.value;
+                this.mutableValue = this.value;
             } else {
-                this.$emit("input", this.markerLatLng);
+                this.$emit("input", this.mutableValue);
             }
         },
         props: {
             value: {
                 type: Object,
-                default: () => {}
+                default: null
             },
         },
-        data () {
+        data() {
             return {
+                zoom:5,
+                center: L.latLng(34.6, 51.6),
                 url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-                zoom: 4,
-                center: [35.723, 53.682],
-                markerLatLng: {lat: 35.723, lng:53.682},
-                circle: {
-                    center: [47.413220, -1.0482],
-                    radius: 4500,
-                    color: 'red'
-                }
+                attribution: '&copy; <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+                marker: L.latLng(34.6, 51.6),
+                mutableValue: {lat: 1000, lng: 1000}
             };
+        },
+        methods: {
+            setMarkerPosition(event) {
+                this.$refs.mapMarker.setLatLng(event.latlng);
+            }
         },
         watch: {
             value:{
                 deep: true,
                 handler(newValue, oldValue) {
                     if (typeof newValue.lat != "undefined" && typeof newValue.lng != "undefined") {
-                        if (newValue.lat != this.markerLatLng.lat || newValue.lng != this.markerLatLng.lng) {
-                            this.markerLatLng = {lat: newValue.lat, lng: newValue.lng};
-                            if (this.$refs.marker) {
-                                this.$refs.marker.setLatLng(new LatLng(newValue.lat, newValue.lng));
+                        if (newValue.lat != this.mutableValue.lat || newValue.lng != this.mutableValue.lng) {
+                            this.mutableValue = {lat: newValue.lat, lng: newValue.lng};
+                            if (this.$refs.mapMarker) {
+                                this.$refs.mapMarker.setLatLng(new LatLng(newValue.lat, newValue.lng));
                             }
                         }
                     }
                 }
             },
-            markerLatLng(newValue, oldValue) {
+            mutableValue (newValue, oldValue) {
                 this.$emit("input", newValue);
             }
         },
     }
 </script>
 
-<style>
-    .leaflet-control-container {
+<style lang="scss">
+    .leaflet-pane.leaflet-shadow-pane {
         display: none;
     }
-    .leaflet-pane.leaflet-shadow-pane {
+    .leaflet-marker-shadow {
         display: none;
     }
 </style>

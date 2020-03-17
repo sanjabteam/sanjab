@@ -12,7 +12,7 @@
         <b-table striped hover responsive :items="tableItems" :fields="fields" thead-class="d-none">
             <template v-slot:cell(delete)="data">
                 <b-button-group>
-                    <b-button @click="removeOption(data.index)" variant="danger" size="sm" :title="sanjabTrans('delete')"><i class="material-icons">delete</i></b-button>
+                    <b-button @click="removeOption(data.index)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip><i class="material-icons">delete</i></b-button>
                 </b-button-group>
             </template>
         </b-table>

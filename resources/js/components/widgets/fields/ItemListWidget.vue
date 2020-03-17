@@ -14,7 +14,7 @@
                 </b-col>
                 <b-col :cols="2">
                     <br>
-                    <b-button @click="removeOption(itemIndex)" variant="danger" size="sm" :title="sanjabTrans('delete')"><i class="material-icons">delete</i></b-button>
+                    <b-button @click="removeOption(itemIndex)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip><i class="material-icons">delete</i></b-button>
                 </b-col>
             </b-row>
         </b-card>
