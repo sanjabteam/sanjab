@@ -8,7 +8,7 @@ use Sanjab\Models\Setting;
 use Silber\Bouncer\Database\Role;
 
 /**
- * Assign super_admin to an user.
+ * Export setting as code for seeder.
  */
 class SettingsExport extends Command
 {

@@ -284,9 +284,11 @@ class Sanjab
                 return null;
             } else {
                 $response = json_decode($response, true);
-                $out = array_random($response);
-                if (is_array($out) && isset($out['image']) && isset($out['link']) && isset($out['author'])) {
-                    return $out;
+                if (is_array($response)) {
+                    $out = array_random($response);
+                    if (is_array($out) && isset($out['image']) && isset($out['link']) && isset($out['author'])) {
+                        return $out;
+                    }
                 }
                 return null;
             }

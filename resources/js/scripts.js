@@ -21,7 +21,7 @@ window.sanjabSuccess = function (title, message = '') {
 }
 
 /**
- * Show a error message.
+ * Show an error message.
  */
 window.sanjabError = function (title, message = '') {
     return Swal.fire({

@@ -20,7 +20,7 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.12.1",
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "@types/leaflet": "^1.5.10",
     "@uppy/locales": "^1.11.5",
     "@voerro/vue-tagsinput": "^2.2.0",
