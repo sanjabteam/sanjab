@@ -54,7 +54,7 @@
             },
             properties: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             },
             item: {
                 type: Object,

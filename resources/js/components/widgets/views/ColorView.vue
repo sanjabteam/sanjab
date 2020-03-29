@@ -11,11 +11,11 @@
         props: {
             widget: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             },
             data: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             }
         }
     }

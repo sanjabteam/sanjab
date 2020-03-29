@@ -24,7 +24,7 @@
         props: {
             inputOptions: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             },
             value: {
                 type: Array,

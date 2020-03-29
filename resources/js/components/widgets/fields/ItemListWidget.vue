@@ -27,7 +27,7 @@
         props: {
             inputOptions: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             },
             value: {
                 type: Array,
@@ -55,7 +55,7 @@
             },
             properties: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             },
             crudType: {
                 type: String,
@@ -63,7 +63,7 @@
             },
             errors: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             }
         },
         data() {

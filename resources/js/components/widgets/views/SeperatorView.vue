@@ -9,7 +9,7 @@
         props: {
             widget: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             },
         },
     }

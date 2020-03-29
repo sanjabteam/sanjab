@@ -25,15 +25,15 @@
             value: null,
             widget: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             },
             properties: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             },
             errors: {
                 type: Object,
-                default: () => {}
+                default: () => {return {};}
             },
             fieldLocale: {
                 type: String,
