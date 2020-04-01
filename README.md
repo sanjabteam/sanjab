@@ -7,6 +7,7 @@
 <div align="center">
 
 [![Build Status](https://travis-ci.com/sanjabteam/sanjab.svg?branch=master)](https://travis-ci.com/sanjabteam/sanjab)
+[![StyleCI](https://github.styleci.io/repos/197559365/shield?branch=master)](https://github.styleci.io/repos/197559365)
 [![Code Coverage](https://codecov.io/gh/sanjabteam/sanjab/branch/master/graph/badge.svg?sanitize=true)](https://codecov.io/gh/sanjabteam/sanjab)
 [![Total Downloads](https://poser.pugx.org/sanjabteam/sanjab/downloads)](https://packagist.org/packages/sanjabteam/sanjab)
 [![Latest Stable Version](https://poser.pugx.org/sanjabteam/sanjab/v/stable)](https://packagist.org/packages/sanjabteam/sanjab)
