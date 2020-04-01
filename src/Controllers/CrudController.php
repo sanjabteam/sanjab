@@ -14,8 +14,8 @@ use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -56,7 +56,7 @@ abstract class CrudController extends SanjabController
     public function index(Request $request)
     {
         $this->authorize('viewAny'.static::property('permissionsKey'), $this->property('model'));
-        $this->initCrud("index");
+        $this->initCrud('index');
 
         // items for json ajax.
         if ($request->wantsJson()) {
@@ -112,7 +112,8 @@ abstract class CrudController extends SanjabController
                 $cardsData[$key] = new stdClass;
                 $card->doModifyResponse($cardsData[$key]);
             }
-            return compact("items", "cardsData", "notification");
+
+            return compact('items', 'cardsData', 'notification');
         }
 
         // view it self without items
@@ -123,7 +124,7 @@ abstract class CrudController extends SanjabController
                 'actions' => $this->actions,
                 'filterOptions' => $this->filters,
                 'cards' => $this->cards,
-                'properties' => $this->properties()
+                'properties' => $this->properties(),
             ]
         );
     }
@@ -136,13 +137,14 @@ abstract class CrudController extends SanjabController
     public function create()
     {
         $this->authorize('create'.static::property('permissionsKey'), $this->property('model'));
-        abort_unless($this->property("creatable"), 404);
-        $this->initCrud("create");
+        abort_unless($this->property('creatable'), 404);
+        $this->initCrud('create');
+
         return view(
             'sanjab::crud.form',
             [
                 'widgets' => $this->widgets,
-                'properties' => $this->properties()
+                'properties' => $this->properties(),
             ]
         );
     }
@@ -156,15 +158,16 @@ abstract class CrudController extends SanjabController
     public function store(Request $request)
     {
         $this->authorize('create'.static::property('permissionsKey'), $this->property('model'));
-        abort_unless($this->property("creatable"), 404);
+        abort_unless($this->property('creatable'), 404);
         // initialize crud
-        $this->initCrud("create");
+        $this->initCrud('create');
         $model = $this->property('model');
         // Create new model and save
         $item = new $model;
         $this->save($request, $item, 'create');
         // Success toast
         Session::flash('sanjab_success', trans('sanjab::sanjab.:item_created_successfully', ['item' => $this->property('title')]));
+
         return ['success' => true];
     }
 
@@ -183,18 +186,19 @@ abstract class CrudController extends SanjabController
         $this->queryScope($item);
         $item = $item->firstOrFail();
         $this->authorize('view'.static::property('permissionsKey'), $item);
-        $this->initCrud("show", $item);
+        $this->initCrud('show', $item);
         // item itself if request wants json.
         $item = $this->itemResponse($item);
         if ($request->wantsJson()) {
             return $item;
         }
+
         return view(
             'sanjab::crud.show',
             [
                 'widgets'    => $this->widgets,
                 'properties' => $this->properties(),
-                'item'       => $item
+                'item'       => $item,
             ]
         );
     }
@@ -207,7 +211,7 @@ abstract class CrudController extends SanjabController
      */
     public function edit($id)
     {
-        abort_unless($this->property("editable"), 404);
+        abort_unless($this->property('editable'), 404);
         $model = $this->property('model');
         $item = $model::where('id', $id);
         // customize query by query scope
@@ -215,15 +219,16 @@ abstract class CrudController extends SanjabController
         $item = $item->firstOrFail();
         // authorization
         $this->authorize('update'.static::property('permissionsKey'), $item);
-        $this->initCrud("edit", $item);
+        $this->initCrud('edit', $item);
         // convert item to response object.
         $item = $this->itemResponse($item);
+
         return view(
             'sanjab::crud.form',
             [
                 'widgets' => $this->widgets,
                 'properties' => $this->properties(),
-                'item' => $item
+                'item' => $item,
             ]
         );
     }
@@ -237,17 +242,18 @@ abstract class CrudController extends SanjabController
      */
     public function update(Request $request, $id)
     {
-        abort_unless($this->property("editable"), 404);
+        abort_unless($this->property('editable'), 404);
         $model = $this->property('model');
         $item = $model::where('id', $id);
         // customize query by query scope
         $this->queryScope($item);
         $item = $item->firstOrFail();
         $this->authorize('update'.static::property('permissionsKey'), $item);
-        $this->initCrud("edit", $item);
+        $this->initCrud('edit', $item);
         $this->save($request, $item, 'edit');
         // success toast.
         Session::flash('sanjab_success', trans('sanjab::sanjab.:item_updated_successfully', ['item' => $this->property('title')]));
+
         return ['success' => true];
     }
 
@@ -260,6 +266,7 @@ abstract class CrudController extends SanjabController
     public function destroy(Model $item)
     {
         $item->delete();
+
         return ['message' => trans('sanjab::sanjab.deleted_successfully')];
     }
 
@@ -272,7 +279,7 @@ abstract class CrudController extends SanjabController
      */
     public function action(Request $request, $action)
     {
-        $this->initCrud("action");
+        $this->initCrud('action');
         // Find action in actions array
         $action = array_filter($this->actions, function ($act) use ($action) {
             return $act->action == $action;
@@ -283,7 +290,7 @@ abstract class CrudController extends SanjabController
 
         // Per item action
         if ($action->perItem) {
-            $model = $this->property("model");
+            $model = $this->property('model');
             $items = $model::whereIn('id', $request->input('items'));
             // customize query by queryScope
             $this->queryScope($items);
@@ -304,6 +311,7 @@ abstract class CrudController extends SanjabController
             foreach ($items as $item) {
                 $response = App::call([$this, $action->action], [Model::class => $item, $this->property('model') => $item]);
             }
+
             return $response;
         }
         // Non per item action
@@ -321,6 +329,7 @@ abstract class CrudController extends SanjabController
         if ($key === null) {
             return static::properties();
         }
+
         return array_get(static::properties()->toArray(), $key);
     }
 
@@ -341,7 +350,7 @@ abstract class CrudController extends SanjabController
     final protected function initCrud(string $type, Model $item = null): void
     {
         if (isset($this->sanjabCrudInitialized) == false || $this->sanjabCrudInitialized == false) {
-            $model = $this->property("model");
+            $model = $this->property('model');
             $this->initWidgets($model);
 
             // Add create action to actions
@@ -387,7 +396,7 @@ abstract class CrudController extends SanjabController
                                     ->action('destroy')
                                     ->variant('danger')
                                     ->icon('delete')
-                                    ->confirm(trans("sanjab::sanjab.are_you_sure_you_want_to_delete?"))
+                                    ->confirm(trans('sanjab::sanjab.are_you_sure_you_want_to_delete?'))
                                     ->authorize(function ($item) {
                                         return Auth::user()->can('delete'.static::property('permissionsKey'), $item);
                                     });
@@ -521,11 +530,11 @@ abstract class CrudController extends SanjabController
 
     public static function routes(): void
     {
-        Route::prefix("modules")->name("modules.")->group(function () {
+        Route::prefix('modules')->name('modules.')->group(function () {
             Route::post(static::property('route').'/action/{action}', static::class.'@action')->name(static::property('route').'action');
             Route::resource(static::property('route'), static::class)
                             ->parameters([
-                                static::property('route') => 'id'
+                                static::property('route') => 'id',
                             ])
                             ->except(['destroy']);
         });
@@ -544,16 +553,17 @@ abstract class CrudController extends SanjabController
                     })
                     ->hidden(function () {
                         return Auth::user()->cannot('viewAny'.static::property('permissionsKey'), static::property('model'));
-                    })
+                    }),
         ];
         if (static::property('menuParentText')) {
             return [
                 MenuItem::create('javascript:void(0);')
                     ->title(static::property('menuParentText'))
                     ->icon(static::property('menuParentIcon'))
-                    ->addChildren($menu)
+                    ->addChildren($menu),
             ];
         }
+
         return $menu;
     }
 
@@ -573,6 +583,7 @@ abstract class CrudController extends SanjabController
         if (static::property('deletable')) {
             $permission->addPermission(trans('sanjab::sanjab.delete_:item', ['item' => static::property('title')]), 'delete'.static::property('permissionsKey'), static::property('model'));
         }
+
         return [$permission];
     }
 
@@ -582,14 +593,16 @@ abstract class CrudController extends SanjabController
             $model = static::property('model');
             $items = $model::query();
             app(static::class)->queryScope($items);
+
             return [
                 StatsCard::create(static::property('titles'))
                             ->value($items->count())
                             ->link(route('sanjab.modules.'.static::property('route').'.index'))
                             ->variant(array_random(['primary', 'secondary', 'success', 'info', 'warning', 'danger']))
-                            ->icon(static::property('icon'))
+                            ->icon(static::property('icon')),
             ];
         }
+
         return [];
     }
 
@@ -619,13 +632,13 @@ abstract class CrudController extends SanjabController
             if (static::property('itemFormat')) {
                 $itemFormat = static::property('itemFormat');
             } elseif (! empty(optional($model::first())->name)) {
-                $itemFormat = "%name";
+                $itemFormat = '%name';
             } elseif (! empty(optional($model::first())->title)) {
-                $itemFormat = "%title";
+                $itemFormat = '%title';
             }
             foreach ($items as $item) {
                 $itemName = $itemFormat;
-                preg_match_all("/%([A-Za-z0-9_]+)/", $itemFormat, $matches);
+                preg_match_all('/%([A-Za-z0-9_]+)/', $itemFormat, $matches);
                 // Format item by requested format
                 foreach ($matches[1] as $match) {
                     $itemName = str_replace('%'.$match, $item->{ $match }, $itemName);
@@ -648,6 +661,7 @@ abstract class CrudController extends SanjabController
                 }
             }
         }
+
         return $results;
     }
 }

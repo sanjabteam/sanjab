@@ -2,26 +2,26 @@
 
 namespace Sanjab\Widgets;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Sanjab\Helpers\SearchType;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Select widget
+ * Select widget.
  */
 class SelectWidget extends Widget
 {
     protected $getters = [
-        'options'
+        'options',
     ];
 
     protected $selectOptions = [];
 
     public function init()
     {
-        $this->tag("select-widget");
-        $this->indexTag("select-view")->viewTag('select-view');
+        $this->tag('select-widget');
+        $this->indexTag('select-view')->viewTag('select-view');
     }
 
     public function postInit()
@@ -32,7 +32,7 @@ class SelectWidget extends Widget
     }
 
     /**
-     * Add option to options
+     * Add option to options.
      *
      * @param mixed $key
      * @param string $title
@@ -41,11 +41,12 @@ class SelectWidget extends Widget
     public function addOption($key, string $title)
     {
         $this->selectOptions[$key] = $title;
+
         return $this;
     }
 
     /**
-     * Add multiple options
+     * Add multiple options.
      *
      * @param array $options
      * @return $this
@@ -55,6 +56,7 @@ class SelectWidget extends Widget
         foreach ($options as $key => $title) {
             $this->selectOptions[$key] = $title;
         }
+
         return $this;
     }
 
@@ -67,6 +69,7 @@ class SelectWidget extends Widget
     public function multiple(bool $multiple = true)
     {
         $this->setProperty('multiple', $multiple);
+
         return $this;
     }
 
@@ -76,17 +79,17 @@ class SelectWidget extends Widget
             SearchType::create('empty', trans('sanjab::sanjab.is_empty')),
             SearchType::create('not_empty', trans('sanjab::sanjab.is_not_empty')),
             SearchType::create('equal', trans('sanjab::sanjab.equal'))
-                        ->addWidget(SelectWidget::create('search', trans('sanjab::sanjab.equal'))->addOptions($this->selectOptions)),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.equal'))->addOptions($this->selectOptions)),
             SearchType::create('not_equal', trans('sanjab::sanjab.not_equal'))
-                        ->addWidget(SelectWidget::create('search', trans('sanjab::sanjab.not_equal'))->addOptions($this->selectOptions)),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.not_equal'))->addOptions($this->selectOptions)),
             SearchType::create('similar', trans('sanjab::sanjab.similar'))
                         ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.similar'))),
             SearchType::create('not_similar', trans('sanjab::sanjab.not_similar'))
                         ->addWidget(TextWidget::create('search', trans('sanjab::sanjab.not_similar'))),
             SearchType::create('in', trans('sanjab::sanjab.is_in'))
-                        ->addWidget(SelectWidget::create('search', trans('sanjab::sanjab.is_in'))->addOptions($this->selectOptions)->multiple()),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.is_in'))->addOptions($this->selectOptions)->multiple()),
             SearchType::create('not_in', trans('sanjab::sanjab.is_not_in'))
-                        ->addWidget(SelectWidget::create('search', trans('sanjab::sanjab.is_not_in'))->addOptions($this->selectOptions)->multiple()),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.is_not_in'))->addOptions($this->selectOptions)->multiple()),
         ];
     }
 
@@ -144,17 +147,17 @@ class SelectWidget extends Widget
         if ($this->property('multiple')) {
             return [
                 $this->name => $this->property('rules.'.$type, []),
-                $this->name.'.*' => ['in:'.implode(",", array_keys($this->selectOptions))],
+                $this->name.'.*' => ['in:'.implode(',', array_keys($this->selectOptions))],
             ];
         } else {
             return [
-                $this->name => $this->property('rules.'.$type, ['in:'.implode(",", array_keys($this->selectOptions))]),
+                $this->name => $this->property('rules.'.$type, ['in:'.implode(',', array_keys($this->selectOptions))]),
             ];
         }
     }
 
     /**
-     * Get select options
+     * Get select options.
      *
      * @return array
      */
@@ -164,6 +167,7 @@ class SelectWidget extends Widget
         foreach ($this->selectOptions as $optionKey => $optionTitle) {
             $out[] = ['label' => $optionTitle, 'value' => $optionKey];
         }
+
         return $out;
     }
 }

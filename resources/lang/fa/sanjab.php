@@ -71,7 +71,6 @@ return [
     'readen' => 'خوانده شده',
     'text' => 'متن',
 
-
     'are_you_sure' => 'آیا مطمئن هستید؟',
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',
     'deleted_successfully' => 'با موفقیت حذف شد.',

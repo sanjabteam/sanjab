@@ -37,8 +37,10 @@ class PropertiesHolder implements Arrayable, JsonSerializable
     {
         if (count($arguments) == 1) {
             $this->properties[$method] = array_first($arguments);
+
             return $this;
         }
+
         return $this;
     }
 
@@ -68,8 +70,9 @@ class PropertiesHolder implements Arrayable, JsonSerializable
         foreach ($this->getGetters() as $getter) {
             $out[$getter] = $this->__get($getter);
         }
+
         return array_filter($out, function ($property, $key) {
-            return !in_array($key, $this->hidden);
+            return ! in_array($key, $this->hidden);
         }, ARRAY_FILTER_USE_BOTH);
     }
 
@@ -90,6 +93,7 @@ class PropertiesHolder implements Arrayable, JsonSerializable
         if ($key === null) {
             return $this->properties;
         }
+
         return array_get($this->properties, $key, $default);
     }
 
@@ -103,6 +107,7 @@ class PropertiesHolder implements Arrayable, JsonSerializable
     public function setProperty(string $key, $value)
     {
         $this->properties[$key] = $value;
+
         return $this;
     }
 

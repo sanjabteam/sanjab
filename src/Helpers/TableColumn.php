@@ -2,9 +2,6 @@
 
 namespace Sanjab\Helpers;
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Request;
-
 /**
  * @method $this key (string $value)       Key of response item.
  * @method $this sortable (boolean $value) Is column sortable.
@@ -27,11 +24,12 @@ class TableColumn extends PropertiesHolder
     public function title(string $title)
     {
         $this->properties['label'] = $title;
+
         return $this;
     }
 
     /**
-     * create new Menu item
+     * create new Menu item.
      *
      * @return static
      */

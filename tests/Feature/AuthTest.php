@@ -2,8 +2,8 @@
 
 namespace Sajab\Tests\Feature;
 
-use Sanjab\Tests\Models\User;
 use Sanjab\Tests\TestCase;
+use Sanjab\Tests\Models\User;
 
 class AuthTest extends TestCase
 {

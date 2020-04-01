@@ -2,14 +2,14 @@
 
 namespace Sanjab\Models;
 
-use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Model;
 use Sanjab\Observers\SettingObserver;
+use Illuminate\Database\Eloquent\Model;
+use Astrotomic\Translatable\Translatable;
 
 class Setting extends Model
 {
     use Translatable;
-    protected $table = "sanjab_settings";
+    protected $table = 'sanjab_settings';
 
     protected $fillable = [
         'translation',
@@ -45,6 +45,7 @@ class Setting extends Model
         if ($this->translation) {
             return $this->translated_value;
         }
+
         return $this->castAttribute('value', $this->getAttributeFromArray('value'));
     }
 }

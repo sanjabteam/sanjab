@@ -9,8 +9,8 @@ class TextAreaWidget extends Widget
 {
     public function init()
     {
-        $this->setProperty("floatlabel", true);
-        $this->tag("b-form-textarea")
+        $this->setProperty('floatlabel', true);
+        $this->tag('b-form-textarea')
             ->rows(3)
             ->onIndex(false);
     }

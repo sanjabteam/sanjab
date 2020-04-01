@@ -2,11 +2,11 @@
 
 namespace Sanjab\Controllers;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class UppyWidgetController extends SanjabController
@@ -20,21 +20,23 @@ class UppyWidgetController extends SanjabController
      */
     public function upload(Request $request, $any = null)
     {
-        if ($request->isMethod('get') && $any && is_array(Session::get("sanjab_uppy_files.".$any))) {
-            if (! File::exists(Session::get("sanjab_uppy_files.".$any)['file_path'])) {
+        if ($request->isMethod('get') && $any && is_array(Session::get('sanjab_uppy_files.'.$any))) {
+            if (! File::exists(Session::get('sanjab_uppy_files.'.$any)['file_path'])) {
                 sleep(1);
             }
 
-            if (File::exists(Session::get("sanjab_uppy_files.".$any)['file_path'])) {
-                if ($request->input('thumb') == 'true' && in_array(strtolower(pathinfo(Session::get("sanjab_uppy_files.".$any)['file_path'], PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
-                    return Image::make(Session::get("sanjab_uppy_files.".$any)['file_path'])->fit(128, 128)->response();
+            if (File::exists(Session::get('sanjab_uppy_files.'.$any)['file_path'])) {
+                if ($request->input('thumb') == 'true' && in_array(strtolower(pathinfo(Session::get('sanjab_uppy_files.'.$any)['file_path'], PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
+                    return Image::make(Session::get('sanjab_uppy_files.'.$any)['file_path'])->fit(128, 128)->response();
                 }
-                return response()->file(Session::get("sanjab_uppy_files.".$any)['file_path']);
+
+                return response()->file(Session::get('sanjab_uppy_files.'.$any)['file_path']);
             }
         }
 
         $response = app('sanjab-tus-server')->serve();
         $response->send();
+
         return response('', $response->getStatusCode());
     }
 
@@ -54,9 +56,11 @@ class UppyWidgetController extends SanjabController
                 if ($request->input('thumb') == 'true' && in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
                     return Image::make($file)->fit(128, 128)->response();
                 }
+
                 return response()->file($file);
             }
         }
+
         return abort(404);
     }
 

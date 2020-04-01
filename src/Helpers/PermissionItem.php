@@ -2,9 +2,6 @@
 
 namespace Sanjab\Helpers;
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Request;
-
 /**
  * @method $this groupName (string $value)  name of permission group
  * @method $this order (int $value)         order in checkgroups
@@ -12,15 +9,15 @@ use Illuminate\Support\Facades\Request;
 class PermissionItem extends PropertiesHolder
 {
     protected $properties = [
-        'order' => 100
+        'order' => 100,
     ];
     protected $getters = [
-        'permissions'
+        'permissions',
     ];
     protected $permissions = [];
 
     /**
-     * create new Menu item
+     * create new Menu item.
      *
      * @return static
      */
@@ -44,7 +41,8 @@ class PermissionItem extends PropertiesHolder
      */
     public function addPermission($title, $name, $model = null)
     {
-        $this->permissions[] = compact("title", "name", "model");
+        $this->permissions[] = compact('title', 'name', 'model');
+
         return $this;
     }
 

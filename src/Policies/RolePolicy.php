@@ -2,9 +2,9 @@
 
 namespace Sanjab\Policies;
 
+use Silber\Bouncer\Database\Role;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Silber\Bouncer\Database\Role;
 
 class RolePolicy
 {

@@ -2,10 +2,10 @@
 
 namespace Sanjab\Widgets;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
 use Sanjab\Helpers\SearchType;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @method $this min(number $val)      minimum value.
@@ -17,7 +17,7 @@ class NumberWidget extends TextWidget
     public function init()
     {
         parent::init();
-        $this->setProperty("type", "number");
+        $this->setProperty('type', 'number');
         $this->min(0);
         $this->max(PHP_INT_MAX);
     }
@@ -48,27 +48,27 @@ class NumberWidget extends TextWidget
             SearchType::create('empty', trans('sanjab::sanjab.is_empty')),
             SearchType::create('not_empty', trans('sanjab::sanjab.is_not_empty')),
             SearchType::create('equal', trans('sanjab::sanjab.equal'))
-                        ->addWidget(NumberWidget::create('search', trans('sanjab::sanjab.equal'))),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.equal'))),
             SearchType::create('not_equal', trans('sanjab::sanjab.not_equal'))
-                        ->addWidget(NumberWidget::create('search', trans('sanjab::sanjab.not_equal'))),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.not_equal'))),
             SearchType::create('more', trans('sanjab::sanjab.more'))
-                        ->addWidget(NumberWidget::create('search', trans('sanjab::sanjab.more'))),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.more'))),
             SearchType::create('more_or_eqaul', trans('sanjab::sanjab.more_or_eqaul'))
-                        ->addWidget(NumberWidget::create('search', trans('sanjab::sanjab.more_or_eqaul'))),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.more_or_eqaul'))),
             SearchType::create('less', trans('sanjab::sanjab.less'))
-                        ->addWidget(NumberWidget::create('search', trans('sanjab::sanjab.less'))),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.less'))),
             SearchType::create('less_or_eqaul', trans('sanjab::sanjab.less_or_eqaul'))
-                        ->addWidget(NumberWidget::create('search', trans('sanjab::sanjab.less_or_eqaul'))),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.less_or_eqaul'))),
             SearchType::create('between', trans('sanjab::sanjab.between'))
-                        ->addWidget(NumberWidget::create('first', trans('sanjab::sanjab.between')))
-                        ->addWidget(NumberWidget::create('second', trans('sanjab::sanjab.between'))),
+                        ->addWidget(self::create('first', trans('sanjab::sanjab.between')))
+                        ->addWidget(self::create('second', trans('sanjab::sanjab.between'))),
             SearchType::create('not_between', trans('sanjab::sanjab.not_between'))
-                        ->addWidget(NumberWidget::create('first', trans('sanjab::sanjab.not_between')))
-                        ->addWidget(NumberWidget::create('second', trans('sanjab::sanjab.not_between'))),
+                        ->addWidget(self::create('first', trans('sanjab::sanjab.not_between')))
+                        ->addWidget(self::create('second', trans('sanjab::sanjab.not_between'))),
             SearchType::create('even', trans('sanjab::sanjab.even')),
             SearchType::create('odd', trans('sanjab::sanjab.odd')),
             SearchType::create('divisible', trans('sanjab::sanjab.divisible'))
-                        ->addWidget(NumberWidget::create('search', trans('sanjab::sanjab.divisible'))),
+                        ->addWidget(self::create('search', trans('sanjab::sanjab.divisible'))),
         ];
     }
 

@@ -10,19 +10,19 @@ class PasswordWidget extends Widget
 {
     public function init()
     {
-        $this->tag("b-form-input")
+        $this->tag('b-form-input')
             ->onIndex(false)
             ->onView(false)
             ->searchable(false)
             ->sortable(false);
-        $this->setProperty("floatlabel", true);
-        $this->setProperty("type", "password");
+        $this->setProperty('floatlabel', true);
+        $this->setProperty('type', 'password');
     }
 
     public function store(Request $request, Model $item)
     {
-        if ($request->filled($this->property("name"))) {
-            $item->{ $this->property("name") } = bcrypt($request->input($this->property("name")));
+        if ($request->filled($this->property('name'))) {
+            $item->{ $this->property('name') } = bcrypt($request->input($this->property('name')));
         }
     }
 

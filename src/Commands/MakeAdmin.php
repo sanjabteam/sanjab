@@ -52,7 +52,7 @@ class MakeAdmin extends Command
         while (! ($user = $userModel::withoutGlobalScopes()->where(config('sanjab.login.username'), $username)->first())) {
             $this->error('User does not exists!');
             $username = $this->ask(config('sanjab.login.username'));
-        };
+        }
 
         if (! Role::where('name', 'super_admin')->exists()) {
             Role::create(['name' => 'super_admin', 'title' => trans('sanjab::sanjab.super_admin')]);

@@ -2,18 +2,18 @@
 
 namespace Sajab\Tests\Feature;
 
+use Sanjab\Sanjab;
+use Sanjab\Cards\Card;
+use Sanjab\Tests\TestCase;
+use Sanjab\Helpers\MenuItem;
+use Sanjab\Tests\Models\User;
+use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Sanjab\Cards\Card;
-use Sanjab\Helpers\MenuItem;
 use Sanjab\Helpers\NotificationItem;
-use Sanjab\Helpers\PermissionItem;
-use Sanjab\Sanjab;
-use Sanjab\Tests\Models\User;
-use Sanjab\Tests\TestCase;
 
 /**
- * Test everything working on \Sanjab\Tests\Controllers\TestController::class,
+ * Test everything working on \Sanjab\Tests\Controllers\TestController::class,.
  */
 class SanjabControllersTest extends TestCase
 {

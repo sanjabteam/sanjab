@@ -21,7 +21,7 @@ abstract class DashboardController extends SanjabController
     protected $cards = [];
 
     /**
-     * Show dashboard
+     * Show dashboard.
      *
      * @return \Illuminate\Http\Response
      */
@@ -33,10 +33,11 @@ abstract class DashboardController extends SanjabController
             $cardsData[$key] = new stdClass;
             $card->doModifyResponse($cardsData[$key]);
         }
+
         return view('sanjab::dashboard', [
             'properties' => $this->properties(),
             'cards' => $this->cards,
-            'cardsData' => $cardsData
+            'cardsData' => $cardsData,
         ]);
     }
 
@@ -51,6 +52,7 @@ abstract class DashboardController extends SanjabController
         if ($key === null) {
             return static::properties();
         }
+
         return array_get(static::properties()->toArray(), $key);
     }
 
@@ -83,7 +85,7 @@ abstract class DashboardController extends SanjabController
 
     public static function routes(): void
     {
-        Route::name("dashboards.")->group(function () {
+        Route::name('dashboards.')->group(function () {
             Route::get(static::property('route'), static::class.'@show')->name(static::property('key'));
         });
     }
@@ -98,7 +100,7 @@ abstract class DashboardController extends SanjabController
                     ->badgeVariant(static::property('badgeVariant'))
                     ->active(function () {
                         return Route::is('sanjab.dashboards.'.static::property('key'));
-                    })
+                    }),
         ];
     }
 
@@ -107,6 +109,7 @@ abstract class DashboardController extends SanjabController
         $permission = PermissionItem::create(trans('sanjab::sanjab.dashboard'))
                         ->order(50)
                         ->addPermission(trans('sanjab::sanjab.access_to_admin_panel'), 'access_sanjab');
+
         return [$permission];
     }
 }

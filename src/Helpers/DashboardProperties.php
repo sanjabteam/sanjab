@@ -21,7 +21,7 @@ class DashboardProperties extends PropertiesHolder
     ];
 
     /**
-     * create new Menu item
+     * create new Menu item.
      *
      * @return static
      */
@@ -44,6 +44,7 @@ class DashboardProperties extends PropertiesHolder
     public function badge(callable $badgeCallback)
     {
         $this->setProperty('badge', $badgeCallback);
+
         return $this;
     }
 }

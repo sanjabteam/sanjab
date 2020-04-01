@@ -16,7 +16,7 @@ class SettingTranslationObserver
     {
         $values = [];
         foreach ($setting->getAttributes() as $key => $attr) {
-            if (!in_array($key, ['id', 'locale', 'setting_id', 'translated_value'])) {
+            if (! in_array($key, ['id', 'locale', 'setting_id', 'translated_value'])) {
                 $values[$key] = $attr;
                 unset($setting->$key);
             }

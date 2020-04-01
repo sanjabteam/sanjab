@@ -15,11 +15,11 @@ class NotificationItem extends PropertiesHolder
 {
     protected $properties = [
         'icon' => 'notifications',
-        'order' => 100
+        'order' => 100,
     ];
 
     protected $getters = [
-        'items'
+        'items',
     ];
 
     /**
@@ -32,13 +32,14 @@ class NotificationItem extends PropertiesHolder
     /**
      * Check menu item is hidden or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function isHidden()
     {
         if (isset($this->properties['hidden'])) {
             return App::call($this->properties['hidden']);
         }
+
         return false;
     }
 
@@ -53,6 +54,7 @@ class NotificationItem extends PropertiesHolder
     public function addItem($title, $link = '#', array $otherOptions = [])
     {
         $this->items[] = array_merge($otherOptions, compact('title', 'link'));
+
         return $this;
     }
 
@@ -64,6 +66,7 @@ class NotificationItem extends PropertiesHolder
     public function addDivider()
     {
         $this->items[] = 0;
+
         return $this;
     }
 

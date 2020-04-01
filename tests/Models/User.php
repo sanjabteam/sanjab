@@ -2,9 +2,9 @@
 
 namespace Sanjab\Tests\Models;
 
+use Sanjab\Models\SanjabUser;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Sanjab\Models\SanjabUser;
 
 class User extends Authenticatable
 {

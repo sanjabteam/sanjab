@@ -15,7 +15,7 @@ class MakeCrud extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'sanjab:make:crud {name}' .
+    protected $signature = 'sanjab:make:crud {name}'.
                            '{--m|model= : Model for crud}
                             ';
 
@@ -60,15 +60,16 @@ class MakeCrud extends GeneratorCommand
     protected function buildClass($name)
     {
         $stub = parent::buildClass($name);
-        $className = str_ireplace("controller", "", class_basename($name));
+        $className = str_ireplace('controller', '', class_basename($name));
         if (empty($this->option('model'))) {
-            $stub = str_replace("DummyModel", '\\'.$this->rootNamespace().$className, $stub);
+            $stub = str_replace('DummyModel', '\\'.$this->rootNamespace().$className, $stub);
         } else {
-            $stub = str_replace("DummyModel", '\\'.$this->rootNamespace().$this->option('model'), $stub);
+            $stub = str_replace('DummyModel', '\\'.$this->rootNamespace().$this->option('model'), $stub);
         }
-        $stub = str_replace("DummyRoute", mb_strtolower(str_plural($className)), $stub);
-        $stub = str_replace("DummyTitles", str_plural($className), $stub);
-        $stub = str_replace("DummyTitle", $className, $stub);
+        $stub = str_replace('DummyRoute', mb_strtolower(str_plural($className)), $stub);
+        $stub = str_replace('DummyTitles', str_plural($className), $stub);
+        $stub = str_replace('DummyTitle', $className, $stub);
+
         return $stub;
     }
 

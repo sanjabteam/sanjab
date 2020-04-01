@@ -2,12 +2,12 @@
 
 namespace Sanjab\Widgets\Relation;
 
-use Illuminate\Database\Eloquent\Builder;
 use stdClass;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
 use Sanjab\Helpers\SearchType;
 use Sanjab\Widgets\TextWidget;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Belongs to relation picker.
@@ -27,23 +27,23 @@ class BelongsToPickerWidget extends RelationWidget
         parent::init();
         $this->tag('belongs-to-picker-widget');
         $this->ajax(false);
-        $this->indexTag("belongs-to-picker-view")->viewTag("belongs-to-picker-view");
-        $this->orderColumn("id");
+        $this->indexTag('belongs-to-picker-view')->viewTag('belongs-to-picker-view');
+        $this->orderColumn('id');
         $this->creatableText(trans('sanjab::sanjab.create'));
     }
 
     protected function store(Request $request, Model $item)
     {
-        if ($this->property('creatable') && is_array($request->input($this->name)) && $request->input($this->name.'.create_new') == 'true' && !empty($this->name.'.value')) {
-            $item->{ $this->property("name") }()->associate($this->property('creatable')($request->input($this->name.'.value')));
+        if ($this->property('creatable') && is_array($request->input($this->name)) && $request->input($this->name.'.create_new') == 'true' && ! empty($this->name.'.value')) {
+            $item->{ $this->property('name') }()->associate($this->property('creatable')($request->input($this->name.'.value')));
         } else {
-            $item->{ $this->property("name") }()->associate($request->input($this->property("name")));
+            $item->{ $this->property('name') }()->associate($request->input($this->property('name')));
         }
     }
 
     protected function modifyResponse(stdClass $response, Model $item)
     {
-        $response->{ $this->property("name") } = optional($item->{ $this->property("name") })->{ $this->ownerKey };
+        $response->{ $this->property('name') } = optional($item->{ $this->property('name') })->{ $this->ownerKey };
     }
 
     public function getController()
@@ -54,6 +54,7 @@ class BelongsToPickerWidget extends RelationWidget
         if (isset($this->controllerProperties['controller'])) {
             return $this->controllerProperties['controller'];
         }
+
         return $this->property('ajaxController');
     }
 
@@ -65,6 +66,7 @@ class BelongsToPickerWidget extends RelationWidget
         if (isset($this->controllerProperties['type'])) {
             return $this->controllerProperties['type'];
         }
+
         return $this->property('ajaxControllerAction');
     }
 
@@ -73,26 +75,27 @@ class BelongsToPickerWidget extends RelationWidget
         if (isset($this->controllerProperties['item'])) {
             return optional($this->controllerProperties['item'])->id;
         }
+
         return optional($this->property('ajaxControllerItem'))->id;
     }
 
     public function getOptions()
     {
         if ($this->property('ajax') &&
-            (!in_array($this->controllerProperties['type'], ['index', 'show']) || $this->property('searchWidget') == true)
+            (! in_array($this->controllerProperties['type'], ['index', 'show']) || $this->property('searchWidget') == true)
         ) {
             return [];
         }
+
         return parent::getOptions();
     }
 
     public function validationRules(Request $request, string $type, Model $item = null): array
     {
         return [
-            $this->name =>
-                array_merge(
+            $this->name => array_merge(
                     $this->property('rules.'.$type, []),
-                    $this->property('creatable') && is_array($request->input($this->name)) && $request->input($this->name.'.create_new') == 'true' && !empty($this->name.'.value') ? [] : ['exists:'.$this->getRelatedModelTable().','.$this->getOwnerKey()]
+                    $this->property('creatable') && is_array($request->input($this->name)) && $request->input($this->name.'.create_new') == 'true' && ! empty($this->name.'.value') ? [] : ['exists:'.$this->getRelatedModelTable().','.$this->getOwnerKey()]
                 ),
         ];
     }
@@ -134,10 +137,10 @@ class BelongsToPickerWidget extends RelationWidget
                 break;
             case 'not_similar':
                 foreach ($this->property('searchFields') as $searchField) {
-                    $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property("name").'.'.$searchField);
-                    $field = str_replace($relation.'.', '', $this->property("name").'.'.$searchField);
+                    $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property('name').'.'.$searchField);
+                    $field = str_replace($relation.'.', '', $this->property('name').'.'.$searchField);
                     $query->orWhereHas($relation, function (Builder $query) use ($field, $search) {
-                        $query->where($query->getQuery()->from.'.'.$field, "NOT LIKE", "%".$search."%");
+                        $query->where($query->getQuery()->from.'.'.$field, 'NOT LIKE', '%'.$search.'%');
                     });
                 }
                 break;

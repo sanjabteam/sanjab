@@ -19,21 +19,21 @@ class MapWidget extends Widget
         $this->onIndex(false)
             ->sortable(false)
             ->searchable(false)
-            ->tag("map-widget")
-            ->viewTag("map-view");
+            ->tag('map-widget')
+            ->viewTag('map-view');
     }
 
     protected function store(Request $request, Model $item)
     {
-        $item->{ $this->property("latitudeName") } = $request->input($this->property("name").".lat");
-        $item->{ $this->property("longitudeName") } = $request->input($this->property("name").".lng");
+        $item->{ $this->property('latitudeName') } = $request->input($this->property('name').'.lat');
+        $item->{ $this->property('longitudeName') } = $request->input($this->property('name').'.lng');
     }
 
     protected function modifyResponse(stdClass $response, Model $item)
     {
-        $response->{ $this->property("name") } = [
-            'lat' => $item->{ $this->property("latitudeName") },
-            'lng' => $item->{ $this->property("longitudeName") },
+        $response->{ $this->property('name') } = [
+            'lat' => $item->{ $this->property('latitudeName') },
+            'lng' => $item->{ $this->property('longitudeName') },
         ];
     }
 
@@ -41,8 +41,8 @@ class MapWidget extends Widget
     {
         return [
             $this->name => $this->property('rules.'.$type, []),
-            $this->property("name").".lat"  => ['numeric', 'regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/'],
-            $this->property("name").".lng"  => ['numeric', 'regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'],
+            $this->property('name').'.lat'  => ['numeric', 'regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/'],
+            $this->property('name').'.lng'  => ['numeric', 'regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'],
         ];
     }
 

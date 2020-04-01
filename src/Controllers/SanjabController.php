@@ -2,15 +2,15 @@
 
 namespace Sanjab\Controllers;
 
+use Sanjab\Cards\Card;
 use Sanjab\Helpers\MenuItem;
+use Sanjab\Helpers\SearchResult;
+use Sanjab\Helpers\PermissionItem;
+use Sanjab\Helpers\NotificationItem;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Sanjab\Helpers\PermissionItem;
-use Sanjab\Helpers\NotificationItem;
-use Sanjab\Cards\Card;
-use Sanjab\Helpers\SearchResult;
 
 abstract class SanjabController extends BaseController
 {

@@ -2,14 +2,14 @@
 
 namespace Sanjab\Tests\Controllers;
 
+use Sanjab\Cards\StatsCard;
 use Sanjab\Helpers\MenuItem;
-use Illuminate\Support\Facades\Route;
+use Sanjab\Helpers\SearchResult;
+use Sanjab\Helpers\MaterialIcons;
 use Sanjab\Helpers\PermissionItem;
 use Sanjab\Helpers\NotificationItem;
-use Sanjab\Cards\StatsCard;
+use Illuminate\Support\Facades\Route;
 use Sanjab\Controllers\SanjabController;
-use Sanjab\Helpers\MaterialIcons;
-use Sanjab\Helpers\SearchResult;
 
 /**
  * Test a very base controller.
@@ -18,7 +18,7 @@ class TestController extends SanjabController
 {
     public function testRoute()
     {
-        return "Hello";
+        return 'Hello';
     }
 
     public static function routes(): void
@@ -34,7 +34,7 @@ class TestController extends SanjabController
                 ->badge(function () {
                     return '10';
                 })
-                ->addChild(MenuItem::create(route('sanjab.test-route'))->title('Child menu item'))
+                ->addChild(MenuItem::create(route('sanjab.test-route'))->title('Child menu item')),
         ];
     }
 
@@ -42,7 +42,7 @@ class TestController extends SanjabController
     {
         return [
             NotificationItem::create(MaterialIcons::CHAT_BUBBLE)
-                ->addItem('Hello', route('sanjab.test-route'))
+                ->addItem('Hello', route('sanjab.test-route')),
         ];
     }
 
@@ -50,7 +50,7 @@ class TestController extends SanjabController
     {
         return [
             PermissionItem::create('Hello Group')
-                ->addPermission('Access to test controller', 'access_to_test_controller')
+                ->addPermission('Access to test controller', 'access_to_test_controller'),
         ];
     }
 
@@ -58,7 +58,7 @@ class TestController extends SanjabController
     {
         return [
             StatsCard::create('Test Card')
-                    ->value('Hello')
+                    ->value('Hello'),
         ];
     }
 
@@ -66,9 +66,10 @@ class TestController extends SanjabController
     {
         if ($search == 'test controller global search') {
             return [
-                SearchResult::create('Hello', route('sanjab.test-route'))
+                SearchResult::create('Hello', route('sanjab.test-route')),
             ];
         }
+
         return [];
     }
 }

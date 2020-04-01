@@ -16,6 +16,7 @@ class DashboardTest extends TestCase
                     ->assertRouteIs('sanjab.auth.login');
         });
     }
+
     public function testCanSeeDashboard()
     {
         $this->browse(function (Browser $browser) {

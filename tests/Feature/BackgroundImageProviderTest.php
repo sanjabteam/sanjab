@@ -2,9 +2,9 @@
 
 namespace Sajab\Tests\Feature;
 
-use Illuminate\Support\Facades\Cache;
 use Sanjab\Sanjab;
 use Sanjab\Tests\TestCase;
+use Illuminate\Support\Facades\Cache;
 
 class BackgroundImageProviderTest extends TestCase
 {

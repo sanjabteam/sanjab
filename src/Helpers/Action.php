@@ -81,6 +81,7 @@ class Action extends PropertiesHolder
         if (is_callable($this->property('url'))) {
             return $this->property('url')($item);
         }
+
         return $this->property('url');
     }
 }

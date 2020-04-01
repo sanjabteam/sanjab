@@ -3,17 +3,17 @@
 namespace Sanjab;
 
 use Exception;
+use EditorJS\EditorJS;
+use Sanjab\Cards\Card;
 use Sanjab\Helpers\MenuItem;
+use EditorJS\EditorJSException;
+use Sanjab\Helpers\SearchResult;
 use Sanjab\Helpers\PermissionItem;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sanjab\Helpers\NotificationItem;
-use Sanjab\Cards\Card;
-use Sanjab\Helpers\SearchResult;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
-use EditorJS\EditorJS;
-use EditorJS\EditorJSException;
 
 class Sanjab
 {
@@ -32,21 +32,21 @@ class Sanjab
     ];
 
     /**
-     * Menu items
+     * Menu items.
      *
      * @var MenuItem[]
      */
     protected static $menuItems = null;
 
     /**
-     * Menu items
+     * Menu items.
      *
      * @var NotificationItem[]
      */
     protected static $notificationItems = null;
 
     /**
-     * Permission items
+     * Permission items.
      *
      * @var PermissionItem[]
      */
@@ -60,7 +60,7 @@ class Sanjab
     protected static $customPermissionItems = [];
 
     /**
-     * Dashboard cards
+     * Dashboard cards.
      *
      * @var Card[]
      */
@@ -87,6 +87,7 @@ class Sanjab
                     return true;
                 } else {
                     Log::error("'$controller' is not a valid sanjab controller.");
+
                     return false;
                 }
             }
@@ -124,16 +125,18 @@ class Sanjab
                 }
             }
             static::$menuItems = array_filter(static::$menuItems, function ($menuItem) {
-                return !$menuItem->isHidden();
+                return ! $menuItem->isHidden();
             });
             usort(static::$menuItems, function ($a, $b) {
                 if ($a->order == $b->order) {
                     return $a->key > $b->key ? 1 : -1;
                 }
+
                 return $a->order > $b->order ? 1 : -1;
             });
             static::$menuItems = array_values(static::$menuItems);
         }
+
         return static::$menuItems;
     }
 
@@ -160,12 +163,13 @@ class Sanjab
                 }
             }
             static::$notificationItems = array_filter(static::$notificationItems, function ($notificationItem) {
-                return !$notificationItem->isHidden();
+                return ! $notificationItem->isHidden();
             });
             usort(static::$notificationItems, function ($a, $b) {
                 return $a->order > $b->order;
             });
         }
+
         return static::$notificationItems;
     }
 
@@ -210,6 +214,7 @@ class Sanjab
                 return $a->order > $b->order;
             });
         }
+
         return static::$permissionItems;
     }
 
@@ -235,6 +240,7 @@ class Sanjab
                 return $a->order > $b->order;
             });
         }
+
         return static::$dashboardCards;
     }
 
@@ -262,6 +268,7 @@ class Sanjab
         usort($results, function ($a, $b) {
             return $a->order > $b->order;
         });
+
         return $results;
     }
 
@@ -275,7 +282,7 @@ class Sanjab
         return Cache::remember('sanjab_background_details', now()->addHours(6), function () {
             $curl = curl_init();
             curl_setopt_array($curl, [
-                CURLOPT_URL => "https://sanjabteam.github.io/unsplash/images.json",
+                CURLOPT_URL => 'https://sanjabteam.github.io/unsplash/images.json',
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_RETURNTRANSFER => true,
             ]);
@@ -283,7 +290,7 @@ class Sanjab
             $err = curl_error($curl);
             curl_close($curl);
             if ($err) {
-                return null;
+                return;
             } else {
                 $response = json_decode($response, true);
                 if (is_array($response)) {
@@ -292,7 +299,8 @@ class Sanjab
                         return $out;
                     }
                 }
-                return null;
+
+                return;
             }
         });
     }
@@ -331,7 +339,7 @@ class Sanjab
     public static function addControllerToConfig(string $controller)
     {
         if (! file_exists(config_path('sanjab.php'))) {
-            throw new Exception("Sanjab config not found.");
+            throw new Exception('Sanjab config not found.');
         }
         if (! class_exists($controller)) {
             $controller = ltrim($controller, '\\');
@@ -371,6 +379,7 @@ class Sanjab
         if (static::$fontawesomeIcons == null) {
             static::$fontawesomeIcons = json_decode(file_get_contents(sanjab_path('/resources/json/fontawesome.json')), true);
         }
+
         return static::$fontawesomeIcons;
     }
 
@@ -381,7 +390,7 @@ class Sanjab
      */
     public static function editorJsToHtml(array $data)
     {
-        $out = "";
+        $out = '';
         try {
             $editor = new EditorJS(json_encode($data), file_get_contents(sanjab_path('resources/json/editorjs.json')));
 
@@ -393,6 +402,7 @@ class Sanjab
         } catch (EditorJSException $exception) {
             throw $exception;
         }
+
         return $out;
     }
 

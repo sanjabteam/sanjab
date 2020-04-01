@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -66,9 +66,9 @@ class UppyWidget extends Widget
         $this->multiple(false);
         $this->onIndex(false);
         $this->searchable(false);
-        $this->tag("uppy-widget");
-        $this->viewTag("uppy-view");
-        $this->mimeTypes(["image/*", "video/*", "audio/*"]);
+        $this->tag('uppy-widget');
+        $this->viewTag('uppy-view');
+        $this->mimeTypes(['image/*', 'video/*', 'audio/*']);
         $this->disk('public');
         $this->min(0);
         $this->max(10);
@@ -81,22 +81,23 @@ class UppyWidget extends Widget
                     $extension = mb_strtolower($this->property('extension'));
                 }
                 $image = Image::make($file)->limitColors(127);
-                if ($extension == "jpeg" || $extension == "jpg") {
+                if ($extension == 'jpeg' || $extension == 'jpg') {
                     $image->interlace();
                 }
-                if ($this->property("width") && $this->property("height")) {
-                    $image->fit($this->property("width"), $this->property("height"));
-                } elseif ($this->property("width")) {
-                    $image->widen($this->property("width"));
-                } elseif ($this->property("height")) {
-                    $image->heighten($this->property("height"));
+                if ($this->property('width') && $this->property('height')) {
+                    $image->fit($this->property('width'), $this->property('height'));
+                } elseif ($this->property('width')) {
+                    $image->widen($this->property('width'));
+                } elseif ($this->property('height')) {
+                    $image->heighten($this->property('height'));
                 }
                 if ($this->property('watermark')) {
                     $image->insert($this->property('watermark'), $this->property('watermarkPosition'), $this->property('watermarkX'), $this->property('watermarkY'));
                 }
                 $fileContent = $image->encode($extension);
-                $filename = trim(trim($this->property('directory'), '\\/') . "/" . $file->hashName(), '\\/');
-                Storage::disk($this->property("disk"))->put($filename, $fileContent);
+                $filename = trim(trim($this->property('directory'), '\\/').'/'.$file->hashName(), '\\/');
+                Storage::disk($this->property('disk'))->put($filename, $fileContent);
+
                 return $filename;
             }
 
@@ -147,7 +148,7 @@ class UppyWidget extends Widget
                     'type' => Storage::disk($this->property('disk'))->mimeType($value),
                     'preview' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk'), 'thumb' => 'true']),
                     'link' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk')]),
-                    'value' => $value
+                    'value' => $value,
                 ];
             }
         }
@@ -172,8 +173,8 @@ class UppyWidget extends Widget
             foreach ($request->input($this->property('name')) as $fileInfo) {
                 if (is_array($fileInfo) && isset($fileInfo['value'])) {
                     $fileInfo['value'] = preg_replace('/.*\/helpers\/uppy\/upload\//', '', $fileInfo['value']);
-                    if (is_array(Session::get("sanjab_uppy_files.".$fileInfo['value'])) && File::exists(Session::get("sanjab_uppy_files.".$fileInfo['value'])['file_path'])) {
-                        $fileInfo = Session::get("sanjab_uppy_files.".$fileInfo['value']);
+                    if (is_array(Session::get('sanjab_uppy_files.'.$fileInfo['value'])) && File::exists(Session::get('sanjab_uppy_files.'.$fileInfo['value'])['file_path'])) {
+                        $fileInfo = Session::get('sanjab_uppy_files.'.$fileInfo['value']);
                         $uploadedFiles[] = new UploadedFile($fileInfo['file_path'], $fileInfo['name'], File::mimeType($fileInfo['file_path']), 0, true);
                     } elseif (in_array($fileInfo['value'], $oldValues)) {
                         $uploadedFiles[] = $fileInfo['value'];
@@ -212,6 +213,7 @@ class UppyWidget extends Widget
                 }
             }
         }
+
         return $rules;
     }
 
@@ -226,6 +228,7 @@ class UppyWidget extends Widget
             $types = [$types];
         }
         $this->setProperty('mimeTypes', $types);
+
         return $this;
     }
 
@@ -237,6 +240,7 @@ class UppyWidget extends Widget
     public function imageOnly()
     {
         $this->mimeTypes(['image/*']);
+
         return $this;
     }
 
@@ -248,6 +252,7 @@ class UppyWidget extends Widget
     public function videoOnly()
     {
         $this->mimeTypes(['video/*']);
+
         return $this;
     }
 
@@ -259,6 +264,7 @@ class UppyWidget extends Widget
     public function audioOnly()
     {
         $this->mimeTypes(['audio/*']);
+
         return $this;
     }
 
@@ -271,6 +277,7 @@ class UppyWidget extends Widget
     public function multiple($val = true)
     {
         $this->setProperty('multiple', $val);
+
         return $this;
     }
 
@@ -289,6 +296,7 @@ class UppyWidget extends Widget
         $this->setProperty('watermarkPosition', $position);
         $this->setProperty('watermarkX', $x);
         $this->setProperty('watermarkY', $y);
+
         return $this;
     }
 }

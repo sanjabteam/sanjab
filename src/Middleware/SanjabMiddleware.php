@@ -19,7 +19,7 @@ class SanjabMiddleware
     {
         // Check unsupported browsers
         $browserUnsupported = (Agent::is('IE') || Agent::is('Edge') || Agent::is('Opera Mini') || Agent::is('Netscape'));
-        if (!Route::is('sanjab.unsupported-browser') && $browserUnsupported) {
+        if (! Route::is('sanjab.unsupported-browser') && $browserUnsupported) {
             return redirect()->route('sanjab.unsupported-browser');
         }
 
@@ -35,6 +35,7 @@ class SanjabMiddleware
 
         $response = $next($request);
         $request->session()->put('sanjab_hide_screen_saver', time());
+
         return $response;
     }
 }

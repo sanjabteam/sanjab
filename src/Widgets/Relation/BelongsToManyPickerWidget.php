@@ -3,13 +3,13 @@
 namespace Sanjab\Widgets\Relation;
 
 use stdClass;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Database\Eloquent\Model;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use Sanjab\Helpers\SearchType;
 use Sanjab\Widgets\TextWidget;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Belongs to many select box.
@@ -38,10 +38,10 @@ class BelongsToManyPickerWidget extends RelationWidget
         $this->onIndex(false);
         $this->sortable(false);
         $this->ajax(false);
-        $this->tag("belongs-to-picker-widget");
-        $this->viewTag("belongs-to-picker-view");
-        $this->setProperty("multiple", true);
-        $this->setProperty("tagging", true);
+        $this->tag('belongs-to-picker-widget');
+        $this->viewTag('belongs-to-picker-view');
+        $this->setProperty('multiple', true);
+        $this->setProperty('tagging', true);
         $this->creatableText(trans('sanjab::sanjab.create'));
     }
 
@@ -53,6 +53,7 @@ class BelongsToManyPickerWidget extends RelationWidget
         if (isset($this->controllerProperties['controller'])) {
             return $this->controllerProperties['controller'];
         }
+
         return $this->property('ajaxController');
     }
 
@@ -64,6 +65,7 @@ class BelongsToManyPickerWidget extends RelationWidget
         if (isset($this->controllerProperties['type'])) {
             return $this->controllerProperties['type'];
         }
+
         return $this->property('ajaxControllerAction');
     }
 
@@ -72,16 +74,17 @@ class BelongsToManyPickerWidget extends RelationWidget
         if (isset($this->controllerProperties['item'])) {
             return optional($this->controllerProperties['item'])->id;
         }
+
         return optional($this->property('ajaxControllerItem'))->id;
     }
 
     protected function postStore(Request $request, Model $item)
     {
-        if (is_array($request->input($this->property("name")))) {
-            $values = $request->input($this->property("name"));
+        if (is_array($request->input($this->property('name')))) {
+            $values = $request->input($this->property('name'));
             if ($this->property('creatable')) {
                 foreach ($values as $key => $value) {
-                    if (is_array($value) && Arr::get($value, 'create_new') == 'true' && !empty(Arr::get($value, 'value'))) {
+                    if (is_array($value) && Arr::get($value, 'create_new') == 'true' && ! empty(Arr::get($value, 'value'))) {
                         $values[$key] = $this->property('creatable')(Arr::get($value, 'value'));
                         if ($values[$key] instanceof Model) {
                             $values[$key] = $values[$key]->{ $this->relatedKey };
@@ -96,50 +99,53 @@ class BelongsToManyPickerWidget extends RelationWidget
                 }
                 $values = $valuesWithPivot;
             }
-            $item->{ $this->property("name") }()->sync($values);
+            $item->{ $this->property('name') }()->sync($values);
         }
     }
 
     protected function modifyResponse(stdClass $response, Model $item)
     {
-        if (!in_array($this->controllerProperties['type'], ['index', 'show']) ||
+        if (! in_array($this->controllerProperties['type'], ['index', 'show']) ||
             ($this->controllerProperties['type'] == 'index' && $this->property('onIndex')) ||
             ($this->controllerProperties['type'] == 'show' && $this->property('onView'))
         ) {
-            $response->{ $this->property("name") } = $item->{ $this->property("name") }()->get()->pluck($this->relatedKey)->toArray();
+            $response->{ $this->property('name') } = $item->{ $this->property('name') }()->get()->pluck($this->relatedKey)->toArray();
         }
     }
 
     public function validationRules(Request $request, string $type, Model $item = null): array
     {
         $arrayRule = ['array'];
-        if ($this->property("max")) {
-            $arrayRule[] = 'max:'.$this->property("max");
+        if ($this->property('max')) {
+            $arrayRule[] = 'max:'.$this->property('max');
         }
         if ($this->property('creatable')) {
-            if (is_array($request->input($this->property("name")))) {
-                $rules = [$this->property("name") => array_merge($arrayRule, $this->property('rules.'.$type, []))];
-                foreach ($request->input($this->property("name")) as $key => $value) {
-                    if (!is_array($value) || Arr::get($value, 'create_new') != 'true' || empty(Arr::get($value, 'value'))) {
-                        $rules[$key] = ['numeric', 'exists:'.$this->relatedModelTable.",".$this->relatedKey];
+            if (is_array($request->input($this->property('name')))) {
+                $rules = [$this->property('name') => array_merge($arrayRule, $this->property('rules.'.$type, []))];
+                foreach ($request->input($this->property('name')) as $key => $value) {
+                    if (! is_array($value) || Arr::get($value, 'create_new') != 'true' || empty(Arr::get($value, 'value'))) {
+                        $rules[$key] = ['numeric', 'exists:'.$this->relatedModelTable.','.$this->relatedKey];
                     }
                 }
+
                 return $rules;
             }
         }
+
         return [
-            $this->property("name")       => array_merge($arrayRule, $this->property('rules.'.$type, [])),
-            $this->property("name").".*"  => ['numeric', 'exists:'.$this->relatedModelTable.",".$this->relatedKey],
+            $this->property('name')       => array_merge($arrayRule, $this->property('rules.'.$type, [])),
+            $this->property('name').'.*'  => ['numeric', 'exists:'.$this->relatedModelTable.','.$this->relatedKey],
         ];
     }
 
     public function getOptions()
     {
         if ($this->property('ajax') &&
-            (!in_array($this->controllerProperties['type'], ['index', 'show']) || $this->property('searchWidget') == true)
+            (! in_array($this->controllerProperties['type'], ['index', 'show']) || $this->property('searchWidget') == true)
         ) {
             return [];
         }
+
         return parent::getOptions();
     }
 
@@ -170,10 +176,10 @@ class BelongsToManyPickerWidget extends RelationWidget
                 break;
             case 'not_similar':
                 foreach ($this->property('searchFields') as $searchField) {
-                    $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property("name").'.'.$searchField);
-                    $field = str_replace($relation.'.', '', $this->property("name").'.'.$searchField);
+                    $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property('name').'.'.$searchField);
+                    $field = str_replace($relation.'.', '', $this->property('name').'.'.$searchField);
                     $query->orWhereHas($relation, function (Builder $query) use ($field, $search) {
-                        $query->where($query->getQuery()->from.'.'.$field, "NOT LIKE", "%".$search."%");
+                        $query->where($query->getQuery()->from.'.'.$field, 'NOT LIKE', '%'.$search.'%');
                     });
                 }
                 break;

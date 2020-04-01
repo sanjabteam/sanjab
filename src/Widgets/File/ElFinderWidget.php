@@ -55,9 +55,9 @@ class ElFinderWidget extends Widget
         $this->multiple(false);
         $this->onIndex(false);
         $this->searchable(false);
-        $this->tag("elfinder-widget");
-        $this->viewTag("uppy-view");
-        $this->mimeTypes(["image/*", "video/*", "audio/*"]);
+        $this->tag('elfinder-widget');
+        $this->viewTag('uppy-view');
+        $this->mimeTypes(['image/*', 'video/*', 'audio/*']);
         $this->disk('public');
         $this->min(0);
         $this->max(10);
@@ -66,7 +66,7 @@ class ElFinderWidget extends Widget
 
     protected function store(Request $request, Model $item)
     {
-        if ($this->property("multiple")) {
+        if ($this->property('multiple')) {
             $item->{ $this->property('name') } = $request->input($this->property('name'));
         } else {
             $item->{ $this->property('name') } = array_first($request->input($this->property('name')));
@@ -89,7 +89,7 @@ class ElFinderWidget extends Widget
                 'type' => Storage::disk($this->property('disk'))->mimeType($value),
                 'preview' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk'), 'thumb' => 'true']),
                 'link' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk')]),
-                'value' => $value
+                'value' => $value,
             ];
         }
         $response->{ $this->property('name') } = $files;
@@ -108,7 +108,7 @@ class ElFinderWidget extends Widget
             }
             $request->merge([
                 $this->property('name') => $files,
-                $this->property('name').'_fake' => $fakeUploadedFiles
+                $this->property('name').'_fake' => $fakeUploadedFiles,
             ]);
         }
     }
@@ -126,6 +126,7 @@ class ElFinderWidget extends Widget
 
         $rules = [$this->name => array_merge($this->property('rules.'.$type, []), ['array', 'min:'.$this->property('min'), 'max:'.($this->property('multiple') ? $this->property('max') : 1)])];
         $rules[$this->name.'_fake.*'] = array_merge($fileRules, ['file', 'mimetypes:'.implode(',', $this->property('mimeTypes')), 'max:'.$this->property('maxSize')]);
+
         return $rules;
     }
 
@@ -145,6 +146,7 @@ class ElFinderWidget extends Widget
             $types = [$types];
         }
         $this->setProperty('mimeTypes', $types);
+
         return $this;
     }
 
@@ -156,6 +158,7 @@ class ElFinderWidget extends Widget
     public function imageOnly()
     {
         $this->mimeTypes(['image/*']);
+
         return $this;
     }
 
@@ -167,6 +170,7 @@ class ElFinderWidget extends Widget
     public function videoOnly()
     {
         $this->mimeTypes(['video/*']);
+
         return $this;
     }
 
@@ -178,6 +182,7 @@ class ElFinderWidget extends Widget
     public function audioOnly()
     {
         $this->mimeTypes(['audio/*']);
+
         return $this;
     }
 
@@ -190,6 +195,7 @@ class ElFinderWidget extends Widget
     public function multiple($val = true)
     {
         $this->setProperty('multiple', $val);
+
         return $this;
     }
 }

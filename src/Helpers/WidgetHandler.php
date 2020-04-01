@@ -2,10 +2,10 @@
 
 namespace Sanjab\Helpers;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use stdClass;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
+use Illuminate\Database\Eloquent\Model;
 use Sanjab\Exceptions\CrudTypeNotAllowedException;
 
 trait WidgetHandler
@@ -68,7 +68,7 @@ trait WidgetHandler
     }
 
     /**
-     * Validation rules
+     * Validation rules.
      *
      * @param Request $request
      * @param string $type  create|edit
@@ -81,7 +81,7 @@ trait WidgetHandler
     }
 
     /**
-     * Validation attributes
+     * Validation attributes.
      *
      * @param Request $request
      * @param string $type  create|edit
@@ -120,7 +120,7 @@ trait WidgetHandler
     }
 
     /**
-     * Save request to item model
+     * Save request to item model.
      *
      * @param Request $request
      * @param Model $item
@@ -141,7 +141,7 @@ trait WidgetHandler
     }
 
     /**
-     * Do prestore
+     * Do prestore.
      *
      * @param array $widgets
      * @param Request $request
@@ -179,7 +179,7 @@ trait WidgetHandler
     }
 
     /**
-     * Do store
+     * Do store.
      *
      * @param array $widgets
      * @param Request $request
@@ -205,7 +205,7 @@ trait WidgetHandler
     }
 
     /**
-     * Do post store
+     * Do post store.
      *
      * @param array $widgets
      * @param Request $request
@@ -246,7 +246,7 @@ trait WidgetHandler
         $rules = $this->validationRules($request, $type, $item);
         foreach ($rules as $key => $rule) {
             if (is_string($rule)) {
-                $rules[$key] = explode("|", $rule);
+                $rules[$key] = explode('|', $rule);
             }
         }
 
@@ -354,6 +354,7 @@ trait WidgetHandler
             $request->server()
         );
         $translatedRequest->replace(is_array($request->input('sanjab_translations.'.$locale)) ? $request->input('sanjab_translations.'.$locale) : []);
+
         return $translatedRequest;
     }
 
@@ -396,7 +397,8 @@ trait WidgetHandler
                 }
             }
         }
-        return (array)$responseItem;
+
+        return (array) $responseItem;
     }
 
     /**
@@ -410,7 +412,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -420,7 +422,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -430,7 +432,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -440,7 +442,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -450,7 +452,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -460,7 +462,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -470,7 +472,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -480,7 +482,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event ( not for soft delete )
+     * Model event ( not for soft delete ).
      *
      * @param Model $item
      * @return void
@@ -490,7 +492,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event ( not for soft delete )
+     * Model event ( not for soft delete ).
      *
      * @param Model $item
      * @return void
@@ -500,7 +502,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event ( for soft deletes only )
+     * Model event ( for soft deletes only ).
      *
      * @param Model $item
      * @return void
@@ -510,7 +512,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event ( for soft deletes only )
+     * Model event ( for soft deletes only ).
      *
      * @param Model $item
      * @return void
@@ -520,7 +522,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -530,7 +532,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -540,7 +542,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event when any change happening to database
+     * Model event when any change happening to database.
      *
      * @param Model $item
      * @return void
@@ -550,7 +552,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event when any change happend to database
+     * Model event when any change happend to database.
      *
      * @param Model $item
      * @return void

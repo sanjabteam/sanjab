@@ -2,8 +2,8 @@
 
 namespace Sanjab\Tests\Controllers;
 
-use Sanjab\Tests\Models\User;
 use Sanjab\Widgets\IdWidget;
+use Sanjab\Tests\Models\User;
 use Sanjab\Widgets\TextWidget;
 use Sanjab\Helpers\MaterialIcons;
 use Sanjab\Helpers\CrudProperties;

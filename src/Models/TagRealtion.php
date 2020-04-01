@@ -12,7 +12,7 @@ namespace Sanjab\Models;
  * @property string $tags               tags as string
  * @property array $tags_array          tags as array
  */
-trait TagRelation
+trait TagRealtion
 {
     /**
      * Stroing tags then saving them help to ignore error when Model is not saved in database yet.
@@ -24,7 +24,7 @@ trait TagRelation
     /**
      * Tag saving event submited before or not.
      *
-     * @var boolean
+     * @var bool
      */
     protected static $tagEventHandlerInit = false;
 
@@ -39,13 +39,14 @@ trait TagRelation
     }
 
     /**
-     * Get tags as array
+     * Get tags as array.
      *
      * @return array
      */
     public function getTagsArrayAttribute()
     {
         $this->loadMissing('tagModels');
+
         return $this->tagModels->pluck($this->tagName ?? 'name')->toArray();
     }
 
@@ -61,7 +62,7 @@ trait TagRelation
             $tags = explode(',', $tags);
         }
         $tags = array_filter($tags, function ($tag) {
-            return !empty($tag);
+            return ! empty($tag);
         });
         if (is_array($tags) && count($tags) > 0) {
             $this->cachedTags = $tags;
@@ -89,7 +90,7 @@ trait TagRelation
     }
 
     /**
-     * Set tags as string
+     * Set tags as string.
      *
      * @param string $tags
      * @return void
@@ -100,7 +101,7 @@ trait TagRelation
     }
 
     /**
-     * Get the value of cachedTags
+     * Get the value of cachedTags.
      *
      * @return array
      */

@@ -2,11 +2,11 @@
 
 namespace Sanjab\Controllers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Sanjab\Helpers\NotificationItem;
 use Illuminate\Support\Facades\Auth;
+use Sanjab\Helpers\NotificationItem;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class AuthController extends SanjabController
 {
@@ -39,7 +39,7 @@ class AuthController extends SanjabController
             [
                 $this->username() => 'required',
                 'password'              => 'required',
-                'g-recaptcha-response'  => config('sanjab.login.recaptcha') ? 'sanjab_recaptcha' : ''
+                'g-recaptcha-response'  => config('sanjab.login.recaptcha') ? 'sanjab_recaptcha' : '',
             ],
             [],
             [
@@ -57,7 +57,7 @@ class AuthController extends SanjabController
                 ->icon('person')
                 ->addItem(Auth::user()->name, '#')
                 ->addDivider()
-                ->addItem(trans('sanjab::sanjab.logout'), route('sanjab.auth.logout'))
+                ->addItem(trans('sanjab::sanjab.logout'), route('sanjab.auth.logout')),
         ];
     }
 

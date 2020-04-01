@@ -3,7 +3,7 @@
 namespace Sanjab\Widgets;
 
 /**
- * Seperator
+ * Seperator.
  */
 class SeperatorWidget extends Widget
 {
