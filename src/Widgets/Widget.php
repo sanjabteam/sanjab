@@ -3,16 +3,16 @@
 namespace Sanjab\Widgets;
 
 use stdClass;
-use Sanjab\Helpers\PropertiesHolder;
-use Sanjab\Helpers\TableColumn;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
 use Sanjab\Helpers\SearchType;
+use Sanjab\Helpers\TableColumn;
+use Sanjab\Helpers\PropertiesHolder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Base class for all widgets ( form fields and table cells and view )
+ * Base class for all widgets ( form fields and table cells and view ).
  *
  * @method $this    onIndex(boolean $val)                       is this element availble on index.
  * @method $this    onView(boolean $val)                        is this element availble on view.
@@ -55,7 +55,7 @@ abstract class Widget extends PropertiesHolder
         $this->onCreate(true)->onEdit(true)->onIndex(true)->onStore(true)
             ->onView(true)->col(12)->searchable(true)->sortable(true)
             ->indexTag('simple-view')->viewTag('simple-view')->viewGroupTag('simple-view-group')->translation(false)
-            ->groupTag("simple-group")->tag("input")->cols(12);
+            ->groupTag('simple-group')->tag('input')->cols(12);
         parent::__construct($properties);
         $this->init();
     }
@@ -118,9 +118,10 @@ abstract class Widget extends PropertiesHolder
      */
     final public function getTableColumns()
     {
-        if ($this->property("onIndex")) {
+        if ($this->property('onIndex')) {
             return $this->tableColumns();
         }
+
         return [];
     }
 
@@ -132,10 +133,10 @@ abstract class Widget extends PropertiesHolder
     protected function tableColumns()
     {
         return [
-            TableColumn::create($this->property("name"))
-                ->title($this->property("title"))
+            TableColumn::create($this->property('name'))
+                ->title($this->property('title'))
                 ->sortable($this->property('sortable'))
-                ->tag($this->property('indexTag'))
+                ->tag($this->property('indexTag')),
         ];
     }
 
@@ -150,8 +151,9 @@ abstract class Widget extends PropertiesHolder
             $this->searchTypes = $this->searchTypes();
         }
         if (is_array($this->searchTypes) && count($this->searchTypes) == 0) {
-            return null;
+            return;
         }
+
         return $this->searchTypes;
     }
 
@@ -192,9 +194,9 @@ abstract class Widget extends PropertiesHolder
                 return $searchType->type == $type;
             }));
         }
-        if ($this->property("searchable") &&
+        if ($this->property('searchable') &&
             (
-                ($type == null && is_string($search) && !empty($search)) || ($type != null && (($searchType && count($searchType->getWidgets()) == 0) || !empty($search)))
+                ($type == null && is_string($search) && ! empty($search)) || ($type != null && (($searchType && count($searchType->getWidgets()) == 0) || ! empty($search)))
             )
         ) {
             $this->search($query, $type, $search);
@@ -270,10 +272,11 @@ abstract class Widget extends PropertiesHolder
      */
     public function doStore(Request $request, Model $item)
     {
-        if ($this->property("onStore")) {
-            if ($this->property("customStore")) {
-                return ($this->property("customStore"))($request, $item);
+        if ($this->property('onStore')) {
+            if ($this->property('customStore')) {
+                return ($this->property('customStore'))($request, $item);
             }
+
             return $this->store($request, $item);
         }
     }
@@ -287,11 +290,11 @@ abstract class Widget extends PropertiesHolder
      */
     protected function store(Request $request, Model $item)
     {
-        $item->{ $this->property("name") } = $request->input($this->property("name"));
+        $item->{ $this->property('name') } = $request->input($this->property('name'));
     }
 
     /**
-     * To store on model before validation. for manage temp values and ... if valiadtion faild store will not called
+     * To store on model before validation. for manage temp values and ... if valiadtion faild store will not called.
      *
      * @param Request $request
      * @param Model $item
@@ -299,16 +302,17 @@ abstract class Widget extends PropertiesHolder
      */
     public function doPreStore(Request $request, Model $item)
     {
-        if ($this->property("onStore")) {
-            if ($this->property("customPreStore")) {
-                return ($this->property("customPreStore"))($request, $item);
+        if ($this->property('onStore')) {
+            if ($this->property('customPreStore')) {
+                return ($this->property('customPreStore'))($request, $item);
             }
+
             return $this->preStore($request, $item);
         }
     }
 
     /**
-     * To override pre store on model
+     * To override pre store on model.
      *
      * @param Request $request
      * @param Model $item
@@ -327,10 +331,11 @@ abstract class Widget extends PropertiesHolder
      */
     public function doPostStore(Request $request, Model $item)
     {
-        if ($this->property("onStore")) {
-            if ($this->property("customPostStore")) {
-                return ($this->property("customPostStore"))($request, $item);
+        if ($this->property('onStore')) {
+            if ($this->property('customPostStore')) {
+                return ($this->property('customPostStore'))($request, $item);
             }
+
             return $this->postStore($request, $item);
         }
     }
@@ -396,7 +401,7 @@ abstract class Widget extends PropertiesHolder
      */
     protected function modifyResponse(stdClass $response, Model $item)
     {
-        $response->{ $this->property("name") } = $item->{ $this->property("name") };
+        $response->{ $this->property('name') } = $item->{ $this->property('name') };
     }
 
     /**
@@ -458,6 +463,7 @@ abstract class Widget extends PropertiesHolder
 
         if ($type != 'create' && $type != 'edit') {
             $this->rules($rules, 'create');
+
             return $this->rules($rules, 'edit');
         }
 
@@ -467,6 +473,7 @@ abstract class Widget extends PropertiesHolder
         $thisRules = $this->property('rules', ['create' => [], 'edit' => []]);
         $thisRules[$type] = array_merge($thisRules[$type], $rules);
         $this->setProperty('rules', $thisRules);
+
         return $this;
     }
 
@@ -493,7 +500,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -503,7 +510,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -513,7 +520,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -523,7 +530,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -533,7 +540,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -543,7 +550,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -553,7 +560,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -563,7 +570,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event ( not for soft delete )
+     * Model event ( not for soft delete ).
      *
      * @param Model $item
      * @return void
@@ -573,7 +580,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event ( not for soft delete )
+     * Model event ( not for soft delete ).
      *
      * @param Model $item
      * @return void
@@ -583,7 +590,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event ( for soft deletes only )
+     * Model event ( for soft deletes only ).
      *
      * @param Model $item
      * @return void
@@ -593,7 +600,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event ( for soft deletes only )
+     * Model event ( for soft deletes only ).
      *
      * @param Model $item
      * @return void
@@ -603,7 +610,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -613,7 +620,7 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -635,13 +642,14 @@ abstract class Widget extends PropertiesHolder
     /**
      * Widget is multilingal.
      *
-     * @param boolean $val
+     * @param bool $val
      * @return $this
      */
     public function translation(bool $val = true)
     {
-        $this->setProperty('sortable', !$val);
+        $this->setProperty('sortable', ! $val);
         $this->setProperty('translation', $val);
+
         return $this;
     }
 
@@ -653,6 +661,7 @@ abstract class Widget extends PropertiesHolder
     public function required()
     {
         $this->rules('required');
+
         return $this;
     }
 
@@ -664,6 +673,7 @@ abstract class Widget extends PropertiesHolder
     public function nullable()
     {
         $this->rules('nullable');
+
         return $this;
     }
 

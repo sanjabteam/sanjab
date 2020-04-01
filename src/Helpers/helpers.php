@@ -15,7 +15,8 @@ if (! function_exists('sanjab_mix')) {
             return mix('vendor/sanjab/'.ltrim($path, '\\/'));
         } catch (Exception $exception) {
         }
-        return mix($path, "vendor/sanjab");
+
+        return mix($path, 'vendor/sanjab');
     }
 }
 
@@ -34,9 +35,9 @@ if (! function_exists('sanjab_path')) {
     }
 }
 
-if (! function_exists("sanjab_setting")) {
+if (! function_exists('sanjab_setting')) {
     /**
-     * Get setting value with name
+     * Get setting value with name.
      *
      * @param string $name key of setting  "group.name"
      * @param mixed $default  default value if setting doent exists
@@ -46,12 +47,12 @@ if (! function_exists("sanjab_setting")) {
     function sanjab_setting(string $name, $default = null, string $locale = null)
     {
         $out = $default;
-        $name = explode(".", $name);
+        $name = explode('.', $name);
         $key = $name[0];
         unset($name[0]);
-        $name = implode(".", $name);
-        $data = \Cache::rememberForever("sanjab_settings_".$key, function () use ($key) {
-            return \Sanjab\Models\Setting::where('key', $key)->get()->keyBy("name");
+        $name = implode('.', $name);
+        $data = \Cache::rememberForever('sanjab_settings_'.$key, function () use ($key) {
+            return \Sanjab\Models\Setting::where('key', $key)->get()->keyBy('name');
         });
         if (empty($name)) {
             return $data;
@@ -62,11 +63,12 @@ if (! function_exists("sanjab_setting")) {
                 $out = optional($data[$name]->translate($locale))->translated_value;
             }
         }
+
         return $out;
     }
 }
 
-if (! function_exists("sanjab_set_setting")) {
+if (! function_exists('sanjab_set_setting')) {
     /**
      * Set setting value with name.
      *
@@ -77,13 +79,13 @@ if (! function_exists("sanjab_set_setting")) {
      */
     function sanjab_set_setting(string $name, $value = null, string $locale = null)
     {
-        $name = explode(".", $name);
+        $name = explode('.', $name);
         $key = $name[0];
         unset($name[0]);
-        $name = implode(".", $name);
+        $name = implode('.', $name);
         $setting = \Sanjab\Models\Setting::where('key', $key)->where('name', $name)->firstOrCreate([
             'key' => $key,
-            'name' => $name
+            'name' => $name,
         ]);
         if ($locale) {
             $setting->translation = true;
@@ -93,13 +95,13 @@ if (! function_exists("sanjab_set_setting")) {
             $setting->{ $name } = $value;
         }
         $setting->save();
-        \Cache::forget("sanjab_settings_".$key);
+        \Cache::forget('sanjab_settings_'.$key);
     }
 }
 
-if (! function_exists("setting")) {
+if (! function_exists('setting')) {
     /**
-     * Get setting value with name
+     * Get setting value with name.
      *
      * @param string $name key of setting  "group.name"
      * @param mixed $default  default value if setting doent exists
@@ -112,7 +114,7 @@ if (! function_exists("setting")) {
     }
 }
 
-if (! function_exists("set_setting")) {
+if (! function_exists('set_setting')) {
     /**
      * Set setting value with name.
      *

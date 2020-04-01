@@ -2,10 +2,10 @@
 
 namespace Sanjab\Controllers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Route;
 use Sanjab\Helpers\InteractsWithWidget;
+use Illuminate\Database\Eloquent\Builder;
 
 class RelationWidgetController extends SanjabController
 {
@@ -32,10 +32,10 @@ class RelationWidgetController extends SanjabController
                         $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $searchField);
                         $field = str_replace($relation.'.', '', $searchField);
                         $query->orWhereHas($relation, function (Builder $query) use ($field, $request) {
-                            $query->where($query->getQuery()->from.'.'.$field, "LIKE", "%".$request->input('search')."%");
+                            $query->where($query->getQuery()->from.'.'.$field, 'LIKE', '%'.$request->input('search').'%');
                         });
                     } else {
-                        $query->orWhere($query->getQuery()->from.'.'.$searchField, "LIKE", "%".$request->input('search')."%");
+                        $query->orWhere($query->getQuery()->from.'.'.$searchField, 'LIKE', '%'.$request->input('search').'%');
                     }
                 }
             }
@@ -48,7 +48,7 @@ class RelationWidgetController extends SanjabController
         $format = $relationWidget->format;
         $matches = [[], []];
         if (is_string($format)) {
-            preg_match_all("/%([A-Za-z0-9_]+)/", $format, $matches);
+            preg_match_all('/%([A-Za-z0-9_]+)/', $format, $matches);
         }
         foreach ($items as $item) {
             $text = null;
@@ -57,11 +57,12 @@ class RelationWidgetController extends SanjabController
             } else {
                 $text = $format;
                 foreach ($matches[1] as $match) {
-                    $text = str_replace("%".$match, $item->{ $match }, $text);
+                    $text = str_replace('%'.$match, $item->{ $match }, $text);
                 }
             }
             $out[] = ['label' => $text, 'value' => $item->id];
         }
+
         return $out;
     }
 

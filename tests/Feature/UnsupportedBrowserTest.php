@@ -2,8 +2,8 @@
 
 namespace Sajab\Tests\Feature;
 
-use Sanjab\Tests\Models\User;
 use Sanjab\Tests\TestCase;
+use Sanjab\Tests\Models\User;
 
 class UnsupportedBrowserTest extends TestCase
 {
@@ -11,7 +11,7 @@ class UnsupportedBrowserTest extends TestCase
     {
         $response = $this->actingAs(User::where('email', 'admin@test.com')->firstOrFail())
                 ->get(route('sanjab.dashboards.dashboard'), [
-                    'HTTP_USER_AGENT' => 'MSIE'
+                    'HTTP_USER_AGENT' => 'MSIE',
                 ]);
 
         $response->assertRedirect(route('sanjab.unsupported-browser'));

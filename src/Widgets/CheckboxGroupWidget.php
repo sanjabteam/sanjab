@@ -4,18 +4,18 @@ namespace Sanjab\Widgets;
 
 use stdClass;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Group check box widget
+ * Group check box widget.
  *
  * @method $this    all(boolean $val)      has All button
  */
 class CheckboxGroupWidget extends Widget
 {
     protected $getters = [
-        'options'
+        'options',
     ];
 
     protected $checkOptions = [];
@@ -25,15 +25,15 @@ class CheckboxGroupWidget extends Widget
         $this->searchable(false);
         $this->onIndex(false);
         $this->all(false);
-        $this->tag("checkbox-group-widget");
-        $this->viewTag("checkbox-group-view");
+        $this->tag('checkbox-group-widget');
+        $this->viewTag('checkbox-group-view');
     }
 
     protected function store(Request $request, Model $item)
     {
         $values = array_combine(array_keys($this->checkOptions), array_fill(0, count($this->checkOptions), false));
-        if (is_array($request->input($this->property("name")))) {
-            foreach ($request->input($this->property("name")) as $checked) {
+        if (is_array($request->input($this->property('name')))) {
+            foreach ($request->input($this->property('name')) as $checked) {
                 if (isset($values[$checked])) {
                     $values[$checked] = true;
                 }
@@ -44,16 +44,16 @@ class CheckboxGroupWidget extends Widget
 
     protected function search(Builder $query, string $type = null, $search = null)
     {
-        if ($search == "true") {
+        if ($search == 'true') {
             $query->where($this->name, 1);
         }
-        if ($search == "false") {
+        if ($search == 'false') {
             $query->where($this->name, 0);
         }
     }
 
     /**
-     * Add option to options
+     * Add option to options.
      *
      * @param mixed $key
      * @param string $title
@@ -62,11 +62,12 @@ class CheckboxGroupWidget extends Widget
     public function addOption($key, string $title)
     {
         $this->checkOptions[$key] = $title;
+
         return $this;
     }
 
     /**
-     * Add multiple options
+     * Add multiple options.
      *
      * @param array $options
      * @return $this
@@ -76,6 +77,7 @@ class CheckboxGroupWidget extends Widget
         foreach ($options as $key => $title) {
             $this->checkOptions[$key] = $title;
         }
+
         return $this;
     }
 
@@ -90,6 +92,7 @@ class CheckboxGroupWidget extends Widget
         foreach ($this->checkOptions as $optionKey => $optionTitle) {
             $out[] = ['text' => $optionTitle, 'value' => $optionKey];
         }
+
         return $out;
     }
 
@@ -103,13 +106,13 @@ class CheckboxGroupWidget extends Widget
     protected function modifyResponse(stdClass $response, Model $item)
     {
         $values = [];
-        if (is_array($item->{ $this->property("name") })) {
-            foreach ($item->{ $this->property("name") } as $name => $value) {
+        if (is_array($item->{ $this->property('name') })) {
+            foreach ($item->{ $this->property('name') } as $name => $value) {
                 if ($value) {
                     $values[] = $name;
                 }
             }
         }
-        $response->{ $this->property("name") } = $values;
+        $response->{ $this->property('name') } = $values;
     }
 }

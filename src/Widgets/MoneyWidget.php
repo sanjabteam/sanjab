@@ -19,7 +19,7 @@ class MoneyWidget extends NumberWidget
     {
         parent::init();
         $this->setProperty('type', 'text');
-        $this->tag("money-widget");
+        $this->tag('money-widget');
         $this->viewTag('money-view');
         $this->indexTag('money-view');
         $this->decimal(',');

@@ -2,11 +2,9 @@
 
 namespace Sanjab\Controllers;
 
-use Illuminate\Support\Facades\Route;
-use Sanjab\Helpers\MenuItem;
-use Sanjab\Helpers\MaterialIcons;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 
 class TranslationController extends SanjabController
 {
@@ -24,10 +22,11 @@ class TranslationController extends SanjabController
             Cache::forget('sanjab_js_translation_'.$locale);
         }
         $content = Cache::rememberForEver('sanjab_js_translation_'.$locale, function () use ($locale) {
-            return view("sanjab::helpers.js_translation", ['sanjabTrans' => ['sanjab::sanjab' => trans('sanjab::sanjab', [], $locale)]])->render();
+            return view('sanjab::helpers.js_translation', ['sanjabTrans' => ['sanjab::sanjab' => trans('sanjab::sanjab', [], $locale)]])->render();
         });
+
         return response($content)
-            ->header("Content-Type", "text/javascript");
+            ->header('Content-Type', 'text/javascript');
     }
 
     public static function routes(): void

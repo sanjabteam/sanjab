@@ -2,20 +2,20 @@
 
 namespace Sanjab\Controllers;
 
-use Sanjab\Helpers\MenuItem;
-use Sanjab\Helpers\SettingProperties;
-use Illuminate\Support\Facades\Route;
-use Sanjab\Helpers\WidgetHandler;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Sanjab\Models\Setting;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Session;
-use Sanjab\Helpers\PermissionItem;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\App;
+use Illuminate\Http\Request;
+use Sanjab\Helpers\MenuItem;
 use Sanjab\Helpers\SearchResult;
+use Sanjab\Helpers\WidgetHandler;
+use Illuminate\Support\Collection;
+use Sanjab\Helpers\PermissionItem;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
+use Sanjab\Helpers\SettingProperties;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 
 abstract class SettingController extends SanjabController
 {
@@ -30,15 +30,16 @@ abstract class SettingController extends SanjabController
     public function show()
     {
         $this->authorize('update_setting_'.$this->property('key'));
-        $item = $this->combinedSetting(Setting::where('key', static::property("key"))->get());
+        $item = $this->combinedSetting(Setting::where('key', static::property('key'))->get());
         $this->initSetting($item);
         $responseItem = $this->itemResponse($item);
+
         return view(
             'sanjab::setting.form',
             [
                 'widgets' => $this->widgets,
                 'properties' => $this->properties(),
-                'item' => $responseItem
+                'item' => $responseItem,
             ]
         );
     }
@@ -52,36 +53,37 @@ abstract class SettingController extends SanjabController
     public function update(Request $request)
     {
         $this->authorize('update_setting_'.$this->property('key'));
-        $combinedItem = $this->combinedSetting(Setting::where('key', static::property("key"))->get());
+        $combinedItem = $this->combinedSetting(Setting::where('key', static::property('key'))->get());
         $this->initSetting($combinedItem);
         $items = [];
         foreach ($this->widgets as $widget) {
-            $items[$widget->property("name")] = Setting::where('key', static::property("key"))
-                ->where('name', $widget->property("name"))
+            $items[$widget->property('name')] = Setting::where('key', static::property('key'))
+                ->where('name', $widget->property('name'))
                 ->firstOrCreate([
-                    'key'         => $this->property("key"),
-                    'name'        => $widget->property("name"),
+                    'key'         => $this->property('key'),
+                    'name'        => $widget->property('name'),
                 ]);
-            $items[$widget->property("name")]->translation = $widget->property("translation");
-            foreach ($this->combinedSetting(collect([$items[$widget->property("name")]]))->getAttributes() as $attributeName => $attributeValue) {
-                $items[$widget->property("name")]->{ $attributeName } = $attributeValue;
+            $items[$widget->property('name')]->translation = $widget->property('translation');
+            foreach ($this->combinedSetting(collect([$items[$widget->property('name')]]))->getAttributes() as $attributeName => $attributeValue) {
+                $items[$widget->property('name')]->{ $attributeName } = $attributeValue;
             }
-            $this->widgetsPreStore([$widget], $request, $items[$widget->property("name")]);
+            $this->widgetsPreStore([$widget], $request, $items[$widget->property('name')]);
         }
-        $this->widgetsValidate($this->widgets, $request, "edit");
+        $this->widgetsValidate($this->widgets, $request, 'edit');
 
         // store data
         foreach ($this->widgets as $widget) {
-            $this->widgetsStore([$widget], $request, $items[$widget->property("name")]);
+            $this->widgetsStore([$widget], $request, $items[$widget->property('name')]);
         }
 
         // post store
         foreach ($this->widgets as $widget) {
-            $this->widgetsPostStore([$widget], $request, $items[$widget->property("name")]);
-            $items[$widget->property("name")]->save();
+            $this->widgetsPostStore([$widget], $request, $items[$widget->property('name')]);
+            $items[$widget->property('name')]->save();
         }
         Cache::forget('sanjab_settings_'.$this->property('key'));
         Session::flash('sanjab_success', trans('sanjab::sanjab.:item_updated_successfully', ['item' => $this->property('title')]));
+
         return ['success' => true];
     }
 
@@ -103,6 +105,7 @@ abstract class SettingController extends SanjabController
         if ($key === null) {
             return static::properties();
         }
+
         return array_get(static::properties()->toArray(), $key);
     }
 
@@ -154,6 +157,7 @@ abstract class SettingController extends SanjabController
                 }
             }
         }
+
         return $out;
     }
 
@@ -166,7 +170,7 @@ abstract class SettingController extends SanjabController
 
     public static function routes(): void
     {
-        Route::prefix("settings")->name("settings.")->group(function () {
+        Route::prefix('settings')->name('settings.')->group(function () {
             Route::get(static::property('key'), static::class.'@show')->name(static::property('key'));
             Route::post(static::property('key'), static::class.'@update')->name(static::property('key'));
         });
@@ -179,7 +183,7 @@ abstract class SettingController extends SanjabController
                 ->title(trans('sanjab::sanjab.settings'))
                 ->icon('settings')
                 ->active(function () {
-                    return Route::is("sanjab.settings.*");
+                    return Route::is('sanjab.settings.*');
                 })
                 ->addChild(
                     MenuItem::create(route('sanjab.settings.'.static::property('key')))
@@ -190,7 +194,7 @@ abstract class SettingController extends SanjabController
                     ->hidden(function () {
                         return Auth::user()->cannot('update_setting_'.static::property('key'));
                     })
-                )
+                ),
         ];
     }
 
@@ -198,6 +202,7 @@ abstract class SettingController extends SanjabController
     {
         $permission = PermissionItem::create(trans('sanjab::sanjab.settings'))
                         ->addPermission(trans('sanjab::sanjab.edit_:item', ['item' => static::property('title')]), 'update_setting_'.static::property('key'));
+
         return [$permission];
     }
 
@@ -207,12 +212,11 @@ abstract class SettingController extends SanjabController
             $controllerInsatance = app(static::class);
             App::call([$controllerInsatance, 'show']);
 
-
             if (preg_match('/.*'.preg_quote($search).'.*/', static::property('title'))) {
                 return [
                     SearchResult::create(static::property('title'), route('sanjab.settings.'.static::property('key')))
                                             ->icon(static::property('icon'))
-                                            ->order(50)
+                                            ->order(50),
                 ];
             }
 
@@ -221,11 +225,12 @@ abstract class SettingController extends SanjabController
                     return [
                         SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $widget->title, 'part' => static::property('title')]), route('sanjab.settings.'.static::property('key')))
                                                 ->icon(static::property('icon'))
-                                                ->order(50)
+                                                ->order(50),
                     ];
                 }
             }
         }
+
         return [];
     }
 }

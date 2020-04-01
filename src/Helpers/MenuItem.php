@@ -22,7 +22,7 @@ class MenuItem extends PropertiesHolder
         'icon' => 'code',
         'title' => 'TITLE HERE',
         'badgeVariant' => 'danger',
-        'order' => 100
+        'order' => 100,
     ];
 
     /**
@@ -35,7 +35,7 @@ class MenuItem extends PropertiesHolder
     /**
      * Check menu item is active or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function isActive()
     {
@@ -50,13 +50,14 @@ class MenuItem extends PropertiesHolder
     /**
      * Check menu item is hidden or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function isHidden()
     {
         if (isset($this->properties['hidden'])) {
             return App::call($this->properties['hidden']);
         }
+
         return false;
     }
 
@@ -68,7 +69,7 @@ class MenuItem extends PropertiesHolder
     public function getChildren()
     {
         return array_filter($this->children, function ($menuItem) {
-            return !$menuItem->isHidden();
+            return ! $menuItem->isHidden();
         });
     }
 
@@ -98,14 +99,15 @@ class MenuItem extends PropertiesHolder
      * @param MenuItem $childItem
      * @return $this
      */
-    public function addChild(MenuItem $childItem)
+    public function addChild(self $childItem)
     {
         $this->children[] = $childItem;
+
         return $this;
     }
 
     /**
-     * Add multiple child
+     * Add multiple child.
      *
      * @param array|MenuItem[]  $items
      * @return $this
@@ -113,6 +115,7 @@ class MenuItem extends PropertiesHolder
     public function addChildren(array $childItems)
     {
         $this->children = array_merge($this->children, $childItems);
+
         return $this;
     }
 
@@ -126,11 +129,12 @@ class MenuItem extends PropertiesHolder
         if (is_callable($this->property('badge'))) {
             return $this->property('badge')();
         }
+
         return $this->property('badge');
     }
 
     /**
-     * create new Menu item
+     * create new Menu item.
      *
      * @property string $url  url of menu item.
      * @return static

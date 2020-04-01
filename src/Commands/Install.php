@@ -78,7 +78,7 @@ class Install extends Command
             $userModelContent = str_replace('use Notifiable;', 'use Notifiable, SanjabUser;', $userModelContent);
             if (strpos($userModelContent, 'Sanjab\Models\SanjabUser') === false) {
                 $userModelContent = str_replace(
-                    "use Illuminate\\Foundation\\Auth\\User as Authenticatable;",
+                    'use Illuminate\\Foundation\\Auth\\User as Authenticatable;',
                     "use Illuminate\\Foundation\\Auth\\User as Authenticatable;\nuse Sanjab\\Models\\SanjabUser;",
                     $userModelContent
                 );

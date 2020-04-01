@@ -2,10 +2,8 @@
 
 namespace Sanjab\Commands;
 
-use Bouncer;
-use Illuminate\Console\Command;
 use Sanjab\Models\Setting;
-use Silber\Bouncer\Database\Role;
+use Illuminate\Console\Command;
 
 /**
  * Export setting as code for seeder.

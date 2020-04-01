@@ -17,7 +17,7 @@ abstract class Card extends PropertiesHolder
 {
     public function __construct(array $properties = [])
     {
-        $this->tag("input")->cols(12)->order(100);
+        $this->tag('input')->cols(12)->order(100);
         parent::__construct($properties);
         $this->init();
     }
@@ -33,6 +33,7 @@ abstract class Card extends PropertiesHolder
         if ($title) {
             $out->title($title);
         }
+
         return $out;
     }
 

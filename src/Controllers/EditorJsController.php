@@ -2,27 +2,28 @@
 
 namespace Sanjab\Controllers;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use DOMDocument;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 class EditorJsController extends SanjabController
 {
     public function imageUpload(Request $request)
     {
         $this->validate($request, [
-            'image' => 'required|image'
+            'image' => 'required|image',
         ]);
         $file = $request->file('image');
-        $filename = $file->store("/", "public");
+        $filename = $file->store('/', 'public');
+
         return ['success' => 1, 'file' => ['url' => Storage::disk('public')->url($filename)]];
     }
 
     public function link(Request $request)
     {
         $this->validate($request, [
-            'url' => 'required|url'
+            'url' => 'required|url',
         ]);
         $curl = curl_init();
         curl_setopt_array($curl, [
@@ -68,11 +69,12 @@ class EditorJsController extends SanjabController
                 }
 
                 return [
-                    "success" => 1,
-                    "meta" => $meta
+                    'success' => 1,
+                    'meta' => $meta,
                 ];
             }
         }
+
         return ['success' => 0];
     }
 

@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use Sanjab\Widgets\ShowWidget;
 use Sanjab\Helpers\CrudProperties;
 use Sanjab\Widgets\CheckboxWidget;
-use Sanjab\Helpers\NotificationItem;
 use Illuminate\Support\Facades\Auth;
+use Sanjab\Helpers\NotificationItem;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -74,7 +74,7 @@ class NotificationController extends CrudController
      */
     public function index(Request $request)
     {
-        $this->initCrud("index");
+        $this->initCrud('index');
 
         // items for json ajax.
         if ($request->wantsJson()) {
@@ -130,7 +130,8 @@ class NotificationController extends CrudController
                 $cardsData[$key] = new stdClass;
                 $card->doModifyResponse($cardsData[$key]);
             }
-            return compact("items", "cardsData", "notification");
+
+            return compact('items', 'cardsData', 'notification');
         }
 
         // view it self without items
@@ -141,7 +142,7 @@ class NotificationController extends CrudController
                 'actions' => $this->actions,
                 'filterOptions' => $this->filters,
                 'cards' => $this->cards,
-                'properties' => $this->properties()
+                'properties' => $this->properties(),
             ]
         );
     }
@@ -175,6 +176,7 @@ class NotificationController extends CrudController
             }
             $output[0]->addItem(trans('sanjab::sanjab.all'), route('sanjab.modules.notifications.index'), ['active' => true]);
         }
+
         return $output;
     }
 
@@ -191,6 +193,7 @@ class NotificationController extends CrudController
         if (array_get($notification->data, 'url')) {
             return redirect($notification->data['url']);
         }
+
         return redirect()->back();
     }
 
@@ -203,6 +206,7 @@ class NotificationController extends CrudController
     public function markAsReadNotification(DatabaseNotification $notification)
     {
         $notification->markAsRead();
+
         return ['success' => true];
     }
 
@@ -218,6 +222,7 @@ class NotificationController extends CrudController
         if ($request->wantsJson()) {
             return ['success' => true];
         }
+
         return redirect()->back();
     }
 
@@ -238,12 +243,12 @@ class NotificationController extends CrudController
         $lastCreatedAt = $request->input('time');
         Session::save();
         $response = response()->stream(function () use ($request, $lastCreatedAt) {
-            echo "data: ".json_encode(['type' => 'start'])."\n\n";
+            echo 'data: '.json_encode(['type' => 'start'])."\n\n";
             ob_flush();
             flush();
             if ($request->input('force') == 'true') {
                 $notificationItems = Sanjab::notificationItems(true);
-                echo "data: ".json_encode(['type' => 'items', 'items' => $notificationItems])."\n\n";
+                echo 'data: '.json_encode(['type' => 'items', 'items' => $notificationItems])."\n\n";
                 ob_flush();
                 flush();
             }
@@ -253,16 +258,17 @@ class NotificationController extends CrudController
                 if ($notifications->count() > 0) {
                     $lastCreatedAt = $notifications->max('created_at')->timestamp;
                     $notificationItems = Sanjab::notificationItems(true);
-                    echo "data: ".json_encode(['type' => 'items', 'items' => $notificationItems])."\n\n";
+                    echo 'data: '.json_encode(['type' => 'items', 'items' => $notificationItems])."\n\n";
                     ob_flush();
                     flush();
                 }
 
                 // Prevent Maximum execution time of N seconds exceeded error.
                 if ((microtime(true) - LARAVEL_START) + 3 >= intval(ini_get('max_execution_time'))) {
-                    echo "data: ".json_encode(['type' => 'close'])."\n\n";
+                    echo 'data: '.json_encode(['type' => 'close'])."\n\n";
                     ob_flush();
                     flush();
+
                     return;
                 }
                 sleep(1);
@@ -272,6 +278,7 @@ class NotificationController extends CrudController
         $response->headers->set('X-Accel-Buffering', 'no');
         $response->headers->set('Cach-Control', 'no-cache');
         $response->headers->set('Connection', 'keep-alive');
+
         return $response;
     }
 

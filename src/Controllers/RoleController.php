@@ -10,7 +10,6 @@ use Sanjab\Widgets\TextWidget;
 use Silber\Bouncer\Database\Role;
 use Sanjab\Helpers\CrudProperties;
 use Sanjab\Helpers\PermissionItem;
-use Sanjab\Controllers\CrudController;
 use Illuminate\Database\Eloquent\Model;
 use Sanjab\Widgets\CheckboxGroupWidget;
 
@@ -49,7 +48,7 @@ class RoleController extends CrudController
                         }
                         if (is_array($request->input('permissions_'.$key))) {
                             foreach ($permissionItem->permissions() as $permission) {
-                                if (in_array($permission['name']."__".str_replace("\\", "___", $permission['model']), $request->input('permissions_'.$key))) {
+                                if (in_array($permission['name'].'__'.str_replace('\\', '___', $permission['model']), $request->input('permissions_'.$key))) {
                                     Bouncer::allow($data->name)->to($permission['name'], $permission['model']);
                                 }
                             }
@@ -59,14 +58,14 @@ class RoleController extends CrudController
                         $currentPermissions = [];
                         foreach ($permissionItem->permissions() as $permission) {
                             if ($item && $item->can($permission['name'], $permission['model'])) {
-                                $currentPermissions[] = $permission['name']."__".str_replace("\\", "___", $permission['model']);
+                                $currentPermissions[] = $permission['name'].'__'.str_replace('\\', '___', $permission['model']);
                             }
                         }
                         $response->{ 'permissions_'.$key } = $currentPermissions;
                     });
 
                 foreach ($permissionItem->permissions() as $permission) {
-                    $checkboxGroup->addOption($permission['name']."__".str_replace("\\", "___", $permission['model']), $permission['title']);
+                    $checkboxGroup->addOption($permission['name'].'__'.str_replace('\\', '___', $permission['model']), $permission['title']);
                 }
                 $this->widgets[] = $checkboxGroup;
             }
@@ -79,6 +78,7 @@ class RoleController extends CrudController
         $permissions[] = PermissionItem::create(trans('sanjab::sanjab.dashboard'))
                         ->order(50)
                         ->addPermission(trans('sanjab::sanjab.access_to_admin_panel'), 'access_sanjab');
+
         return $permissions;
     }
 

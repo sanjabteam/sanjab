@@ -24,10 +24,10 @@ class StatsCard extends Card
 
     protected function modifyResponse(stdClass $response)
     {
-        if (is_callable($this->property("value"))) {
-            $response->data = $this->property("value")();
+        if (is_callable($this->property('value'))) {
+            $response->data = $this->property('value')();
         } else {
-            $response->data = $this->property("value");
+            $response->data = $this->property('value');
         }
     }
 }

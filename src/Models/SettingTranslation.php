@@ -7,7 +7,7 @@ use Sanjab\Observers\SettingTranslationObserver;
 
 class SettingTranslation extends Model
 {
-    protected $table = "sanjab_setting_translations";
+    protected $table = 'sanjab_setting_translations';
     protected $fillable = [
         'setting_id',
         'translated_value',

@@ -6,11 +6,11 @@ use stdClass;
 use Exception;
 use Sanjab\Widgets\Widget;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Belongs to relation picker.
@@ -42,7 +42,7 @@ abstract class RelationWidget extends Widget
         });
         $this->ajax(false);
         $this->tag('select-widget');
-        $this->setProperty("format", '%id');
+        $this->setProperty('format', '%id');
         $this->optionsLabelKey('label');
         $this->relationKey('relatedKey');
         $this->withNull(null);
@@ -52,7 +52,7 @@ abstract class RelationWidget extends Widget
     {
         if (empty($this->property('searchFields'))) {
             $matches = null;
-            preg_match_all("/%([A-Za-z0-9_]+)/", $this->property('format'), $matches);
+            preg_match_all('/%([A-Za-z0-9_]+)/', $this->property('format'), $matches);
             $searchFields = [];
             foreach ($matches[1] as $match) {
                 if (method_exists($this->getModelInstance(), 'isTranslationAttribute') && $this->getModelInstance()->isTranslationAttribute($match)) {
@@ -75,10 +75,10 @@ abstract class RelationWidget extends Widget
     protected function search(Builder $query, string $type = null, $search = null)
     {
         foreach ($this->property('searchFields') as $searchField) {
-            $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property("name").'.'.$searchField);
-            $field = str_replace($relation.'.', '', $this->property("name").'.'.$searchField);
+            $relation = preg_replace('/\.[A-Za-z0-9_]+$/', '', $this->property('name').'.'.$searchField);
+            $field = str_replace($relation.'.', '', $this->property('name').'.'.$searchField);
             $query->orWhereHas($relation, function (Builder $query) use ($field, $search) {
-                $query->where($field, "LIKE", "%".$search."%");
+                $query->where($field, 'LIKE', '%'.$search.'%');
             });
         }
     }
@@ -89,9 +89,9 @@ abstract class RelationWidget extends Widget
             Config::set('database.connections.mysql.strict', false);
             DB::reconnect();
         }
-        $query->select($this->table.".*")
-            ->leftJoin($this->relatedModelTable. " as __".$this->relatedModelTable, $this->getModelInstance()->getTable().".".$this->foreignKey, "=", "__".$this->relatedModelTable.".".$this->ownerKey)
-            ->orderBy("__".$this->relatedModelTable.".".$this->property("orderColumn"), $direction);
+        $query->select($this->table.'.*')
+            ->leftJoin($this->relatedModelTable.' as __'.$this->relatedModelTable, $this->getModelInstance()->getTable().'.'.$this->foreignKey, '=', '__'.$this->relatedModelTable.'.'.$this->ownerKey)
+            ->orderBy('__'.$this->relatedModelTable.'.'.$this->property('orderColumn'), $direction);
     }
 
     /**
@@ -105,10 +105,11 @@ abstract class RelationWidget extends Widget
         if (! empty($this->property('model'))) {
             $model = $this->property('model');
         } elseif (isset($this->controllerProperties['model'])) {
-            $model= $this->controllerProperties['model'];
+            $model = $this->controllerProperties['model'];
         } else {
             throw new Exception("You need to set model for '".$this->property('name')."'");
         }
+
         return $model;
     }
 
@@ -122,6 +123,7 @@ abstract class RelationWidget extends Widget
         if ($this->tempModelInstance == null) {
             $this->tempModelInstance = new $this->model;
         }
+
         return $this->tempModelInstance;
     }
 
@@ -142,7 +144,7 @@ abstract class RelationWidget extends Widget
      */
     public function getRelatedModel()
     {
-        return get_class($this->modelInstance->{ $this->property("name") }()->getRelated());
+        return get_class($this->modelInstance->{ $this->property('name') }()->getRelated());
     }
 
     /**
@@ -152,7 +154,7 @@ abstract class RelationWidget extends Widget
      */
     public function getRelatedModelTable()
     {
-        return $this->modelInstance->{ $this->property("name") }()->getRelated()->getTable();
+        return $this->modelInstance->{ $this->property('name') }()->getRelated()->getTable();
     }
 
     /**
@@ -162,7 +164,7 @@ abstract class RelationWidget extends Widget
      */
     public function getRelatedKey()
     {
-        return $this->modelInstance->{ $this->property("name") }()->getRelated()->getKeyName();
+        return $this->modelInstance->{ $this->property('name') }()->getRelated()->getKeyName();
     }
 
     /**
@@ -172,8 +174,9 @@ abstract class RelationWidget extends Widget
      */
     public function getForeignKey()
     {
-        return $this->modelInstance->{ $this->property("name") }()->getForeignKeyName();
+        return $this->modelInstance->{ $this->property('name') }()->getForeignKeyName();
     }
+
     /**
      * Get model owner key.
      *
@@ -181,7 +184,7 @@ abstract class RelationWidget extends Widget
      */
     public function getOwnerKey()
     {
-        return $this->modelInstance->{ $this->property("name") }()->getOwnerKeyName();
+        return $this->modelInstance->{ $this->property('name') }()->getOwnerKeyName();
     }
 
     /**
@@ -197,7 +200,7 @@ abstract class RelationWidget extends Widget
                 $this->cachedOptions[] = [$this->property('optionsLabelKey') => $this->property('withNull'), 'value' => null];
             }
             $options = $this->relatedModel::query();
-            $this->property("query")($options);
+            $this->property('query')($options);
             $options = Cache::remember(
                 'sanjab_relation_options_cache_'.hash(
                     'sha512',
@@ -212,10 +215,10 @@ abstract class RelationWidget extends Widget
                 }
             );
 
-            $format = $this->property("format");
+            $format = $this->property('format');
             $matches = [[], []];
             if (is_string($format)) {
-                preg_match_all("/%([A-Za-z0-9_]+)/", $format, $matches);
+                preg_match_all('/%([A-Za-z0-9_]+)/', $format, $matches);
             }
             foreach ($options as $option) {
                 $text = null;
@@ -224,12 +227,13 @@ abstract class RelationWidget extends Widget
                 } else {
                     $text = $format;
                     foreach ($matches[1] as $match) {
-                        $text = str_replace("%".$match, $option->{ $match }, $text);
+                        $text = str_replace('%'.$match, $option->{ $match }, $text);
                     }
                 }
                 $this->cachedOptions[] = [$this->property('optionsLabelKey') => $text, 'value' => $option->{ $this->{$this->relationKey} }];
             }
         }
+
         return $this->cachedOptions;
     }
 }

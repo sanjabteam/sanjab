@@ -3,13 +3,13 @@
 namespace Sanjab\Widgets;
 
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Sanjab\Helpers\SearchType;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Single check box widget
+ * Single check box widget.
  *
  * @method $this fastChange (boolean $val)                          change checkbox on index.
  * @method $this fastChangeTimestamps (boolean $val)                should timestamp update on fast change.
@@ -31,9 +31,9 @@ class CheckboxWidget extends Widget
 
     public function init(): void
     {
-        $this->tag("b-form-checkbox");
-        $this->indexTag("checkbox-view");
-        $this->viewTag("checkbox-view");
+        $this->tag('b-form-checkbox');
+        $this->indexTag('checkbox-view');
+        $this->viewTag('checkbox-view');
         $this->fastChange(false);
         $this->fastChangeTimestamps(false);
         $this->hideGroupLabel(true);
@@ -43,17 +43,18 @@ class CheckboxWidget extends Widget
         });
         $this->fastChangeControllerAuthorize(function (Model $item) {
             $controller = $this->getController();
+
             return Auth::user()->can('edit'.$controller::property('permissionKey'), $item);
         });
     }
 
     protected function store(Request $request, Model $item)
     {
-        $item->{ $this->property("name") } = $request->input($this->property("name")) == "true";
+        $item->{ $this->property('name') } = $request->input($this->property('name')) == 'true';
     }
 
     /**
-     * Title of checkbox
+     * Title of checkbox.
      *
      * @return string
      */
@@ -70,6 +71,7 @@ class CheckboxWidget extends Widget
         if (isset($this->controllerProperties['controller'])) {
             return $this->controllerProperties['controller'];
         }
+
         return $this->property('fastChangeController');
     }
 
@@ -81,6 +83,7 @@ class CheckboxWidget extends Widget
         if (isset($this->controllerProperties['type'])) {
             return $this->controllerProperties['type'];
         }
+
         return $this->property('fastChangeControllerAction');
     }
 
@@ -89,10 +92,9 @@ class CheckboxWidget extends Widget
         if (isset($this->controllerProperties['item'])) {
             return optional($this->controllerProperties['item'])->id;
         }
+
         return optional($this->property('fastChangeControllerItem'))->id;
     }
-
-
 
     /**
      * Get search types.

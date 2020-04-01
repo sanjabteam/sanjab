@@ -47,7 +47,7 @@ return [
         /**
          * Enable recaptcha for login.
          */
-        'recaptcha' => true
+        'recaptcha' => true,
     ],
 
     /*
@@ -62,19 +62,19 @@ return [
      */
     'recaptcha' => [
         /**
-         * Recaptcha site key
+         * Recaptcha site key.
          */
         'site_key'        => env('RECAPTCHA_SITE_KEY'),
 
         /**
-         * Recaptcha secret key
+         * Recaptcha secret key.
          */
         'secret_key'      => env('RECAPTCHA_SECRET_KEY'),
 
         /**
          * Recaptcha will always passed on debug.
          */
-        'ignore_on_debug' => true
+        'ignore_on_debug' => true,
     ],
 
     /*
@@ -119,7 +119,7 @@ return [
             ['title' => 'LARAVEL', 'link' => 'https://laravel.com/'],
             ['title' => 'CREATIVE TIM', 'link' => 'https://www.creative-tim.com/'],
             ['title' => 'SANJAB', 'link' => 'https://sanjabteam.github.io/'],
-        ]
+        ],
     ],
 
     /*
@@ -148,8 +148,8 @@ return [
         |
         */
         'disks' => [
-            'public' => 'Uploads'
-        ]
+            'public' => 'Uploads',
+        ],
     ],
 
     /*

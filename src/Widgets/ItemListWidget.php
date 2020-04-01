@@ -2,9 +2,9 @@
 
 namespace Sanjab\Widgets;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Sanjab\Helpers\SubWidgets;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Input list of items with custom widgets.
@@ -14,7 +14,7 @@ class ItemListWidget extends Widget
     use SubWidgets;
 
     protected $getters = [
-        'widgets'
+        'widgets',
     ];
 
     public function init()
@@ -22,8 +22,8 @@ class ItemListWidget extends Widget
         $this->onIndex(false);
         $this->searchable(false);
         $this->sortable(false);
-        $this->tag("item-list-widget");
-        $this->viewTag("item-list-view");
+        $this->tag('item-list-widget');
+        $this->viewTag('item-list-view');
     }
 
     protected function preStore(Request $request, Model $item)

@@ -16,7 +16,7 @@ class SettingObserver
     {
         $values = [];
         foreach ($setting->getAttributes() as $key => $attr) {
-            if (!in_array($key, ['id', 'translation', 'key', 'name', 'value', 'created_at', 'updated_at'])) {
+            if (! in_array($key, ['id', 'translation', 'key', 'name', 'value', 'created_at', 'updated_at'])) {
                 $values[$key] = $attr;
                 unset($setting->$key);
             }

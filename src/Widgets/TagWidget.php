@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Tag input widget
+ * Tag input widget.
  *
  * @method $this asArray(bool $val)             store tags as array.
  * @method $this tagRules(array|string $val)    rules per tag.
@@ -15,18 +15,18 @@ use Illuminate\Database\Eloquent\Model;
 class TagWidget extends Widget
 {
     protected $getters = [
-        'existing-tags'
+        'existing-tags',
     ];
     protected $autocompleteOptions = [];
 
     public function init()
     {
-        $this->setProperty("tag", "tags-input");
+        $this->setProperty('tag', 'tags-input');
         $this->onIndex(false);
         $this->asArray(false);
-        $this->setProperty("typeahead", true);
-        $this->setProperty("typeahead-style", 'dropdown');
-        $this->setProperty("add-tags-on-comma", true);
+        $this->setProperty('typeahead', true);
+        $this->setProperty('typeahead-style', 'dropdown');
+        $this->setProperty('add-tags-on-comma', true);
         $this->setProperty('placeholder', trans('sanjab::sanjab.add_a_tag'));
         $this->tagRules([]);
         $this->viewTag('tag-view');
@@ -36,11 +36,11 @@ class TagWidget extends Widget
     public function postInit()
     {
         parent::postInit();
-        $this->setProperty("element-id", snake_case($this->property("name")));
+        $this->setProperty('element-id', snake_case($this->property('name')));
     }
 
     /**
-     * Add autocomplete option
+     * Add autocomplete option.
      *
      * @param string $title
      * @return $this
@@ -48,11 +48,12 @@ class TagWidget extends Widget
     public function addOption(string $value)
     {
         $this->autocompleteOptions[] = $value;
+
         return $this;
     }
 
     /**
-     * Add multiple autocomplete options
+     * Add multiple autocomplete options.
      *
      * @param array $options
      * @return $this
@@ -62,6 +63,7 @@ class TagWidget extends Widget
         foreach ($options as $value) {
             $this->autocompleteOptions[] = $value;
         }
+
         return $this;
     }
 
@@ -75,19 +77,18 @@ class TagWidget extends Widget
     protected function store(Request $request, Model $item)
     {
         $value = [];
-        if (is_array($request->input($this->property("name")))) {
-            foreach ($request->input($this->property("name")) as $tag) {
+        if (is_array($request->input($this->property('name')))) {
+            foreach ($request->input($this->property('name')) as $tag) {
                 if (is_array($tag) && isset($tag['value'])) {
                     $value[] = $tag['value'];
                 }
             }
         }
-        $item->{ $this->property("name") } = $this->property('asArray') ? $value : implode(',', $value);
+        $item->{ $this->property('name') } = $this->property('asArray') ? $value : implode(',', $value);
     }
 
-
     /**
-     * Modify response
+     * Modify response.
      *
      * @param object $respones
      * @param Model $item
@@ -95,7 +96,7 @@ class TagWidget extends Widget
      */
     protected function modifyResponse(stdClass $response, Model $item)
     {
-        $value = $item->{ $this->property("name") };
+        $value = $item->{ $this->property('name') };
         if (! is_array($value)) {
             if (empty($value)) {
                 $value = [];
@@ -106,7 +107,7 @@ class TagWidget extends Widget
         $value = array_map(function ($tag) {
             return ['key' => $tag, 'value' => $tag];
         }, $value);
-        $response->{ $this->property("name") } = $value;
+        $response->{ $this->property('name') } = $value;
     }
 
     /**
@@ -121,9 +122,10 @@ class TagWidget extends Widget
     {
         $tagRules = is_string($this->property('tagRules')) ? explode('|', $this->property('tagRules')) : $this->property('tagRules', []);
         $tagRules = array_merge(['distinct'], $tagRules);
+
         return [
             $this->name => array_merge($this->property('rules.'.$type, []), ['array']),
-            $this->name.'.*.value' => $tagRules
+            $this->name.'.*.value' => $tagRules,
         ];
     }
 

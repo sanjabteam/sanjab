@@ -2,8 +2,6 @@
 
 namespace Sanjab\Helpers;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * @method $this title (string $value)   title of filter option.
  * @method $this query (callable $value) filter option query callback.

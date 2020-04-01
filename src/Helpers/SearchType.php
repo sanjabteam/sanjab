@@ -11,7 +11,7 @@ use Sanjab\Widgets\Widget;
 class SearchType extends PropertiesHolder
 {
     protected $getters = [
-        'widgets'
+        'widgets',
     ];
     /**
      * Search Widgets.
@@ -30,6 +30,7 @@ class SearchType extends PropertiesHolder
     {
         $widget->setProperty('searchable', false);
         $this->widgets[] = $widget;
+
         return $this;
     }
 

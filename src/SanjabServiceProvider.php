@@ -4,17 +4,17 @@ namespace Sanjab;
 
 use Bouncer;
 use ReCaptcha\ReCaptcha;
+use TusPhp\Cache\FileStore;
+use TusPhp\Events\TusEvent;
 use TusPhp\Tus\Server as TusServer;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
-use ReCaptcha\RequestMethod\CurlPost;
 use Illuminate\Support\Facades\Route;
+use ReCaptcha\RequestMethod\CurlPost;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Session;
-use TusPhp\Events\TusEvent;
-use TusPhp\Cache\FileStore;
 
 class SanjabServiceProvider extends ServiceProvider
 {
@@ -134,7 +134,7 @@ class SanjabServiceProvider extends ServiceProvider
     protected function validationRules()
     {
         Validator::extendImplicit('sanjab_recaptcha', function ($attribute, $value, $parameters, $validator) {
-            if (config("app.debug") && config('sanjab.recaptcha.ignore_on_debug')) {
+            if (config('app.debug') && config('sanjab.recaptcha.ignore_on_debug')) {
                 return true;
             }
             if (empty($value)) {
@@ -145,6 +145,7 @@ class SanjabServiceProvider extends ServiceProvider
             if ($response->isSuccess()) {
                 return true;
             }
+
             return false;
         });
 
@@ -161,7 +162,6 @@ class SanjabServiceProvider extends ServiceProvider
     public function registerTus()
     {
         $this->app->singleton('sanjab-tus-server', function ($app) {
-
             if (! Storage::disk('local')->exists('temp/'.Session::getId())) {
                 Storage::disk('local')->makeDirectory('temp/'.Session::getId());
             }

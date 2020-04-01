@@ -3,7 +3,7 @@
 namespace Sanjab\Widgets;
 
 /**
- * Show text widget
+ * Show text widget.
  */
 class ShowWidget extends Widget
 {

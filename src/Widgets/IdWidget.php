@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Widget to show item id
+ * Widget to show item id.
  */
 class IdWidget extends NumberWidget
 {

@@ -2,9 +2,9 @@
 
 namespace Sanjab\Widgets\Wysiwyg;
 
-use Sanjab\Widgets\Widget;
-use Sanjab\Sanjab;
 use stdClass;
+use Sanjab\Sanjab;
+use Sanjab\Widgets\Widget;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,8 +14,8 @@ class EditorJsWidget extends Widget
 {
     public function init()
     {
-        $this->setProperty("tag", "editor-js-widget");
-        $this->setProperty("onIndex", false);
+        $this->setProperty('tag', 'editor-js-widget');
+        $this->setProperty('onIndex', false);
         $this->setProperty('showHtml', true);
     }
 
@@ -29,13 +29,13 @@ class EditorJsWidget extends Widget
     protected function modifyResponse(stdClass $response, Model $item)
     {
         if (isset($this->controllerProperties['type']) && $this->controllerProperties['type'] == 'show') {
-            if (is_array($item->{ $this->property("name") })) {
-                $response->{ $this->property("name") } = Sanjab::editorJsToHtml($item->{ $this->property("name") });
+            if (is_array($item->{ $this->property('name') })) {
+                $response->{ $this->property('name') } = Sanjab::editorJsToHtml($item->{ $this->property('name') });
             } else {
-                $response->{ $this->property("name") } = null;
+                $response->{ $this->property('name') } = null;
             }
         } else {
-            $response->{ $this->property("name") } = $item->{ $this->property("name") };
+            $response->{ $this->property('name') } = $item->{ $this->property('name') };
         }
     }
 }

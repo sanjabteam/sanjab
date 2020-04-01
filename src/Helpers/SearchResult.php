@@ -13,7 +13,7 @@ class SearchResult extends PropertiesHolder
     protected $properties = [
         'icon' => 'search',
         'title' => 'TITLE HERE',
-        'order' => 100
+        'order' => 100,
     ];
 
     /**

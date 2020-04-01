@@ -42,6 +42,7 @@ trait SubWidgets
                 }
             }
         }
+
         return $rules;
     }
 
@@ -61,6 +62,7 @@ trait SubWidgets
                 }
             }
         }
+
         return $attributes;
     }
 
@@ -76,14 +78,15 @@ trait SubWidgets
                 }
             }
         }
+
         return $messages;
     }
 
     protected function modifyResponse(stdClass $response, Model $item)
     {
         $responseItems = [];
-        if (is_array($item->{ $this->property("name") }) || $item->{ $this->property("name") } instanceof \Illuminate\Database\Eloquent\Collection) {
-            foreach ($item->{ $this->property("name") } as $key => $itemModel) {
+        if (is_array($item->{ $this->property('name') }) || $item->{ $this->property('name') } instanceof \Illuminate\Database\Eloquent\Collection) {
+            foreach ($item->{ $this->property('name') } as $key => $itemModel) {
                 if (! ($itemModel instanceof \Illuminate\Database\Eloquent\Model)) {
                     $itemModel = $this->arrayToModel($itemModel);
                 }
@@ -93,10 +96,10 @@ trait SubWidgets
                 foreach ($this->widgets as $widget) {
                     $widget->doModifyResponse($responseObject, $itemModel);
                 }
-                $responseItems[] = (array)$responseObject;
+                $responseItems[] = (array) $responseObject;
             }
         }
-        $response->{ $this->property("name") } = $responseItems;
+        $response->{ $this->property('name') } = $responseItems;
     }
 
     protected function modifyRequest(Request $request, Model $item = null)
@@ -143,6 +146,7 @@ trait SubWidgets
             $request->server()
         );
         $widgetRequest->replace(is_array($request->input($this->name.'.'.$index)) ? $request->input($this->name.'.'.$index) : []);
+
         return $widgetRequest;
     }
 
@@ -165,6 +169,7 @@ trait SubWidgets
                 }
             }
         }
+
         return $models;
     }
 
@@ -183,6 +188,7 @@ trait SubWidgets
         foreach ($attributes as $key2 => $value) {
             $model->{ $key2 } = $value;
         }
+
         return $model;
     }
 
@@ -200,7 +206,7 @@ trait SubWidgets
     }
 
     /**
-     * Widgets getter
+     * Widgets getter.
      *
      * @return array
      */
@@ -218,6 +224,7 @@ trait SubWidgets
     public function addWidget(Widget $newWidget)
     {
         $this->widgets[] = $newWidget;
+
         return $this;
     }
 
@@ -230,6 +237,7 @@ trait SubWidgets
     public function addWidgets(array $newWidgets)
     {
         $this->widgets = array_merge($this->widgets, $newWidgets);
+
         return $this;
     }
 }

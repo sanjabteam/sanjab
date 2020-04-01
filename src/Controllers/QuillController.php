@@ -2,8 +2,8 @@
 
 namespace Sanjab\Controllers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 class QuillController extends SanjabController
@@ -11,10 +11,11 @@ class QuillController extends SanjabController
     public function imageUpload(Request $request)
     {
         $this->validate($request, [
-            'file' => 'required|image'
+            'file' => 'required|image',
         ]);
         $file = $request->file('file');
-        $filename = $file->store("/", "public");
+        $filename = $file->store('/', 'public');
+
         return response()->json(Storage::disk('public')->url($filename));
     }
 

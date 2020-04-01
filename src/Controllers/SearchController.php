@@ -2,9 +2,9 @@
 
 namespace Sanjab\Controllers;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use Sanjab\Sanjab;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class SearchController extends SanjabController
 {

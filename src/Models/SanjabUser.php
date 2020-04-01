@@ -2,9 +2,9 @@
 
 namespace Sanjab\Models;
 
+use Silber\Bouncer\Database\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
-use Silber\Bouncer\Database\Models;
 
 trait SanjabUser
 {

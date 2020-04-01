@@ -2,9 +2,9 @@
 
 namespace Sajab\Tests\Feature\Widgets\File;
 
-use Illuminate\Support\Facades\File;
 use Sanjab\Sanjab;
 use Sanjab\Tests\TestCase;
+use Illuminate\Support\Facades\File;
 
 class UppyWidgetTest extends TestCase
 {

@@ -5,10 +5,10 @@ namespace Sanjab\Controllers;
 use elFinder;
 use elFinderConnector;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use Sanjab\Helpers\MenuItem;
 use Sanjab\Helpers\PermissionItem;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 class ElfinderController extends SanjabController
 {
@@ -24,6 +24,7 @@ class ElfinderController extends SanjabController
         if ($request->input('popup') != 'true') {
             $this->authorize('access_to_file_manager');
         }
+
         return view('sanjab::file_manager', ['popup' => $request->input('popup') == 'true']);
     }
 
@@ -100,9 +101,9 @@ class ElfinderController extends SanjabController
                         ->title(trans('sanjab::sanjab.file_manager'))
                         ->icon('folder')
                         ->hidden(function () {
-                            return !config('sanjab.elfinder.enabled') || auth()->user()->cannot('access_to_file_manager');
+                            return ! config('sanjab.elfinder.enabled') || auth()->user()->cannot('access_to_file_manager');
                         })
-                        ->order(150)
+                        ->order(150),
         ];
     }
 
@@ -110,7 +111,7 @@ class ElfinderController extends SanjabController
     {
         return [
             PermissionItem::create(trans('sanjab::sanjab.file_manager'))
-                            ->addPermission(trans('sanjab::sanjab.access_to_file_manager'), 'access_to_file_manager')
+                            ->addPermission(trans('sanjab::sanjab.access_to_file_manager'), 'access_to_file_manager'),
         ];
     }
 }

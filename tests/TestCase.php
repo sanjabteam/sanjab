@@ -3,10 +3,10 @@
 namespace Sanjab\Tests;
 
 use Sanjab\Tests\Models\User;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Illuminate\Support\Facades\File;
+use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Orchestra\Testbench\Dusk\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
@@ -68,7 +68,7 @@ class TestCase extends OrchestraTestCase
         return [
             'Sanjab' => \Sanjab\SanjabFacade::class,
             'Bouncer' => \Silber\Bouncer\BouncerFacade::class,
-            'Agent' => \Jenssegers\Agent\Facades\Agent::class
+            'Agent' => \Jenssegers\Agent\Facades\Agent::class,
         ];
     }
 

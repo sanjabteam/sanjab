@@ -2,8 +2,8 @@
 
 namespace Sanjab\Controllers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Sanjab\Helpers\InteractsWithWidget;
 
 class CheckboxWidgetController extends SanjabController
@@ -26,7 +26,7 @@ class CheckboxWidgetController extends SanjabController
         // Get item.
         $item = $model::where('id', $request->input('item'))->withoutGlobalScopes()->firstOrFail();
         // Check user authorized to update model
-        if (! $checkboxWidget->property("fastChangeControllerAuthorize")($item)) {
+        if (! $checkboxWidget->property('fastChangeControllerAuthorize')($item)) {
             return response()->json(['success' => false], 403);
         }
 
@@ -43,6 +43,7 @@ class CheckboxWidgetController extends SanjabController
         // Call after save callback
         ($checkboxWidget->property('fastChangeAfter'))($item);
         $item->save();
+
         return ['success' => true];
     }
 
