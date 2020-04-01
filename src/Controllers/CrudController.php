@@ -593,7 +593,7 @@ abstract class CrudController extends SanjabController
         return [];
     }
 
-    public static function globalSearch(string $search)
+    public static function globalSearch(string $search): array
     {
         $results = [];
         // Authorize can user access to items list atleasts.

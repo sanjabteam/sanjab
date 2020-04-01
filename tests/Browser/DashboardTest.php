@@ -3,10 +3,10 @@
 namespace Sanjab\Tests\Browser;
 
 use Laravel\Dusk\Browser;
-use Sanjab\Tests\DuskTestCase;
+use Sanjab\Tests\TestCase;
 use Sanjab\Tests\Models\User;
 
-class DashboardTest extends DuskTestCase
+class DashboardTest extends TestCase
 {
     public function testRedirectUnathorizedUser()
     {
@@ -16,21 +16,6 @@ class DashboardTest extends DuskTestCase
                     ->assertRouteIs('sanjab.auth.login');
         });
     }
-
-    public function testAbortIfCannotAccessSanjab()
-    {
-        $this->actingAs(User::where('email', 'normal@test.com')->firstOrFail())
-                ->get(route('sanjab.dashboards.dashboard'))
-                ->assertStatus(403);
-    }
-
-    public function testRedirectIfUserLoggedInBefore()
-    {
-        $this->actingAs(User::where('email', 'admin@test.com')->firstOrFail())
-                ->get(route('sanjab.auth.login'))
-                ->assertRedirect('/admin');
-    }
-
     public function testCanSeeDashboard()
     {
         $this->browse(function (Browser $browser) {

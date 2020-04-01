@@ -100,7 +100,7 @@ class ElfinderController extends SanjabController
                         ->title(trans('sanjab::sanjab.file_manager'))
                         ->icon('folder')
                         ->hidden(function () {
-                            return !config('sanjab.elfinder.enabled') || request()->user()->cannot('access_to_file_manager');
+                            return !config('sanjab.elfinder.enabled') || auth()->user()->cannot('access_to_file_manager');
                         })
                         ->order(150)
         ];

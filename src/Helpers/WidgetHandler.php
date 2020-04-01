@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use stdClass;
 use Illuminate\Validation\Validator;
-use Sanjab\Exceptions\CrudTypeNotAllowed;
+use Sanjab\Exceptions\CrudTypeNotAllowedException;
 
 trait WidgetHandler
 {
@@ -308,7 +308,7 @@ trait WidgetHandler
     private function typeTitleCase(string $type)
     {
         if ($type != 'create' && $type != 'edit') {
-            throw new CrudTypeNotAllowed();
+            throw new CrudTypeNotAllowedException();
         }
 
         return title_case($type);

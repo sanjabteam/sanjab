@@ -7,8 +7,9 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Illuminate\Support\Facades\File;
+use Orchestra\Testbench\Dusk\TestCase as OrchestraTestCase;
 
-class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
+class TestCase extends OrchestraTestCase
 {
     protected function setUp(): void
     {
@@ -85,6 +86,7 @@ class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         $app['config']->set('sanjab.controllers', [
             \Sanjab\Tests\Controllers\DashboardController::class,
             \Sanjab\Tests\Controllers\UserController::class,
+            \Sanjab\Tests\Controllers\TestController::class,
         ]);
 
         if (! file_exists(database_path('database.sqlite'))) {

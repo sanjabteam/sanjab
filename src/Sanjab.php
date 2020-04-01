@@ -78,7 +78,7 @@ class Sanjab
      *
      * @return array
      */
-    public static function controllers()
+    public static function controllers(): array
     {
         return array_filter(
             array_merge(config('sanjab.controllers'), static::SANJAB_CONTROLLERS),
@@ -101,37 +101,38 @@ class Sanjab
      */
     public static function menuItems(): array
     {
+        if (! Auth::check()) {
+            return [];
+        }
         if (static::$menuItems == null) {
             static::$menuItems = [];
-            if (Auth::check()) {
-                $index = 0;
-                foreach (static::controllers() as $controller) {
-                    foreach ($controller::menus() as $menuItemKey => $menuItem) {
-                        if (! $menuItem instanceof MenuItem) {
-                            throw new Exception("Some menu item in '$controller' is not a MenuItem type.");
-                        }
-                        $menuItem->key = $index++;
-                        if ($menuItem->hasChildren() == false || ! isset(static::$menuItems[$menuItem->title])) {
-                            static::$menuItems[$menuItem->title] = $menuItem;
-                        } else {
-                            foreach ($menuItem->getChildren() as $childItem) {
-                                static::$menuItems[$menuItem->title]
-                                    ->addChild($childItem);
-                            }
+            $index = 0;
+            foreach (static::controllers() as $controller) {
+                foreach ($controller::menus() as $menuItemKey => $menuItem) {
+                    if (! $menuItem instanceof MenuItem) {
+                        throw new Exception("Some menu item in '$controller' is not a MenuItem type.");
+                    }
+                    $menuItem->key = $index++;
+                    if ($menuItem->hasChildren() == false || ! isset(static::$menuItems[$menuItem->title])) {
+                        static::$menuItems[$menuItem->title] = $menuItem;
+                    } else {
+                        foreach ($menuItem->getChildren() as $childItem) {
+                            static::$menuItems[$menuItem->title]
+                                ->addChild($childItem);
                         }
                     }
                 }
-                static::$menuItems = array_filter(static::$menuItems, function ($menuItem) {
-                    return !$menuItem->isHidden();
-                });
-                usort(static::$menuItems, function ($a, $b) {
-                    if ($a->order == $b->order) {
-                        return $a->key > $b->key ? 1 : -1;
-                    }
-                    return $a->order > $b->order ? 1 : -1;
-                });
-                static::$menuItems = array_values(static::$menuItems);
             }
+            static::$menuItems = array_filter(static::$menuItems, function ($menuItem) {
+                return !$menuItem->isHidden();
+            });
+            usort(static::$menuItems, function ($a, $b) {
+                if ($a->order == $b->order) {
+                    return $a->key > $b->key ? 1 : -1;
+                }
+                return $a->order > $b->order ? 1 : -1;
+            });
+            static::$menuItems = array_values(static::$menuItems);
         }
         return static::$menuItems;
     }
@@ -145,24 +146,25 @@ class Sanjab
      */
     public static function notificationItems($forceRefresh = false): array
     {
+        if (! Auth::check()) {
+            return [];
+        }
         if (static::$notificationItems == null || $forceRefresh) {
             static::$notificationItems = [];
-            if (Auth::check()) {
-                foreach (static::controllers() as $controller) {
-                    foreach ($controller::notifications() as $notificationItem) {
-                        if (! $notificationItem instanceof NotificationItem) {
-                            throw new Exception("Some permission item in '$controller' is not a NotificationItem type.");
-                        }
-                        static::$notificationItems[] = $notificationItem;
+            foreach (static::controllers() as $controller) {
+                foreach ($controller::notifications() as $notificationItem) {
+                    if (! $notificationItem instanceof NotificationItem) {
+                        throw new Exception("Some permission item in '$controller' is not a NotificationItem type.");
                     }
+                    static::$notificationItems[] = $notificationItem;
                 }
-                static::$notificationItems = array_filter(static::$notificationItems, function ($notificationItem) {
-                    return !$notificationItem->isHidden();
-                });
-                usort(static::$notificationItems, function ($a, $b) {
-                    return $a->order > $b->order;
-                });
             }
+            static::$notificationItems = array_filter(static::$notificationItems, function ($notificationItem) {
+                return !$notificationItem->isHidden();
+            });
+            usort(static::$notificationItems, function ($a, $b) {
+                return $a->order > $b->order;
+            });
         }
         return static::$notificationItems;
     }
@@ -326,7 +328,7 @@ class Sanjab
      * @param string $controller
      * @return void
      */
-    public static function addControllerToConfig($controller)
+    public static function addControllerToConfig(string $controller)
     {
         if (! file_exists(config_path('sanjab.php'))) {
             throw new Exception("Sanjab config not found.");

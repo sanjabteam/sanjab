@@ -72,7 +72,7 @@ abstract class SanjabController extends BaseController
      * @param string $search  text to search.
      * @return array|SearchResult[]
      */
-    public static function globalSearch(string $search)
+    public static function globalSearch(string $search): array
     {
         return [];
     }
