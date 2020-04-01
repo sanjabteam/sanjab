@@ -7,9 +7,9 @@
 <div align="center">
 
 [![Build Status](https://travis-ci.com/sanjabteam/sanjab.svg?branch=master)](https://travis-ci.com/sanjabteam/sanjab)
+[![Code Coverage](https://codecov.io/gh/sanjabteam/sanjab/branch/master/graph/badge.svg?sanitize=true)](https://codecov.io/gh/sanjabteam/sanjab)
 [![Total Downloads](https://poser.pugx.org/sanjabteam/sanjab/downloads)](https://packagist.org/packages/sanjabteam/sanjab)
 [![Latest Stable Version](https://poser.pugx.org/sanjabteam/sanjab/v/stable)](https://packagist.org/packages/sanjabteam/sanjab)
-[![Open Issues](https://img.shields.io/github/issues/sanjabteam/sanjab)](https://github.com/sanjabteam/sanjab/issues)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 </div>

@@ -1,20 +1,19 @@
 language: php
 
 php:
-  - 7.2
-  - 7.3
-
-env:
-  matrix:
-    - COMPOSER_FLAGS="--prefer-lowest"
-    - COMPOSER_FLAGS=""
+    - 7.2
+    - 7.3
 
 before_script:
-  - travis_retry composer self-update
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+    - travis_retry composer self-update
+    - travis_retry composer install --no-interaction --prefer-dist
 
 script:
-  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+    - vendor/bin/phpunit --coverage-clover=coverage.xml
 
-after_script:
-  - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
+
+cache:
+    directories:
+        - $HOME/.composer/cache
