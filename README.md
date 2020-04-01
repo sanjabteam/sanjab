@@ -1,11 +1,25 @@
-# Laravel admin panel
+<div align="center">
+    <img src="./images/logo.svg" width="300" height="300">
+</div>
+<h1 align="center">Sanjab</h1>
+<h2 align="center">Yet another admin package for <a href="http://laravel.com/" title="Laravel">Laravel</a>.</h2>
 
-![Panel](./images/screenshots/crud.jpg)
+<div align="center">
+
+[![Build Status](https://travis-ci.com/sanjabteam/sanjab.svg?branch=master)](https://travis-ci.com/sanjabteam/sanjab)
+[![Total Downloads](https://poser.pugx.org/sanjabteam/sanjab/downloads)](https://packagist.org/packages/sanjabteam/sanjab)
+[![Latest Stable Version](https://poser.pugx.org/sanjabteam/sanjab/v/stable)](https://packagist.org/packages/sanjabteam/sanjab)
+[![Open Issues](https://img.shields.io/github/issues/sanjabteam/sanjab)](https://github.com/sanjabteam/sanjab/issues)
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+
+</div>
+
+![CRUD List](./images/screenshots/crud.jpg)
+![CRUD Form](./images/screenshots/crud_form.jpg)
 ![Login](./images/screenshots/login.jpg)
-![Screen Saver](./images/screenshots/screensaver.jpg)
 
-## [Installation](https://sanjabteam.github.io/install.html)
-Read installation manual [here](https://sanjabteam.github.io/install.html).
+## [Documentation](https://sanjabteam.github.io/)
+Installation guide [here](https://sanjabteam.github.io/install.html).
 
 ### Changelog
 
