@@ -12,7 +12,7 @@ namespace Sanjab\Models;
  * @property string $tags               tags as string
  * @property array $tags_array          tags as array
  */
-trait TagRealtion
+trait TagRelation
 {
     /**
      * Stroing tags then saving them help to ignore error when Model is not saved in database yet.

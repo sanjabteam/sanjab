@@ -206,7 +206,7 @@ abstract class SettingController extends SanjabController
         return [$permission];
     }
 
-    public static function globalSearch(string $search)
+    public static function globalSearch(string $search): array
     {
         if (Auth::user()->can('update_setting_'.static::property('key')) && static::property('globalSearch')) {
             $controllerInsatance = app(static::class);
