@@ -12,7 +12,7 @@
 [![Total Downloads](https://poser.pugx.org/sanjabteam/sanjab/downloads)](https://packagist.org/packages/sanjabteam/sanjab)
 [![Latest Stable Version](https://poser.pugx.org/sanjabteam/sanjab/v/stable)](https://packagist.org/packages/sanjabteam/sanjab)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
-[![Discord](https://img.shields.io/discord/695222831562358854)](https://discord.gg/5sPHMjK)
+[![Discord](https://img.shields.io/discord/695222831562358854)](https://discord.gg/kwuTZQd)
 
 </div>
 
@@ -24,7 +24,7 @@
 Installation guide [here](https://sanjabteam.github.io/install.html).
 
 ## Community
-Join us on [Discord](https://discord.gg/5sPHMjK).
+Join us on [Discord](https://discord.gg/kwuTZQd).
 
 ### Changelog
 
