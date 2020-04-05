@@ -2,10 +2,7 @@
 
 namespace Sanjab\Controllers;
 
-use DOMDocument;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use ReflectionClass;
 use Sanjab\Helpers\MaterialIcons;
 
@@ -19,6 +16,7 @@ class IconController extends SanjabController
     public function show()
     {
         $icons = (new ReflectionClass(MaterialIcons::class))->getConstants();
+
         return view('sanjab::icons', ['icons' => $icons]);
     }
 
