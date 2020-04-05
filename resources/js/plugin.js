@@ -1,4 +1,3 @@
-import Quill from 'quill';
 import { ImageUpload } from 'quill-image-upload';
 import store from './store';
 

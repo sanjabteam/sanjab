@@ -16,6 +16,7 @@ try {
     window.require = window.requirejs = require('shebang-loader!requirejs');
     window.ace = require('ace-builds');
     window.define = ace.define;
+    window.Quill = require('quill');
     require('ace-builds/src-noconflict/theme-monokai');
     ace.config.set(
         "basePath",
