@@ -1,4 +1,5 @@
 /.githooks
+/.github
 /.idea
 /.vscode
 /build

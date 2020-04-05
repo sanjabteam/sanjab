@@ -2,7 +2,7 @@
     <img src="./images/logo.svg" width="200" height="200">
 </div>
 <h1 align="center">Sanjab</h1>
-<h2 align="center">Yet another admin package for <a href="http://laravel.com/" title="Laravel">Laravel</a>.</h2>
+<h2 align="center">Yet another admin package for Laravel.</h2>
 
 <div align="center">
 
@@ -17,21 +17,69 @@
 
 </div>
 
+Sanjab is a [Laravel](http://laravel.com/) package that helping laravel developers create an admin panel for projects quickly.
+
+- [Screebshots](#screebshots)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Code](#code)
+- [Documentation](#documentation)
+- [Community & Support](#community--support)
+- [Contributing](#contributing)
+- [Acknowledgements](#acknowledgements)
+- [Changelog](#changelog)
+- [License](#license)
+
+
+---
+
+## Screebshots
 ![CRUD List](./images/screenshots/crud.jpg)
 ![CRUD Form](./images/screenshots/crud_form.jpg)
 ![Login](./images/screenshots/login.jpg)
 
-## [Documentation](https://sanjabteam.github.io/)
-Installation guide [here](https://sanjabteam.github.io/install.html).
+---
 
-## Community
+## Features
+* Easy yet powerful.
+* Working directly with [Eloquent](https://laravel.com/docs/eloquent) models.
+* Eloquent relation & policy support.
+* Multiple [input types](https://sanjabteam.github.io/widgets.html) and [cards](https://sanjabteam.github.io/cards.html).
+* [Setting](https://sanjabteam.github.io/setting.html) support with no pain.
+* Extendible. [Create a custom field](https://sanjabteam.github.io/widgets.html#extending-widgets) or completely custom controller based on [vue.js](https://vuejs.org/).
+* Dynamic Role/Permission support based on [bouncer](https://github.com/JosephSilber/bouncer).
+* Customizable CRUD buttons and bulk actions support in few lines of code.
+* Multilingual inputs support based on [laravel translatable](https://github.com/Astrotomic/laravel-translatable).
+* Realtime notification tracking with toast and/or sound notification support.
+* Beautiful Material UI based on [Material Dashboard](https://www.creative-tim.com/product/material-dashboard).
+
+## Getting Started
+First, you should install sanjab on your Laravel project. Read installation guide here [Here](https://sanjabteam.github.io/install.html).
+
+## Code
+Sanjab has an elegant syntax.
+
+For example, if you have a field called "name" in your model and it's a required field. you can define text field for that just in a few lines of code:
+```php
+$this->widgets[] = TextWidget::create('name')
+                ->required();
+```
+Now you have a field in your create/edit form with search, sort, table column and show field, all done automatically.
+
+Also autocomplete is supported for your favorite IDE.
+
+## Documentation
+You can find more information about Sanjab in [documentation](https://sanjabteam.github.io/).
+
+## Community & Support
 Join us on [Discord](https://discord.gg/kwuTZQd).
 
-### Changelog
+To ask a question read [Support Guide](./.github/SUPPORT.md).
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+## Contributing
+Contributions are welcome! Please read [Contributing Guide](./.github/CONTRIBUTING.md) for more informations.
 
-## Credits
+## Acknowledgements
 
 - [Ace](https://ace.c9.io)
 - [Agent](https://github.com/jenssegers/agent)
@@ -69,6 +117,10 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 - [Vue select](https://github.com/sagalbot/vue-select)
 - [Vue tags input](https://github.com/voerro/vue-tagsinput)
 - [Vue2 leaflet](https://github.com/KoRiGaN/Vue2Leaflet)
+
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information about what has changed recently.
 
 ## License
 

@@ -10,3 +10,5 @@
 /tests              export-ignore
 /.editorconfig      export-ignore
 /images             export-ignore
+/.githooks          export-ignore
+/.github            export-ignore

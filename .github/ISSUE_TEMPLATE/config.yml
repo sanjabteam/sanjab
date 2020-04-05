@@ -1,0 +1,4 @@
+contact_links:
+  - name: Ask Questions
+    url: https://github.com/sanjabteam/sanjab/blob/master/.github/SUPPORT.md
+    about: 'Please do not use the issue tracker for asking questions or support. use discord or StackOverflow instead.'
