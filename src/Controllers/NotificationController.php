@@ -79,60 +79,7 @@ class NotificationController extends CrudController
 
         // items for json ajax.
         if ($request->wantsJson()) {
-            $model = $this->property('model');
-            $items = $model::query();
-            // Do search
-            if (is_array($request->input('searchTypes')) &&
-                count(array_filter($request->input('searchTypes'), function ($searchType) {
-                    return $searchType != null;
-                })) > 0
-            ) {
-                // advanced search
-                foreach ($this->widgets as $widget) {
-                    if ($request->input('searchTypes.'.$widget->name) &&
-                        $searchType = array_first(array_filter($widget->getSearchTypes(), function ($searchType) use ($request, $widget) {
-                            return $searchType->type == $request->input('searchTypes.'.$widget->name);
-                        }))
-                    ) {
-                        $items->where(function (Builder $query) use ($widget, $request, $searchType) {
-                            if (count($searchType->getWidgets()) > 1) {
-                                $widget->doSearch($query, $request->input('searchTypes.'.$widget->name), $request->input('search.'.$widget->name.'.'.$searchType->type));
-                            } else {
-                                $widget->doSearch($query, $request->input('searchTypes.'.$widget->name), array_first($request->input('search.'.$widget->name.'.'.$searchType->type)));
-                            }
-                        });
-                    }
-                }
-            } else {
-                // normal filter
-                $this->querySearch($items, $request->input('filter'));
-                if (isset($this->filters[$request->input('filterOption')])) {
-                    $this->filters[$request->input('filterOption')]->property('query')($items);
-                }
-            }
-            // Do sort
-            $this->querySort($items, $request->input('sortBy'), $request->input('sortDesc') == 'true' ? true : false);
-            // Customize query by query scope
-            $this->queryScope($items);
-
-            // Get and paginate
-            $items = $items->paginate($request->input('perPage', $this->property('perPage')));
-
-            // Convert each item to well formatted response including actions authorizations/urls and widget modified responses
-            foreach ($items as $key => $value) {
-                $items[$key] = $this->itemResponse($value);
-            }
-
-            $notification = $this->notification($request, $items);
-
-            // Add cards data to response
-            $cardsData = [];
-            foreach ($this->cards as $key => $card) {
-                $cardsData[$key] = new stdClass;
-                $card->doModifyResponse($cardsData[$key]);
-            }
-
-            return compact('items', 'cardsData', 'notification');
+            return $this->indexJson($request);
         }
 
         // view it self without items
@@ -286,7 +233,9 @@ class NotificationController extends CrudController
 
     protected function queryScope(Builder $query)
     {
-        $query->where('data', 'LIKE', '%"text":%');
+        $query->where('data', 'LIKE', '%"text":%')->whereHasMorph('notifiable', [Sanjab::userModel()], function ($query) {
+            $query->where('id', Auth::id());
+        });
     }
 
     public static function menus(): array
