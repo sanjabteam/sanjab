@@ -27,16 +27,6 @@ class MakeAdmin extends Command
     protected $description = 'Make a new super admin';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed

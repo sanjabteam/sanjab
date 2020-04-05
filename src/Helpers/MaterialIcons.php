@@ -4,8 +4,6 @@ namespace Sanjab\Helpers;
 
 /**
  * List of material icons.
- *
- * @todo Some of icons not working and needed to be fixed.
  */
 class MaterialIcons
 {
@@ -27,7 +25,6 @@ class MaterialIcons
     const ALL_OUT = 'all_out';
     const ANDROID = 'android';
     const ANNOUNCEMENT = 'announcement';
-    const ARROW_RIGHT_ALT = 'arrow_right_alt';
     const ASPECT_RATIO = 'aspect_ratio';
     const ASSESSMENT = 'assessment';
     const ASSIGNMENT = 'assignment';
@@ -45,8 +42,6 @@ class MaterialIcons
     const BUG_REPORT = 'bug_report';
     const BUILD = 'build';
     const CACHED = 'cached';
-    const CALENDAR_TODAY = 'calendar_today';
-    const CALENDAR_VIEW_DAY = 'calendar_view_day';
     const CAMERA_ENHANCE = 'camera_enhance';
     const CARD_GIFTCARD = 'card_giftcard';
     const CARD_MEMBERSHIP = 'card_membership';
@@ -57,9 +52,7 @@ class MaterialIcons
     const CHROME_READER_MODE = 'chrome_reader_mode';
     const _CLASS = 'class';
     const CODE = 'code';
-    const COMMUTE = 'commute';
     const COMPARE_ARROWS = 'compare_arrows';
-    const CONTACT_SUPPORT = 'contact_support';
     const COPYRIGHT = 'copyright';
     const CREDIT_CARD = 'credit_card';
     const DASHBOARD = 'dashboard';
@@ -74,7 +67,6 @@ class MaterialIcons
     const DONE_OUTLINE = 'done_outline';
     const DONUT_LARGE = 'donut_large';
     const DONUT_SMALL = 'donut_small';
-    const DRAG_INDICATOR = 'drag_indicator';
     const EJECT = 'eject';
     const EURO_SYMBOL = 'euro_symbol';
     const EVENT = 'event';
@@ -105,7 +97,6 @@ class MaterialIcons
     const HIGHLIGHT_OFF = 'highlight_off';
     const HISTORY = 'history';
     const HOME = 'home';
-    const HORIZONTAL_SPLIT = 'horizontal_split';
     const HOURGLASS_EMPTY = 'hourglass_empty';
     const HOURGLASS_FULL = 'hourglass_full';
     const HTTP = 'http';
@@ -126,11 +117,8 @@ class MaterialIcons
     const LOCK_OPEN = 'lock_open';
     const LOYALTY = 'loyalty';
     const MARKUNREAD_MAILBOX = 'markunread_mailbox';
-    const MAXIMIZE = 'maximize';
-    const MINIMIZE = 'minimize';
     const MOTORCYCLE = 'motorcycle';
     const NOTE_ADD = 'note_add';
-    const OFFLINE_BOLT = 'offline_bolt';
     const OFFLINE_PIN = 'offline_pin';
     const OPACITY = 'opacity';
     const OPEN_IN_BROWSER = 'open_in_browser';
@@ -164,7 +152,6 @@ class MaterialIcons
     const REORDER = 'reorder';
     const REPORT_PROBLEM = 'report_problem';
     const RESTORE = 'restore';
-    const RESTORE_FROM_TRASH = 'restore_from_trash';
     const RESTORE_PAGE = 'restore_page';
     const ROOM = 'room';
     const ROUNDED_CORNER = 'rounded_corner';
@@ -199,18 +186,12 @@ class MaterialIcons
     const STARS = 'stars';
     const STORE = 'store';
     const SUBJECT = 'subject';
-    const SUPERVISED_USER_CIRCLE = 'supervised_user_circle';
     const SUPERVISOR_ACCOUNT = 'supervisor_account';
     const SWAP_HORIZ = 'swap_horiz';
-    const SWAP_HORIZONTAL_CIRCLE = 'swap_horizontal_circle';
     const SWAP_VERT = 'swap_vert';
     const SWAP_VERTICAL_CIRCLE = 'swap_vertical_circle';
     const TAB = 'tab';
     const TAB_UNSELECTED = 'tab_unselected';
-    const TEXT_ROTATE_UP = 'text_rotate_up';
-    const TEXT_ROTATE_VERTICAL = 'text_rotate_vertical';
-    const TEXT_ROTATION_DOWN = 'text_rotation_down';
-    const TEXT_ROTATION_NONE = 'text_rotation_none';
     const THEATERS = 'theaters';
     const THUMB_DOWN = 'thumb_down';
     const THUMB_UP = 'thumb_up';
@@ -229,7 +210,6 @@ class MaterialIcons
     const TURNED_IN_NOT = 'turned_in_not';
     const UPDATE = 'update';
     const VERIFIED_USER = 'verified_user';
-    const VERTICAL_SPLIT = 'vertical_split';
     const VIEW_AGENDA = 'view_agenda';
     const VIEW_ARRAY = 'view_array';
     const VIEW_CAROUSEL = 'view_carousel';
@@ -243,7 +223,6 @@ class MaterialIcons
     const VIEW_WEEK = 'view_week';
     const VISIBILITY = 'visibility';
     const VISIBILITY_OFF = 'visibility_off';
-    const VOICE_OVER_OFF = 'voice_over_off';
     const WATCH_LATER = 'watch_later';
     const WORK = 'work';
     const WORK_OFF = 'work_off';
@@ -254,9 +233,7 @@ class MaterialIcons
     const ADD_ALERT = 'add_alert';
     const ERROR = 'error';
     const ERROR_OUTLINE = 'error_outline';
-    const NOTIFICATION_IMPORTANT = 'notification_important';
     const WARNING = 'warning';
-    const _4K = '4k';
     const ADD_TO_QUEUE = 'add_to_queue';
     const AIRPLAY = 'airplay';
     const ALBUM = 'album';
@@ -265,7 +242,6 @@ class MaterialIcons
     const BRANDING_WATERMARK = 'branding_watermark';
     const CALL_TO_ACTION = 'call_to_action';
     const CLOSED_CAPTION = 'closed_caption';
-    const CONTROL_CAMERA = 'control_camera';
     const EQUALIZER = 'equalizer';
     const EXPLICIT = 'explicit';
     const FAST_FORWARD = 'fast_forward';
@@ -340,7 +316,6 @@ class MaterialIcons
     const VOLUME_UP = 'volume_up';
     const WEB = 'web';
     const WEB_ASSET = 'web_asset';
-    const ALTERNATE_EMAIL = 'alternate_email';
     const BUSINESS = 'business';
     const CALL = 'call';
     const CALL_END = 'call_end';
@@ -360,11 +335,8 @@ class MaterialIcons
     const CONTACT_MAIL = 'contact_mail';
     const CONTACT_PHONE = 'contact_phone';
     const CONTACTS = 'contacts';
-    const DESKTOP_ACCESS_DISABLED = 'desktop_access_disabled';
     const DIALER_SIP = 'dialer_sip';
     const DIALPAD = 'dialpad';
-    const DOMAIN_DISABLED = 'domain_disabled';
-    const DUO = 'duo';
     const EMAIL = 'email';
     const FORUM = 'forum';
     const IMPORT_CONTACTS = 'import_contacts';
@@ -378,7 +350,6 @@ class MaterialIcons
     const MESSAGE = 'message';
     const MOBILE_SCREEN_SHARE = 'mobile_screen_share';
     const NO_SIM = 'no_sim';
-    const PAUSE_PRESENTATION = 'pause_presentation';
     const PERSON_ADD_DISABLED = 'person_add_disabled';
     const PHONE = 'phone';
     const PHONELINK_ERASE = 'phonelink_erase';
@@ -400,7 +371,6 @@ class MaterialIcons
     const STOP_SCREEN_SHARE = 'stop_screen_share';
     const SWAP_CALLS = 'swap_calls';
     const TEXTSMS = 'textsms';
-    const UNSUBSCRIBE = 'unsubscribe';
     const VOICEMAIL = 'voicemail';
     const VPN_KEY = 'vpn_key';
     const ADD = 'add';
@@ -409,20 +379,17 @@ class MaterialIcons
     const ADD_CIRCLE_OUTLINE = 'add_circle_outline';
     const ARCHIVE = 'archive';
     const BACKSPACE = 'backspace';
-    const BALLOT = 'ballot';
     const BLOCK = 'block';
     const CLEAR = 'clear';
     const CREATE = 'create';
     const DELETE_SWEEP = 'delete_sweep';
     const DRAFTS = 'drafts';
-    const FILE_COPY = 'file_copy';
     const FILTER_LIST = 'filter_list';
     const FLAG = 'flag';
     const FONT_DOWNLOAD = 'font_download';
     const FORWARD = 'forward';
     const GESTURE = 'gesture';
     const HOW_TO_REG = 'how_to_reg';
-    const HOW_TO_VOTE = 'how_to_vote';
     const INBOX = 'inbox';
     const LINK = 'link';
     const LINK_OFF = 'link_off';
@@ -431,7 +398,6 @@ class MaterialIcons
     const MARKUNREAD = 'markunread';
     const MOVE_TO_INBOX = 'move_to_inbox';
     const NEXT_WEEK = 'next_week';
-    const OUTLINED_FLAG = 'outlined_flag';
     const REDO = 'redo';
     const REMOVE = 'remove';
     const REMOVE_CIRCLE = 'remove_circle';
@@ -448,9 +414,7 @@ class MaterialIcons
     const TEXT_FORMAT = 'text_format';
     const UNARCHIVE = 'unarchive';
     const UNDO = 'undo';
-    const WAVES = 'waves';
     const WEEKEND = 'weekend';
-    const WHERE_TO_VOTE = 'where_to_vote';
     const ACCESS_ALARM = 'access_alarm';
     const ACCESS_ALARMS = 'access_alarms';
     const ACCESS_TIME = 'access_time';
@@ -458,19 +422,7 @@ class MaterialIcons
     const ADD_TO_HOME_SCREEN = 'add_to_home_screen';
     const AIRPLANEMODE_ACTIVE = 'airplanemode_active';
     const AIRPLANEMODE_INACTIVE = 'airplanemode_inactive';
-    const BATTERY_20 = 'battery_20';
-    const BATTERY_30 = 'battery_30';
-    const BATTERY_50 = 'battery_50';
-    const BATTERY_60 = 'battery_60';
-    const BATTERY_80 = 'battery_80';
-    const BATTERY_90 = 'battery_90';
     const BATTERY_ALERT = 'battery_alert';
-    const BATTERY_CHARGING_20 = 'battery_charging_20';
-    const BATTERY_CHARGING_30 = 'battery_charging_30';
-    const BATTERY_CHARGING_50 = 'battery_charging_50';
-    const BATTERY_CHARGING_60 = 'battery_charging_60';
-    const BATTERY_CHARGING_80 = 'battery_charging_80';
-    const BATTERY_CHARGING_90 = 'battery_charging_90';
     const BATTERY_CHARGING_FULL = 'battery_charging_full';
     const BATTERY_FULL = 'battery_full';
     const BATTERY_STD = 'battery_std';
@@ -493,8 +445,6 @@ class MaterialIcons
     const GRAPHIC_EQ = 'graphic_eq';
     const LOCATION_DISABLED = 'location_disabled';
     const LOCATION_SEARCHING = 'location_searching';
-    const MOBILE_FRIENDLY = 'mobile_friendly';
-    const MOBILE_OFF = 'mobile_off';
     const NETWORK_CELL = 'network_cell';
     const NETWORK_WIFI = 'network_wifi';
     const NFC = 'nfc';
@@ -504,29 +454,9 @@ class MaterialIcons
     const SCREEN_ROTATION = 'screen_rotation';
     const SD_STORAGE = 'sd_storage';
     const SETTINGS_SYSTEM_DAYDREAM = 'settings_system_daydream';
-    const SIGNAL_CELLULAR_0_BAR = 'signal_cellular_0_bar';
-    const SIGNAL_CELLULAR_1_BAR = 'signal_cellular_1_bar';
-    const SIGNAL_CELLULAR_2_BAR = 'signal_cellular_2_bar';
-    const SIGNAL_CELLULAR_3_BAR = 'signal_cellular_3_bar';
-    const SIGNAL_CELLULAR_4_BAR = 'signal_cellular_4_bar';
-    const SIGNAL_CELLULAR_ALT = 'signal_cellular_alt';
-    const SIGNAL_CELLULAR_CONNECTED_NO_INTERNET_0_BAR = 'signal_cellular_connected_no_internet_0_bar';
-    const SIGNAL_CELLULAR_CONNECTED_NO_INTERNET_1_BAR = 'signal_cellular_connected_no_internet_1_bar';
-    const SIGNAL_CELLULAR_CONNECTED_NO_INTERNET_2_BAR = 'signal_cellular_connected_no_internet_2_bar';
-    const SIGNAL_CELLULAR_CONNECTED_NO_INTERNET_3_BAR = 'signal_cellular_connected_no_internet_3_bar';
-    const SIGNAL_CELLULAR_CONNECTED_NO_INTERNET_4_BAR = 'signal_cellular_connected_no_internet_4_bar';
     const SIGNAL_CELLULAR_NO_SIM = 'signal_cellular_no_sim';
     const SIGNAL_CELLULAR_NULL = 'signal_cellular_null';
     const SIGNAL_CELLULAR_OFF = 'signal_cellular_off';
-    const SIGNAL_WIFI_0_BAR = 'signal_wifi_0_bar';
-    const SIGNAL_WIFI_1_BAR = 'signal_wifi_1_bar';
-    const SIGNAL_WIFI_1_BAR_LOCK = 'signal_wifi_1_bar_lock';
-    const SIGNAL_WIFI_2_BAR = 'signal_wifi_2_bar';
-    const SIGNAL_WIFI_2_BAR_LOCK = 'signal_wifi_2_bar_lock';
-    const SIGNAL_WIFI_3_BAR = 'signal_wifi_3_bar';
-    const SIGNAL_WIFI_3_BAR_LOCK = 'signal_wifi_3_bar_lock';
-    const SIGNAL_WIFI_4_BAR = 'signal_wifi_4_bar';
-    const SIGNAL_WIFI_4_BAR_LOCK = 'signal_wifi_4_bar_lock';
     const SIGNAL_WIFI_OFF = 'signal_wifi_off';
     const STORAGE = 'storage';
     const USB = 'usb';
@@ -537,7 +467,6 @@ class MaterialIcons
     const ADD_COMMENT = 'add_comment';
     const ATTACH_FILE = 'attach_file';
     const ATTACH_MONEY = 'attach_money';
-    const BAR_CHART = 'bar_chart';
     const BORDER_ALL = 'border_all';
     const BORDER_BOTTOM = 'border_bottom';
     const BORDER_CLEAR = 'border_clear';
@@ -579,7 +508,6 @@ class MaterialIcons
     const FUNCTIONS = 'functions';
     const HIGHLIGHT = 'highlight';
     const INSERT_CHART = 'insert_chart';
-    const INSERT_CHART_OUTLINED = 'insert_chart_outlined';
     const INSERT_COMMENT = 'insert_comment';
     const INSERT_DRIVE_FILE = 'insert_drive_file';
     const INSERT_EMOTICON = 'insert_emoticon';
@@ -595,8 +523,6 @@ class MaterialIcons
     const NOTES = 'notes';
     const PIE_CHART = 'pie_chart';
     const PUBLISH = 'publish';
-    const SCATTER_PLOT = 'scatter_plot';
-    const SCORE = 'score';
     const SHORT_TEXT = 'short_text';
     const SHOW_CHART = 'show_chart';
     const SPACE_BAR = 'space_bar';
@@ -622,13 +548,11 @@ class MaterialIcons
     const FOLDER_SHARED = 'folder_shared';
     const CAST = 'cast';
     const CAST_CONNECTED = 'cast_connected';
-    const CAST_FOR_EDUCATION = 'cast_for_education';
     const COMPUTER = 'computer';
     const DESKTOP_MAC = 'desktop_mac';
     const DESKTOP_WINDOWS = 'desktop_windows';
     const DEVELOPER_BOARD = 'developer_board';
     const DEVICE_HUB = 'device_hub';
-    const DEVICE_UNKNOWN = 'device_unknown';
     const DEVICES_OTHER = 'devices_other';
     const DOCK = 'dock';
     const GAMEPAD = 'gamepad';
@@ -671,7 +595,6 @@ class MaterialIcons
     const VIDEOGAME_ASSET = 'videogame_asset';
     const WATCH = 'watch';
     const ADD_A_PHOTO = 'add_a_photo';
-    const ADD_PHOTO_ALTERNATE = 'add_photo_alternate';
     const ADD_TO_PHOTOS = 'add_to_photos';
     const ADJUST = 'adjust';
     const ASSISTANT = 'assistant';
@@ -780,7 +703,6 @@ class MaterialIcons
     const MOVIE_CREATION = 'movie_creation';
     const MOVIE_FILTER = 'movie_filter';
     const MUSIC_NOTE = 'music_note';
-    const MUSIC_OFF = 'music_off';
     const NATURE = 'nature';
     const NATURE_PEOPLE = 'nature_people';
     const NAVIGATE_BEFORE = 'navigate_before';
@@ -805,7 +727,6 @@ class MaterialIcons
     const ROTATE_90_DEGREES_CCW = 'rotate_90_degrees_ccw';
     const ROTATE_LEFT = 'rotate_left';
     const ROTATE_RIGHT = 'rotate_right';
-    const SHUTTER_SPEED = 'shutter_speed';
     const SLIDESHOW = 'slideshow';
     const STRAIGHTEN = 'straighten';
     const STYLE = 'style';
@@ -829,13 +750,8 @@ class MaterialIcons
     const WB_INCANDESCENT = 'wb_incandescent';
     const WB_IRIDESCENT = 'wb_iridescent';
     const WB_SUNNY = 'wb_sunny';
-    const _360 = '360';
     const ADD_LOCATION = 'add_location';
-    const ATM = 'atm';
     const BEENHERE = 'beenhere';
-    const CATEGORY = 'category';
-    const COMPASS_CALIBRATION = 'compass_calibration';
-    const DEPARTURE_BOARD = 'departure_board';
     const DIRECTIONS = 'directions';
     const DIRECTIONS_BIKE = 'directions_bike';
     const DIRECTIONS_BOAT = 'directions_boat';
@@ -846,10 +762,8 @@ class MaterialIcons
     const DIRECTIONS_SUBWAY = 'directions_subway';
     const DIRECTIONS_TRANSIT = 'directions_transit';
     const DIRECTIONS_WALK = 'directions_walk';
-    const EDIT_ATTRIBUTES = 'edit_attributes';
     const EDIT_LOCATION = 'edit_location';
     const EV_STATION = 'ev_station';
-    const FASTFOOD = 'fastfood';
     const FLIGHT = 'flight';
     const HOTEL = 'hotel';
     const LAYERS = 'layers';
@@ -884,11 +798,9 @@ class MaterialIcons
     const LOCAL_SHIPPING = 'local_shipping';
     const LOCAL_TAXI = 'local_taxi';
     const MAP = 'map';
-    const MONEY = 'money';
     const MY_LOCATION = 'my_location';
     const NAVIGATION = 'navigation';
     const NEAR_ME = 'near_me';
-    const NOT_LISTED_LOCATION = 'not_listed_location';
     const PERSON_PIN = 'person_pin';
     const PERSON_PIN_CIRCLE = 'person_pin_circle';
     const PIN_DROP = 'pin_drop';
@@ -905,8 +817,6 @@ class MaterialIcons
     const TRAIN = 'train';
     const TRAM = 'tram';
     const TRANSFER_WITHIN_A_STATION = 'transfer_within_a_station';
-    const TRANSIT_ENTEREXIT = 'transit_enterexit';
-    const TRIP_ORIGIN = 'trip_origin';
     const ZOOM_OUT_MAP = 'zoom_out_map';
     const APPS = 'apps';
     const ARROW_BACK = 'arrow_back';
@@ -917,8 +827,6 @@ class MaterialIcons
     const ARROW_DROP_UP = 'arrow_drop_up';
     const ARROW_FORWARD = 'arrow_forward';
     const ARROW_FORWARD_IOS = 'arrow_forward_ios';
-    const ARROW_LEFT = 'arrow_left';
-    const ARROW_RIGHT = 'arrow_right';
     const ARROW_UPWARD = 'arrow_upward';
     const CANCEL = 'cancel';
     const CHECK = 'check';
@@ -1051,6 +959,4 @@ class MaterialIcons
     const STAR = 'star';
     const STAR_BORDER = 'star_border';
     const STAR_HALF = 'star_half';
-    const TOGGLE_OFF = 'toggle_off';
-    const TOGGLE_ON = 'toggle_on';
 }

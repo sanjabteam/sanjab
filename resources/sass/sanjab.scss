@@ -81,7 +81,7 @@
     }
 
     h1 {
-        text-shadow: 0px 0px 10px #000000;
+        text-shadow: 0 0 10px #000000;
         cursor: pointer;
         font-size: 120pt;
     }
@@ -107,7 +107,7 @@ a.image-author {
 }
 
 .card .card-body .form-group {
-    margin: 0px !important;
+    margin: 0 !important;
 }
 
 .is-focused [class^='bmd-label'], .is-focused [class*=' bmd-label'] {
@@ -188,6 +188,14 @@ body.swal2-shown:not(.swal2-toast-shown) > [aria-hidden="true"] {
 
 body > * {
     transition: 0.15s filter linear;
+}
+
+.sanjab-icons-list {
+    i {
+        width: 20px;
+        margin-right: auto;
+        margin-left: auto;
+    }
 }
 
 
@@ -309,7 +317,7 @@ html[lang="fa"] {
 html, .sidebar-wrapper {
     &::-webkit-scrollbar-track {
         border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.0);
+        -webkit-box-shadow: inset 0 0 0 rgba(0,0,0,0.0);
         background-color: rgba(0, 0, 0, 0);
     }
 

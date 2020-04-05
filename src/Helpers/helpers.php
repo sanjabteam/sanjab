@@ -14,6 +14,7 @@ if (! function_exists('sanjab_mix')) {
         try {
             return mix('vendor/sanjab/'.ltrim($path, '\\/'));
         } catch (Exception $exception) {
+            // Prevent error if custom compiled mix manifest not exists.
         }
 
         return mix($path, 'vendor/sanjab');

@@ -70,11 +70,12 @@ abstract class CrudController extends SanjabController
             ) {
                 // advanced search
                 foreach ($this->widgets as $widget) {
-                    if ($request->input('searchTypes.'.$widget->name) &&
-                        $searchType = array_first(array_filter($widget->getSearchTypes(), function ($searchType) use ($request, $widget) {
+                    $searchType = array_first(
+                        array_filter($widget->getSearchTypes(), function ($searchType) use ($request, $widget) {
                             return $searchType->type == $request->input('searchTypes.'.$widget->name);
-                        }))
-                    ) {
+                        })
+                    );
+                    if ($request->input('searchTypes.'.$widget->name) && $searchType) {
                         $items->where(function (Builder $query) use ($widget, $request, $searchType) {
                             if (count($searchType->getWidgets()) > 1) {
                                 $widget->doSearch($query, $request->input('searchTypes.'.$widget->name), $request->input('search.'.$widget->name.'.'.$searchType->type));

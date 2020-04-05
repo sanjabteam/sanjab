@@ -25,16 +25,6 @@ class Clear extends Command
     protected $description = 'Clear any unused files.';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed

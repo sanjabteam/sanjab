@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div v-if="header" class="card-header card-header-sanjab">
+                <div class="card-header card-header-sanjab">
                     <h4 class="card-title">@lang('sanjab::sanjab.unsupported_browser')</h4>
                 </div>
                 <div class="card-body unsupported-browser">

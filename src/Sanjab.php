@@ -29,6 +29,7 @@ class Sanjab
         \Sanjab\Controllers\TranslationController::class,
         \Sanjab\Controllers\SearchController::class,
         \Sanjab\Controllers\ElfinderController::class,
+        \Sanjab\Controllers\IconController::class,
     ];
 
     /**

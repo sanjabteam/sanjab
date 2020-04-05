@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./images/logo.svg" width="300" height="300">
+    <img src="./images/logo.svg" width="200" height="200">
 </div>
 <h1 align="center">Sanjab</h1>
 <h2 align="center">Yet another admin package for <a href="http://laravel.com/" title="Laravel">Laravel</a>.</h2>
@@ -8,6 +8,7 @@
 
 [![Build Status](https://travis-ci.com/sanjabteam/sanjab.svg?branch=master)](https://travis-ci.com/sanjabteam/sanjab)
 [![StyleCI](https://github.styleci.io/repos/197559365/shield?branch=master)](https://github.styleci.io/repos/197559365)
+[![CodeFactor](https://www.codefactor.io/repository/github/sanjabteam/sanjab/badge/master)](https://www.codefactor.io/repository/github/sanjabteam/sanjab/overview/master)
 [![codecov](https://codecov.io/gh/sanjabteam/sanjab/branch/master/graph/badge.svg)](https://codecov.io/gh/sanjabteam/sanjab)
 [![Total Downloads](https://poser.pugx.org/sanjabteam/sanjab/downloads)](https://packagist.org/packages/sanjabteam/sanjab)
 [![Latest Stable Version](https://poser.pugx.org/sanjabteam/sanjab/v/stable)](https://packagist.org/packages/sanjabteam/sanjab)

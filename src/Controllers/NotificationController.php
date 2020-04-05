@@ -4,6 +4,7 @@ namespace Sanjab\Controllers;
 
 use stdClass;
 use Carbon\Carbon;
+use Exception;
 use Sanjab\Sanjab;
 use Sanjab\Helpers\Action;
 use Illuminate\Http\Request;
@@ -238,6 +239,7 @@ class NotificationController extends CrudController
             set_time_limit(600);
             ini_set('max_execution_time', 600);
         } catch (Exception $e) {
+            // Prevent error when changing timelimit is not allowed.
         }
 
         $lastCreatedAt = $request->input('time');
