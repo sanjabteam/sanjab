@@ -64,7 +64,9 @@ For example, if you have a field called "name" in your model and it's a required
 $this->widgets[] = TextWidget::create('name')
                 ->required();
 ```
-Now you have a field in your create/edit form with search, sort, table column and show field, all done automatically.
+Now you have a field in your create/edit form, table column with search, sort support and show field, all done automatically.
+
+![Code](./images/screenshots/code.jpg)
 
 Also autocomplete is supported for your favorite IDE.
 

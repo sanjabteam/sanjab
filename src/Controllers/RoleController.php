@@ -82,7 +82,7 @@ class RoleController extends CrudController
         return $permissions;
     }
 
-    protected function onChanged(Model $item)
+    public function onChanged(Model $item)
     {
         Bouncer::refresh();
     }

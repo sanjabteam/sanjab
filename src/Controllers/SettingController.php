@@ -6,7 +6,7 @@ use Sanjab\Models\Setting;
 use Illuminate\Http\Request;
 use Sanjab\Helpers\MenuItem;
 use Sanjab\Helpers\SearchResult;
-use Sanjab\Helpers\WidgetHandler;
+use Sanjab\Traits\WidgetHandler;
 use Illuminate\Support\Collection;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\App;

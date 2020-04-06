@@ -6,41 +6,50 @@ use stdClass;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Sanjab\Helpers\SearchType;
+use Sanjab\Traits\ModelEvents;
 use Sanjab\Helpers\TableColumn;
 use Sanjab\Helpers\PropertiesHolder;
+use Sanjab\Traits\ValidationDetails;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Base class for all widgets ( form fields and table cells and view ).
  *
- * @method $this    onIndex(boolean $val)                       is this element availble on index.
- * @method $this    onView(boolean $val)                        is this element availble on view.
- * @method $this    onCreate(boolean $val)                      is this element availble on create form.
- * @method $this    onEdit(boolean $val)                        is this element availble on edit form.
- * @method $this    onStore(boolean $val)                       should this store in database.
- * @method $this    sortable(boolean $val)                      is this widget sortable.
- * @method $this    searchable(boolean $val)                    is this widget searchable.
- * @method $this    customStore(callable $val)                  store with custom method -  parameters : ($request, $item).
- * @method $this    customPreStore(callable $val)               pre store with custom method -  parameters : ($request, $item).
- * @method $this    customPostStore(callable $val)              post store with custom method -  parameters : ($request, $item).
- * @method $this    customModifyResponse(callable $val)         custom item response modifyer -  parameters : ($response, $item).
- * @method $this    customModifyRequest(callable $val)          custom request modify -  parameters : ($request, $item).
- * @method $this    value(mixed $val)                           default value for input.
- * @method $this    name(string $val)                           field name.
- * @method $this    title(string $val)                          field title.
- * @method $this    description(string $val)                    field description.
- * @method $this    indexTag(string $val)                       field default tag in table columns.
- * @method $this    viewGroupTag(string $val)                   field default tag in show page.
- * @method $this    viewTag(string $val)                        field default tag in show page.
- * @method $this    tag(string $val)                            field tag.
- * @method $this    groupTag(string $val)                       field group tag.
- * @method $this    class(string $val)                          class of input field.
- * @method $this    cols(string $val)                           bootstrap based column width.
- * @method $this    showIf(string $val)                         javascript condition to show widget.
+ * @method $this onIndex(boolean $val)                  is this element availble on index.
+ * @method $this onView(boolean $val)                   is this element availble on view.
+ * @method $this onCreate(boolean $val)                 is this element availble on create form.
+ * @method $this onEdit(boolean $val)                   is this element availble on edit form.
+ * @method $this onStore(boolean $val)                  should this store in database.
+ * @method $this sortable(boolean $val)                 is this widget sortable.
+ * @method $this searchable(boolean $val)               is this widget searchable.
+ * @method $this customStore(callable $val)             store with custom method -  parameters : ($request, $item).
+ * @method $this customPreStore(callable $val)          pre store with custom method -  parameters : ($request, $item).
+ * @method $this customPostStore(callable $val)         post store with custom method -  parameters : ($request, $item).
+ * @method $this customModifyResponse(callable $val)    custom item response modifyer -  parameters : ($response, $item).
+ * @method $this customModifyRequest(callable $val)     custom request modify -  parameters : ($request, $item).
+ * @method $this value(mixed $val)                      default value for input.
+ * @method $this name(string $val)                      field name.
+ * @method $this title(string $val)                     field title.
+ * @method $this description(string $val)               field description.
+ * @method $this indexTag(string $val)                  field default tag in table columns.
+ * @method $this viewGroupTag(string $val)              field default tag in show page.
+ * @method $this viewTag(string $val)                   field default tag in show page.
+ * @method $this tag(string $val)                       field tag.
+ * @method $this groupTag(string $val)                  field group tag.
+ * @method $this class(string $val)                     class of input field.
+ * @method $this cols(string $val)                      bootstrap based column width.
+ * @method $this showIf(string $val)                    javascript condition to show widget.
  */
 abstract class Widget extends PropertiesHolder
 {
+    use ModelEvents, ValidationDetails;
+
+    /**
+     * Controller properties as array.
+     *
+     * @var array
+     */
     public $controllerProperties = [];
 
     /**
@@ -436,19 +445,6 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
-     * Returns validation messages.
-     *
-     * @param Request $request
-     * @property string $type 'create' or 'edit'.
-     * @property Model|null $item
-     * @return array
-     */
-    public function validationMessages(Request $request, string $type, Model $item = null): array
-    {
-        return [];
-    }
-
-    /**
      * Add custom validation rules.
      *
      * @param string|array  $rules
@@ -497,136 +493,6 @@ abstract class Widget extends PropertiesHolder
     final public function editRules($rules)
     {
         return $this->rules($rules, 'edit');
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onRetrieved(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onCreating(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onCreated(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onUpdating(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onUpdated(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onSaving(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onSaved(Model $item)
-    {
-    }
-
-    /**
-     * Model event ( not for soft delete ).
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onDeleting(Model $item)
-    {
-    }
-
-    /**
-     * Model event ( not for soft delete ).
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onDeleted(Model $item)
-    {
-    }
-
-    /**
-     * Model event ( for soft deletes only ).
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onSoftDeleting(Model $item)
-    {
-    }
-
-    /**
-     * Model event ( for soft deletes only ).
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onSoftDeleted(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onRestoring(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    public function onRestored(Model $item)
-    {
     }
 
     /**

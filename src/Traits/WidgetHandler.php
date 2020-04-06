@@ -1,15 +1,18 @@
 <?php
 
-namespace Sanjab\Helpers;
+namespace Sanjab\Traits;
 
 use stdClass;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
+use Sanjab\Traits\ModelEvents;
+use Sanjab\Traits\ValidationDetails;
 use Illuminate\Database\Eloquent\Model;
 use Sanjab\Exceptions\CrudTypeNotAllowedException;
 
 trait WidgetHandler
 {
+    use ModelEvents, ValidationDetails;
+
     /**
      * Array of widgets.
      *
@@ -65,58 +68,6 @@ trait WidgetHandler
             $this->widgets[$key]->postInit();
             $this->widgets[$key]->postInitSearchWidgets();
         }
-    }
-
-    /**
-     * Validation rules.
-     *
-     * @param Request $request
-     * @param string $type  create|edit
-     * @param Model|null $item
-     * @return array
-     */
-    public function validationRules(Request $request, string $type, Model $item = null)
-    {
-        return [];
-    }
-
-    /**
-     * Validation attributes.
-     *
-     * @param Request $request
-     * @param string $type  create|edit
-     * @param Model|null $item
-     * @return array
-     */
-    public function validationAttributes(Request $request, string $type, Model $item = null)
-    {
-        return [];
-    }
-
-    /**
-     * Validation messages.
-     *
-     * @param Request $request
-     * @param string $type  create|edit
-     * @param Model|null $item
-     * @return array
-     */
-    public function validationMessages(Request $request, string $type, Model $item = null)
-    {
-        return [];
-    }
-
-    /**
-     * Validation after callback.
-     *
-     * @param \Illuminate\Validation\Validator  $validator
-     * @param \Illuminate\Http\Request $request
-     * @param string $type  create|edit
-     * @param Model|null  $item
-     * @return void
-     */
-    public function validationAfter(Validator $validator, Request $request, string $type, Model $item = null)
-    {
     }
 
     /**
@@ -295,6 +246,9 @@ trait WidgetHandler
         $validator = \Validator::make($request->all(), $rules, $messages, $attributes);
         $validator->after(function ($validator) use ($type, $item, $request) {
             $this->validationAfter($validator, $request, $type, $item);
+            foreach ($this->widgets as $widget) {
+                $widget->validationAfter($validator, $request, $type, $item);
+            }
         });
         $validator->validate();
     }
@@ -412,142 +366,12 @@ trait WidgetHandler
     }
 
     /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onRetrieved(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onCreating(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onCreated(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onUpdating(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onUpdated(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onSaving(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onSaved(Model $item)
-    {
-    }
-
-    /**
-     * Model event ( not for soft delete ).
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onDeleting(Model $item)
-    {
-    }
-
-    /**
-     * Model event ( not for soft delete ).
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onDeleted(Model $item)
-    {
-    }
-
-    /**
-     * Model event ( for soft deletes only ).
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onSoftDeleting(Model $item)
-    {
-    }
-
-    /**
-     * Model event ( for soft deletes only ).
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onSoftDeleted(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onRestoring(Model $item)
-    {
-    }
-
-    /**
-     * Model event.
-     *
-     * @param Model $item
-     * @return void
-     */
-    protected function onRestored(Model $item)
-    {
-    }
-
-    /**
      * Model event when any change happening to database.
      *
      * @param Model $item
      * @return void
      */
-    protected function onChanging(Model $item)
+    public function onChanging(Model $item)
     {
     }
 
@@ -557,7 +381,7 @@ trait WidgetHandler
      * @param Model $item
      * @return void
      */
-    protected function onChanged(Model $item)
+    public function onChanged(Model $item)
     {
     }
 }

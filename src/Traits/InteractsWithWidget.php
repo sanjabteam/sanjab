@@ -1,9 +1,12 @@
 <?php
 
-namespace Sanjab\Helpers;
+namespace Sanjab\Traits;
 
 use Illuminate\Support\Facades\App;
 
+/**
+ * To get informations about a widget from an external controller.
+ */
 trait InteractsWithWidget
 {
     /**

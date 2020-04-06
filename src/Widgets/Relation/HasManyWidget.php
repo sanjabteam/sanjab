@@ -3,7 +3,7 @@
 namespace Sanjab\Widgets\Relation;
 
 use Illuminate\Http\Request;
-use Sanjab\Helpers\SubWidgets;
+use Sanjab\Traits\SubWidgets;
 use Illuminate\Database\Eloquent\Model;
 
 /**

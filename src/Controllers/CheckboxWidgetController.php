@@ -4,7 +4,7 @@ namespace Sanjab\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Sanjab\Helpers\InteractsWithWidget;
+use Sanjab\Traits\InteractsWithWidget;
 
 class CheckboxWidgetController extends SanjabController
 {

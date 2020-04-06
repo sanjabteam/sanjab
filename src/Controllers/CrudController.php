@@ -8,7 +8,7 @@ use Sanjab\Cards\StatsCard;
 use Illuminate\Http\Request;
 use Sanjab\Helpers\MenuItem;
 use Sanjab\Helpers\SearchResult;
-use Sanjab\Helpers\WidgetHandler;
+use Sanjab\Traits\WidgetHandler;
 use Sanjab\Helpers\CrudProperties;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\App;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sanjab\Helpers;
+namespace Sanjab\Traits;
 
 use stdClass;
 use Sanjab\Widgets\Widget;

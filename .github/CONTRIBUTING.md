@@ -114,6 +114,28 @@ Sanjab follows [PSR2](https://github.com/php-fig/fig-standards/blob/master/accep
 * Never put compiled assets for development in git commits. Highly recommended to use githooks to prevent this happen.
 * Keep your commits as small as possible and use informative git commit messages.
 * Do not touch version in `package.json`.
+* Class phpdoc definition and description must be in a column like a table.
+❌ Bad:
+```php
+/**
+ * @param string $var description about var.
+ * @param string $anotherVar description about another var.
+ * @method int aMethod (string $value) description about method.
+ * @method float anotherMethod (string $value) description about another method.
+ * @method $this anotherMoreMethod (string $value) description about another more method.
+ */
+```
+
+ ✅ Good:
+ ```php
+ /**
+ * @param string $var                               description about var.
+ * @param string $anotherVar                        description about another var.
+ * @method int aMethod (string $value)              description about method.
+ * @method float anotherMethod (string $value)      description about another method.
+ * @method $this anotherMoreMethod (string $value)  description about another more method.
+ */
+ ```
 
 ### Questions about source code
 If you have any questions about Sanjab source code join us on [Discord](https://discord.gg/kwuTZQd).
