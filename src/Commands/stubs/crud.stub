@@ -14,8 +14,8 @@ class DummyClass extends CrudController
     {
         return CrudProperties::create('DummyRoute')
                 ->model(DummyModel::class)
-                ->title("DummyTitle")
-                ->titles("DummyTitles")
+                ->title('DummyTitle')
+                ->titles('DummyTitles')
                 ->icon(MaterialIcons::GROUP_WORK);
     }
 
