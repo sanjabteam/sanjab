@@ -4,8 +4,6 @@ namespace Sanjab\Traits;
 
 use stdClass;
 use Illuminate\Http\Request;
-use Sanjab\Traits\ModelEvents;
-use Sanjab\Traits\ValidationDetails;
 use Illuminate\Database\Eloquent\Model;
 use Sanjab\Exceptions\CrudTypeNotAllowedException;
 
