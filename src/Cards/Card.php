@@ -15,6 +15,13 @@ use Sanjab\Helpers\PropertiesHolder;
  */
 abstract class Card extends PropertiesHolder
 {
+    /**
+     * Controller properties as array.
+     *
+     * @var array
+     */
+    public $controllerProperties = [];
+
     public function __construct(array $properties = [])
     {
         $this->tag('input')->cols(12)->order(100);

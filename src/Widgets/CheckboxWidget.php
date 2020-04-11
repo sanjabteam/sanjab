@@ -17,8 +17,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @method $this fastChangeAfter(callable $callback)                callback call after fast change happened. parameters(Model $item)
  * @method $this fastChangeController(string $val)                  controller to use with fast change.
  * @method $this fastChangeControllerAuthorize(callable $callback)  authorize fast change. parameters(Model $item)
- * @method $this fastChangeControllerAction(callable $callback)     controller to use with fast change.
- * @method $this fastChangeControllerItem(callable $callback)       controller action parameter working with fast change.
+ * @method $this fastChangeControllerAction(string $val)            controller to use with fast change.
+ * @method $this fastChangeControllerItem(string $val)              controller action parameter working with fast change.
  */
 class CheckboxWidget extends Widget
 {

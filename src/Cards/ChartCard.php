@@ -9,7 +9,6 @@ use Sanjab\Helpers\ChartData;
  * Chart card.
  *
  * @method $this chartTag(string $val)      tag of chart.
- * @method $this labels(array $val)         array of chart labels.
  * @method $this height(int $height)        height of chart.
  * @method $this borderless(bool $val)      by default is true. if you want a border around card set this to false.
  */
@@ -26,7 +25,6 @@ class ChartCard extends Card
     {
         $this->tag('chart-card');
         $this->height(128);
-        $this->cols(6);
     }
 
     protected function modifyResponse(stdClass $response)
@@ -55,12 +53,27 @@ class ChartCard extends Card
     /**
      * Add array of chart data to dataset.
      *
-     * @param ChartData ...$chartData
+     * @param array $chartData
      * @return $this
      */
-    public function addMultipleData(ChartData ...$chartData)
+    public function addMultipleData($chartData)
     {
-        $this->chartData = array_merge($this->chartData, ...$chartData);
+        $this->chartData = array_merge($this->chartData, $chartData);
+        return $this;
+    }
+
+    /**
+     * Array of labels.
+     *
+     * @param array|callable $labels
+     * @return $this
+     */
+    public function labels($labels)
+    {
+        if (is_callable($labels)) {
+            $labels = $labels();
+        }
+        $this->setProperty('labels', $labels);
         return $this;
     }
 }

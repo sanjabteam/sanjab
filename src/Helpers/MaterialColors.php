@@ -376,4 +376,15 @@ class MaterialColors
         shuffle($colors);
         return array_slice($colors, 0, $count);
     }
+
+    /**
+     * Get a material color based on theme.
+     *
+     * @param string $lightness  light/darkness of color.
+     * @return string
+     */
+    public static function theme(string $lightness = '500')
+    {
+        return constant('static::'.str_replace('-', '_', strtoupper(config('sanjab.theme.color'))).'_'.$lightness);
+    }
 }

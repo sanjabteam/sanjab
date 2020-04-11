@@ -27,9 +27,10 @@ class Sanjab
         \Sanjab\Controllers\RelationWidgetController::class,
         \Sanjab\Controllers\CheckboxWidgetController::class,
         \Sanjab\Controllers\TranslationController::class,
-        \Sanjab\Controllers\SearchController::class,
         \Sanjab\Controllers\ElfinderController::class,
+        \Sanjab\Controllers\SearchController::class,
         \Sanjab\Controllers\IconController::class,
+        \Sanjab\Controllers\SelectiveCardController::class,
     ];
 
     /**

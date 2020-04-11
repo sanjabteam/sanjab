@@ -127,7 +127,7 @@ class MenuItem extends PropertiesHolder
     public function getBadgeValue()
     {
         if (is_callable($this->property('badge'))) {
-            return $this->property('badge')();
+            $this->setProperty('badge', $this->property('badge')());
         }
 
         return $this->property('badge');

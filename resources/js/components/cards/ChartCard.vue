@@ -1,6 +1,6 @@
 <template>
     <component :is="borderless ? 'div' : 'b-card'">
-        <component v-if="data" :is="chartTag" :options="options" :chartdata="chartdata" :height="height">
+        <component :is="chartTag" :options="options" :chartdata="chartdata" :height="height">
         </component>
     </component>
 </template>
@@ -37,7 +37,7 @@
             chartdata() {
                 return {
                     labels: this.labels,
-                    datasets: this.data.data
+                    datasets: this.data instanceof Object && this.data.data != undefined ? this.data.data : []
                 };
             },
             options() {

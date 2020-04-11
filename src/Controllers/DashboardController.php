@@ -2,8 +2,8 @@
 
 namespace Sanjab\Controllers;
 
-use stdClass;
 use Sanjab\Helpers\MenuItem;
+use Sanjab\Traits\CardHandler;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Route;
 use Sanjab\Helpers\DashboardProperties;
@@ -13,12 +13,7 @@ use Sanjab\Helpers\DashboardProperties;
  */
 abstract class DashboardController extends SanjabController
 {
-    /**
-     * Dashboard cards.
-     *
-     * @var array|\Sanjab\Cards\Card
-     */
-    protected $cards = [];
+    use CardHandler;
 
     /**
      * Show dashboard.
@@ -28,16 +23,12 @@ abstract class DashboardController extends SanjabController
     public function show()
     {
         $this->initDashboard();
-        $cardsData = [];
-        foreach ($this->cards as $key => $card) {
-            $cardsData[$key] = new stdClass;
-            $card->doModifyResponse($cardsData[$key]);
-        }
+        $cardsData = $this->getCardsData();
 
         return view('sanjab::dashboard', [
             'properties' => $this->properties(),
-            'cards' => $this->cards,
-            'cardsData' => $cardsData,
+            'cards'      => $this->cards,
+            'cardsData'  => $cardsData,
         ]);
     }
 
@@ -71,9 +62,8 @@ abstract class DashboardController extends SanjabController
     final protected function initDashboard(): void
     {
         $this->init();
-        foreach ($this->cards as $card) {
-            $card->postInit();
-        }
+        $this->postInitCards('show');
+        $this->sortCards();
     }
 
     /**

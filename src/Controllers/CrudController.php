@@ -2,11 +2,11 @@
 
 namespace Sanjab\Controllers;
 
-use stdClass;
 use Sanjab\Helpers\Action;
 use Sanjab\Cards\StatsCard;
 use Illuminate\Http\Request;
 use Sanjab\Helpers\MenuItem;
+use Sanjab\Traits\CardHandler;
 use Sanjab\Helpers\SearchResult;
 use Sanjab\Traits\WidgetHandler;
 use Sanjab\Helpers\CrudProperties;
@@ -24,7 +24,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
  */
 abstract class CrudController extends SanjabController
 {
-    use WidgetHandler;
+    use WidgetHandler, CardHandler;
 
     /**
      * Array of actions.
@@ -39,13 +39,6 @@ abstract class CrudController extends SanjabController
      * @var \Sanjab\Helpers\FilterOption[]
      */
     protected $filters = [];
-
-    /**
-     * Array of cards.
-     *
-     * @var \Sanjab\Cards\Card[]
-     */
-    protected $cards = [];
 
     /**
      * Display a listing of the resource.
@@ -132,11 +125,7 @@ abstract class CrudController extends SanjabController
         $notification = $this->notification($request, $items);
 
         // Add cards data to response
-        $cardsData = [];
-        foreach ($this->cards as $key => $card) {
-            $cardsData[$key] = new stdClass;
-            $card->doModifyResponse($cardsData[$key]);
-        }
+        $cardsData = $this->getCardsData();
 
         return compact('items', 'cardsData', 'notification');
     }
@@ -428,13 +417,9 @@ abstract class CrudController extends SanjabController
             // Call widgets post init
             $this->postInitWidgets($type, $item);
             // Call cards post init
-            foreach ($this->cards as $card) {
-                $card->postInit();
-            }
+            $this->postInitCards($type, $item);
             // Sort cards
-            usort($this->cards, function ($a, $b) {
-                return $a->order > $b->order;
-            });
+            $this->sortCards();
             $this->sanjabCrudInitialized = true;
         }
     }

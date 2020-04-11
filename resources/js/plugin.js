@@ -4,7 +4,7 @@ import store from './store';
 
 function chartJsComponent(classType) {
     return {
-        mixins: [classType],
+        mixins: [classType, VueChartJs.mixins.reactiveProp],
         template: "",
         props: {
             chartdata: {
