@@ -31,7 +31,8 @@ class SelectiveCardController extends SanjabController
         }
         $cardData = new stdClass;
         $card['card']->doModifyResponse($cardData);
-        return (array)$cardData;
+
+        return (array) $cardData;
     }
 
     public static function routes(): void

@@ -45,6 +45,7 @@ trait CardHandler
             $cardsData[$key] = new stdClass;
             $card->doModifyResponse($cardsData[$key]);
         }
+
         return $cardsData;
     }
 
