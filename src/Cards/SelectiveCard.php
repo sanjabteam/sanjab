@@ -48,6 +48,7 @@ class SelectiveCard extends Card
     public function addCard(string $title, Card $card)
     {
         $this->cards[] = ['title' => $title, 'card' => $card];
+
         return $this;
     }
 
@@ -62,6 +63,7 @@ class SelectiveCard extends Card
         foreach ($cards as $title => $card) {
             $cards[] = ['title' => $title, 'card' => $card];
         }
+
         return $this;
     }
 

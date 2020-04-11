@@ -60,6 +60,7 @@ class ChartCard extends Card
     public function addMultipleData(array $chartData)
     {
         $this->chartData = array_merge($this->chartData, $chartData);
+
         return $this;
     }
 
@@ -75,6 +76,7 @@ class ChartCard extends Card
             $labels = $labels();
         }
         $this->setProperty('labels', $labels);
+
         return $this;
     }
 }
