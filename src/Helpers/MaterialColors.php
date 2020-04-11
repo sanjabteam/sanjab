@@ -333,7 +333,7 @@ class MaterialColors
     public const BLUE_GREY_A700 = '#455a64';
 
     /**
-     * Get all colors with specific lightness as array
+     * Get all colors with specific lightness as array.
      *
      * @param string $lightness
      * @return array
@@ -374,6 +374,7 @@ class MaterialColors
             $colors = array_merge($colors, static::colors($lightness));
         }
         shuffle($colors);
+
         return array_slice($colors, 0, $count);
     }
 

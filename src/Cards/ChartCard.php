@@ -47,6 +47,7 @@ class ChartCard extends Card
     public function addData(ChartData $chartData)
     {
         $this->chartData[] = $chartData;
+
         return $this;
     }
 
@@ -56,7 +57,7 @@ class ChartCard extends Card
      * @param array $chartData
      * @return $this
      */
-    public function addMultipleData($chartData)
+    public function addMultipleData(array $chartData)
     {
         $this->chartData = array_merge($this->chartData, $chartData);
         return $this;
