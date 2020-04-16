@@ -10,19 +10,25 @@
                 </b-form-select>
             </b-col>
         </b-row>
-        <template v-for="(card, index) in cards">
-            <div v-if="index == currentCard" :key="index" class="selective-card-container">
-                <b-row v-if="cardsData[index] != undefined">
-                    <b-col>
-                        <component :is="card.card.tag" :data="cardsData[index]" v-bind="card.card" />
-                    </b-col>
-                </b-row>
-                <div v-else class="text-center text-danger my-2">
-                    <b-spinner variant="default" class="align-middle">
-                    </b-spinner>
+        <template v-if="currentCard !== null">
+            <template v-for="(card, index) in cards">
+                <div v-if="index == currentCard" :key="index" class="selective-card-container">
+                    <b-row v-if="cardsData[index] != undefined">
+                        <b-col>
+                            <component :is="card.card.tag" :data="cardsData[index]" v-bind="card.card" />
+                        </b-col>
+                    </b-row>
+                    <div v-else class="text-center text-danger my-2">
+                        <b-spinner variant="default" class="align-middle">
+                        </b-spinner>
+                    </div>
                 </div>
-            </div>
+            </template>
         </template>
+        <div v-else class="text-center text-danger my-2">
+            <b-spinner variant="default" class="align-middle">
+            </b-spinner>
+        </div>
     </div>
 </template>
 
@@ -65,7 +71,8 @@
             }
         },
         mounted () {
-            this.currentCard = 0;
+            var self = this;
+            setTimeout(() => self.currentCard = 0, 100);
         },
         watch: {
             currentCard(newValue, oldValue) {

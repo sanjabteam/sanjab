@@ -47,6 +47,9 @@
                     title: {
                         display: this.title != null,
                         text: this.title
+                    },
+                    tooltips: {
+                        mode: 'index'
                     }
                 };
             }

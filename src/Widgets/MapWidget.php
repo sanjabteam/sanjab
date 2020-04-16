@@ -37,6 +37,13 @@ class MapWidget extends Widget
         ];
     }
 
+    protected function modifyRequest(Request $request, Model $item = null)
+    {
+        if ($request->input($this->property('name').'.lat') == 1000 && $request->input($this->property('name').'.lng') == 1000) {
+            $request->merge([$this->property('name') => null]);
+        }
+    }
+
     public function validationRules(Request $request, string $type, Model $item = null): array
     {
         return [
