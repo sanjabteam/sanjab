@@ -30,10 +30,10 @@ class NotificationsTest extends TestCase
                     'items' => [
                         'data' => [
                             [
-                                'text' => 'hello admin user'
-                            ]
-                        ]
-                    ]
+                                'text' => 'hello admin user',
+                            ],
+                        ],
+                    ],
                 ]);
     }
 
