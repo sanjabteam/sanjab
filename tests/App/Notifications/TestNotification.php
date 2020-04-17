@@ -20,12 +20,12 @@ class TestNotification extends Notification
     protected $url = null;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $sound = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $toast = false;
 
@@ -34,8 +34,8 @@ class TestNotification extends Notification
      *
      * @param string $text
      * @param string $url
-     * @param boolean $sound
-     * @param boolean $toast
+     * @param bool $sound
+     * @param bool $toast
      */
     public function __construct(string $text, string $url = '#', bool $sound = false, bool $toast = false)
     {
