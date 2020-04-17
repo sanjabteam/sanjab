@@ -47,7 +47,6 @@ class NotificationController extends CrudController
     {
         $this->widgets[] = CheckboxWidget::create('read', trans('sanjab::sanjab.readen'))
                             ->customModifyResponse(function (stdClass $response, Model $item) {
-                                debug($item->read_at);
                                 $response->read = $item->read_at != null;
                             });
 

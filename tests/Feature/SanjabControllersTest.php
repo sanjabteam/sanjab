@@ -6,7 +6,7 @@ use Sanjab\Sanjab;
 use Sanjab\Cards\Card;
 use Sanjab\Tests\TestCase;
 use Sanjab\Helpers\MenuItem;
-use Sanjab\Tests\Models\User;
+use Sanjab\Tests\App\Models\User;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;

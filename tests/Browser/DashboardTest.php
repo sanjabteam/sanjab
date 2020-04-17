@@ -4,7 +4,7 @@ namespace Sanjab\Tests\Browser;
 
 use Laravel\Dusk\Browser;
 use Sanjab\Tests\TestCase;
-use Sanjab\Tests\Models\User;
+use Sanjab\Tests\App\Models\User;
 
 class DashboardTest extends TestCase
 {

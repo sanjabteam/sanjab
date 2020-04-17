@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'inline-selective-card': inline}">
+    <div :class="{'inline-selective-card': inline}" class="selective-card">
         <b-row>
             <b-col>
                 <b class="selective-card-title">{{ title }}</b>
@@ -103,12 +103,12 @@
         .bmd-form-group {
             position: absolute;
             padding-top: 5px;
-            z-index: 5000;
+            z-index: 500;
         }
 
         .selective-card-title {
             position: absolute;
-            z-index: 5000;
+            z-index: 500;
             padding-top: 5px;
         }
 
@@ -118,22 +118,26 @@
     }
 
     html[dir="ltr"] {
-        .bmd-form-group {
-            right: 25px;
-        }
+        .selective-card {
+            .bmd-form-group {
+                right: 25px;
+            }
 
-        .selective-card-title {
-            left: 25px;
+            .selective-card-title {
+                left: 25px;
+            }
         }
     }
 
     html[dir="rtl"] {
-        .bmd-form-group {
-            left: 25px;
-        }
+        .selective-card {
+            .bmd-form-group {
+                left: 25px;
+            }
 
-        .selective-card-title {
-            right: 25px;
+            .selective-card-title {
+                right: 25px;
+            }
         }
     }
 </style>
