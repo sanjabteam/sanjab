@@ -124,6 +124,8 @@ $('body').on('change', '.bmd-form-group > textarea.form-control', (e) => e.targe
 $(document).ready(function () {
     $(document).on("click", ".screen-saver-content h1", function () {
         $("body").removeClass("screen-saver");
+        $(document).trigger('sanjab-screen-saver-closing');
+        setTimeout(() => $(document).trigger('sanjab-screen-saver-closed'), 350);
         loadScreenSaver();
         // To refresh screen saver session.
         fetch(sanjabUrl());

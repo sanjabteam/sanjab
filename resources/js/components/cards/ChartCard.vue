@@ -1,6 +1,6 @@
 <template>
     <component :is="borderless ? 'div' : 'b-card'">
-        <component :is="chartTag" :options="options" :chartdata="chartdata" :height="height">
+        <component v-if="show" :is="chartTag" :options="options" :chart-data="chartdata" :height="height">
         </component>
     </component>
 </template>
@@ -32,6 +32,18 @@
                 type: Boolean,
                 default: true
             }
+        },
+        data() {
+            return {
+                show: false
+            };
+        },
+        mounted () {
+            var self = this;
+            self.show = !$('body').hasClass('screen-saver');
+            $(document).on('sanjab-screen-saver-closed', function () {
+                self.show = !$('body').hasClass('screen-saver');
+            });
         },
         computed: {
             chartdata() {

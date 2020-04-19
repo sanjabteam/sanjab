@@ -5,7 +5,7 @@
                 <b class="selective-card-title">{{ title }}</b>
             </b-col>
             <b-col>
-                <b-form-select v-model="currentCard" class="">
+                <b-form-select v-model="currentCard">
                     <option v-for="(card, index) in cards" :key="index" :value="index">{{ card.title }}</option>
                 </b-form-select>
             </b-col>
@@ -13,7 +13,7 @@
         <template v-if="currentCard !== null">
             <template v-for="(card, index) in cards">
                 <div v-if="index == currentCard" :key="index" class="selective-card-container">
-                    <b-row v-if="cardsData[index] != undefined">
+                    <b-row v-if="typeof cardsData[index] == 'object'">
                         <b-col>
                             <component :is="card.card.tag" :data="cardsData[index]" v-bind="card.card" />
                         </b-col>
@@ -67,7 +67,7 @@
         data() {
             return {
                 currentCard: null,
-                cardsData: []
+                cardsData: {}
             }
         },
         mounted () {

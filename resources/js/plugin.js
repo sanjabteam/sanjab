@@ -7,17 +7,13 @@ function chartJsComponent(classType) {
         mixins: [classType, VueChartJs.mixins.reactiveProp],
         template: "",
         props: {
-            chartdata: {
-                type: Object,
-                default: null
-            },
             options: {
                 type: Object,
                 default: null
             }
         },
         mounted () {
-            this.renderChart(this.chartdata, this.options)
+            this.renderChart(this.chartData, this.options)
         }
     };
 }
