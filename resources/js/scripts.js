@@ -92,7 +92,10 @@ function loadScreenSaver() {
     if (!screenSaverLoaded) {
         setInterval(function () {
             var time = new Date();
-            $(".screen-saver-content h1").text(('0' + time.getHours()).slice(-2) + ":" + ('0' + time.getMinutes()).slice(-2));
+            var clock = ('0' + time.getHours()).slice(-2) + ":" + ('0' + time.getMinutes()).slice(-2);
+            if ($(".screen-saver-content h1").text() != clock) {
+                $(".screen-saver-content h1").text(clock);
+            }
             screenSaverTimer += 1;
             if (screenSaverTimer > 300) {
                 $("body").addClass("screen-saver");

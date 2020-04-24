@@ -172,7 +172,7 @@ abstract class SettingController extends SanjabController
     {
         Route::prefix('settings')->name('settings.')->group(function () {
             Route::get(static::property('key'), static::class.'@show')->name(static::property('key'));
-            Route::post(static::property('key'), static::class.'@update')->name(static::property('key'));
+            Route::post(static::property('key'), static::class.'@update')->name(static::property('key').'.update');
         });
     }
 
