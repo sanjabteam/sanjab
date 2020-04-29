@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.7
+* Russian translations added. (Thanks to [Yevhenii Miniailenko](https://github.com/mafftor))
+
 ## v0.1.4
 * Map widget with nullable property bug fixed.
 * PSR4 autoloading issue fixed.
