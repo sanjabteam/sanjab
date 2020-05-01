@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method $this title (string $value)                  title of button.
  * @method $this icon (string $value)                   icon of button.
  * @method $this perItem (string $value)                button that just working with items.
- * @method $this bulk (string $value)                   can be used with multiple.
+ * @method $this bulk (bool $value)                     can be used with multiple.
  * @method $this variant (string $value)                variant of button, bootstrap classes like : "success", "primary", ...
  * @method $this tag (string $value)                    tag to show inside modal.
  * @method $this tagContent (string $value)             modal content inside tag.
- * @method $this tagAttributes (string $value)          modal tag attributes.
+ * @method $this tagAttributes (array $value)           modal tag attributes.
  * @method $this modalSize (string $value)              modal size. 'sm', 'md', 'lg', ...
  * @method $this action (string $value)                 ajax action.
  * @method $this confirm (string $value)                confirm message.
@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method $this confirmOk (string $value)              Ok button text after confirm action done.
  * @method $this confirmInput (string $value)           Sweetalert input for confirm type.
  * @method $this confirmInputTitle (string $value)      Sweetalert input placeholder.
- * @method $this confirmInputAttributes (string $value) Sweetalert input attributes.
+ * @method $this confirmInputAttributes (array $value)  Sweetalert input attributes.
  * @method $this authorize(callable)                    check allowed to call action or not.
  */
 class Action extends PropertiesHolder

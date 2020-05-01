@@ -1,3 +1,3 @@
 <h{{ $data['level'] }}>
     {{ $data['text'] }}
-</h{{}}>
+</h{{ $data['level'] }}>
