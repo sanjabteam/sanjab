@@ -85,6 +85,7 @@ class Action extends PropertiesHolder
         })) > 0) {
             $this->setProperty('bulkUrl', true);
         }
+
         return $this;
     }
 
@@ -105,6 +106,7 @@ class Action extends PropertiesHolder
                 if ($result instanceof \Illuminate\Support\Collection) {
                     return $result->first();
                 }
+
                 return $result;
             }
 

@@ -326,7 +326,7 @@ abstract class CrudController extends SanjabController
                 }
 
                 return $response;
-            } else if (! empty($action->property('action'))) {
+            } elseif (! empty($action->property('action'))) {
                 // Detect action is bulk handling action or one by one model action.
                 if (count(array_filter((new \ReflectionMethod(static::class, $action->action))->getParameters(), function (\ReflectionParameter $parameter) {
                     return optional($parameter->getType())->getName() == 'Illuminate\Support\Collection';
@@ -346,6 +346,7 @@ abstract class CrudController extends SanjabController
         if (! empty($action->property('action'))) {
             return App::call([$this, $action->action]);
         }
+
         return abort(404);
     }
 
