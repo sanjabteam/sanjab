@@ -71,6 +71,7 @@ return [
     'readen' => 'خوانده شده',
     'text' => 'متن',
     'icons' => 'آیکون ها',
+    'please_wait' => 'لطفا صبر کنید...',
 
     'are_you_sure' => 'آیا مطمئن هستید؟',
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',
@@ -91,4 +92,5 @@ return [
     'your_browser_is_unsupported_use_another_one_from_down_below_instead' => 'مرورگر شما پشتیبانی نمیشود. لطفا از یکی از مرورگر های پایین استفاده کنید.',
     'insert_text_here' => 'متن خود را وارد کنید...',
     'sorry_no_matching_options' => 'متاسفانه گزینه مرتبطی یافت نشد.',
+    'to_open_multiple_urls_please_disable_popup_blocker_first' => 'برای باز کردن چند آدرس به صورت همزمان لطفا ابتدا مسدودکننده پاپ آپ را غیر فعال کنید.',
 ];

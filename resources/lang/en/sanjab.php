@@ -71,6 +71,7 @@ return [
     'readen' => 'Readen',
     'text' => 'Text',
     'icons' => 'Icons',
+    'please_wait' => 'Please wait...',
 
     'are_you_sure' => 'Are you sure?',
     'are_you_sure_you_want_to_delete?' => 'Are you sure you want to delete?',
@@ -91,4 +92,5 @@ return [
     'your_browser_is_unsupported_use_another_one_from_down_below_instead' => 'Your browser is unsupported. use another one from down below instead.',
     'insert_text_here' => 'Insert text here ...',
     'sorry_no_matching_options' => 'Sorry, no matching options.',
+    'to_open_multiple_urls_please_disable_popup_blocker_first' => 'To open multiple URLs please disable popup blocker first.',
 ];

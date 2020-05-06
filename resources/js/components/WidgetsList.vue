@@ -238,41 +238,88 @@
                     }
                     this.currentAction = action;
                     this.$refs.actionModal.show();
-                } else if (action.action) {
+                } else {
                     if (item && !(item instanceof Array)) {
+                        if (item.__action_url[action.index]) {
+                            return;
+                        }
                         item = [item];
                     }
-                    Swal.fire({
-                        title: action.confirm,
-                        showCancelButton: true,
-                        showLoaderOnConfirm: true,
-                        confirmButtonText: action.confirmYes,
-                        cancelButtonText: action.confirmNo,
-                        input: action.confirmInput,
-                        inputPlaceholder: action.confirmInputTitle,
-                        inputAttributes: action.confirmInputAttributes,
-                        preConfirm: (input) => {
-                            return axios.post(sanjabUrl("/modules/" + self.properties.route + '/action/' + action.action), {
-                                items : item ? item.map((it) => it.id) : null,
-                                input: input
-                            }).then(function (response) {
-                                return response.data;
-                            }).catch((error) => {
-                                Swal.showValidationMessage(error.response.data.message ? error.response.data.message : sanjabHttpErrorMessage(error.response.status));
-                            });
-                        },
-                        allowOutsideClick: () => !Swal.isLoading()
-                    }).then(function (result) {
-                        if (result.value) {
+                    if (action.action) {
+                        Swal.fire({
+                            title: action.confirm,
+                            showCancelButton: true,
+                            showLoaderOnConfirm: true,
+                            confirmButtonText: action.confirmYes,
+                            cancelButtonText: action.confirmNo,
+                            input: action.confirmInput,
+                            inputPlaceholder: action.confirmInputTitle,
+                            inputAttributes: action.confirmInputAttributes,
+                            preConfirm: (input) => {
+                                return axios.post(sanjabUrl("/modules/" + self.properties.route + '/action/' + action.action), {
+                                    items : item ? item.map((it) => it.id) : null,
+                                    input: input
+                                }).then(function (response) {
+                                    return response.data;
+                                }).catch((error) => {
+                                    Swal.showValidationMessage(error.response.data.message ? error.response.data.message : sanjabHttpErrorMessage(error.response.status));
+                                });
+                            },
+                            allowOutsideClick: () => !Swal.isLoading()
+                        }).then(function (result) {
+                            if (result.value) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: result.value.message ? result.value.message : sanjabTrans('success'),
+                                    confirmButtonText: action.confirmOk,
+                                });
+                                self.selectedBulk = [];
+                                self.$refs.table.refresh();
+                            }
+                        })
+                    } else if (action.url) {
+                        let currentWindow = window;
+
+                        // Url generating is based on a collection for bulk selection
+                        if (action.bulkUrl) {
                             Swal.fire({
-                                icon: 'success',
-                                title: result.value.message ? result.value.message : sanjabTrans('success'),
-                                confirmButtonText: action.confirmOk,
+                                title: sanjabTrans('please_wait'),
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                                allowOutsideClick: false,
                             });
-                            self.selectedBulk = [];
-                            self.$refs.table.refresh();
+                            axios.post(sanjabUrl("/modules/" + self.properties.route + '/action/' + action.index), {
+                                items : item ? item.map((it) => it.id) : null,
+                            }).then(function (response) {
+                                Swal.close();
+                                if (response.data instanceof Array) {
+                                    for (let i in response.data) {
+                                        let newWidow = window.open(response.data[i], '_blank');
+                                        if(!newWidow || newWidow.closed || typeof newWidow.closed == 'undefined') {
+                                            sanjabError(sanjabTrans('to_open_multiple_urls_please_disable_popup_blocker_first'));
+                                            return;
+                                        }
+                                        currentWindow.focus();
+                                    }
+                                } else {
+                                    let newWidow = window.open(response.data, '_blank');
+                                }
+                            }).catch((error) => {
+                                sanjabError(sanjabHttpErrorMessage(error.response.status));
+                            });
+                        } else {
+                            for (let i in item) {
+                                if (item[i].__action_url[action.index]) {
+                                    let newWidow = window.open(item[i].__action_url[action.index], '_blank');
+                                    if(!newWidow || newWidow.closed || typeof newWidow.closed == 'undefined') {
+                                        sanjabError(sanjabTrans('to_open_multiple_urls_please_disable_popup_blocker_first'));
+                                        return;
+                                    }
+                                    currentWindow.focus();
+                                }
+                            }
                         }
-                    })
+                    }
                 }
             },
             onSearch() {
@@ -333,7 +380,7 @@
             bulkActions() {
                 if (this.properties.bulk) {
                     return this.perItemActions.filter(function (value) {
-                        return value.bulk == true && value.action;
+                        return value.bulk == true && (value.action || value.url);
                     });
                 }
                 return [];

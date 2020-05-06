@@ -5,7 +5,6 @@ namespace Sanjab\Helpers;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @method $this url (string|callable $value)           url of button.
  * @method $this target (string $value)                 action target if url used.
  * @method $this title (string $value)                  title of button.
  * @method $this icon (string $value)                   icon of button.
@@ -34,6 +33,7 @@ class Action extends PropertiesHolder
         'variant' => 'default',
         'perItem' => false,
         'bulk' => true,
+        'bulkUrl' => false,
         'tagContent' => '',
         'tagAttributes' => [],
         'modalSize' => 'md',
@@ -71,6 +71,24 @@ class Action extends PropertiesHolder
     }
 
     /**
+     * URL of button.
+     *
+     * @param string|callable $value
+     * @return $this
+     */
+    public function url($value)
+    {
+        $this->setProperty('url', $value);
+        $this->bulk(false);
+        if (is_callable($value) && count(array_filter((new \ReflectionFunction($value))->getParameters(), function (\ReflectionParameter $parameter) {
+            return optional($parameter->getType())->getName() == 'Illuminate\Support\Collection';
+        })) > 0) {
+            $this->setProperty('bulkUrl', true);
+        }
+        return $this;
+    }
+
+    /**
      * Get action link.
      *
      * @property null|Model $item
@@ -79,6 +97,17 @@ class Action extends PropertiesHolder
     public function getActionUrl(Model $item = null)
     {
         if (is_callable($this->property('url'))) {
+            if ($this->property('bulkUrl')) {
+                $result = $this->property('url')(collect([$item]));
+                if (is_array($result)) {
+                    return array_first($result);
+                }
+                if ($result instanceof \Illuminate\Support\Collection) {
+                    return $result->first();
+                }
+                return $result;
+            }
+
             return $this->property('url')($item);
         }
 

@@ -282,16 +282,21 @@ abstract class CrudController extends SanjabController
      * Perform action.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param string $action  action name
+     * @param string $actionNameOrIndex  action name or index
      * @return \Illuminate\Http\Response
      */
-    public function action(Request $request, $action)
+    public function action(Request $request, $actionNameOrIndex)
     {
+        $request->validate(['items' => 'required|array']);
         $this->initCrud('action');
-        // Find action in actions array
-        $action = array_filter($this->actions, function ($act) use ($action) {
-            return $act->action == $action;
+        // Find action in actions array by name
+        $action = array_filter($this->actions, function ($act) use ($actionNameOrIndex) {
+            return $act->action == $actionNameOrIndex;
         });
+        // If not found then search by index
+        if (count($action) == 0 && isset($this->actions[$actionNameOrIndex])) {
+            $action = [$this->actions[$actionNameOrIndex]];
+        }
         // If did not find action then response error 404
         abort_if(count($action) == 0, 404);
         $action = array_first($action);
@@ -307,23 +312,41 @@ abstract class CrudController extends SanjabController
             foreach ($items as $item) {
                 abort_unless($action->property('authorize')($item), 403);
             }
-            // Detect action is bulk handling action or one by one model action.
-            if (count(array_filter((new \ReflectionMethod(static::class, $action->action))->getParameters(), function (\ReflectionParameter $parameter) {
-                return optional($parameter->getType())->getName() == 'Illuminate\Support\Collection';
-            })) > 0) {
-                // Call action in bulk way.
-                return App::call([$this, $action->action], ['Illuminate\Support\Collection' => $items]);
-            }
             // Call action per item.
             $response = null;
-            foreach ($items as $item) {
-                $response = App::call([$this, $action->action], [Model::class => $item, $this->property('model') => $item]);
-            }
+            if (is_callable($action->property('url'))) {
+                // Detect action has bulk handling URL
+                if ($action->property('bulkUrl')) {
+                    // Get URL in bulk way.
+                    return $action->property('url')($items);
+                }
+                $response = [];
+                foreach ($items as $item) {
+                    $response[] = $action->property('url')($item);
+                }
 
-            return $response;
+                return $response;
+            } else if (! empty($action->property('action'))) {
+                // Detect action is bulk handling action or one by one model action.
+                if (count(array_filter((new \ReflectionMethod(static::class, $action->action))->getParameters(), function (\ReflectionParameter $parameter) {
+                    return optional($parameter->getType())->getName() == 'Illuminate\Support\Collection';
+                })) > 0) {
+                    // Call action in bulk way.
+                    return App::call([$this, $action->action], ['Illuminate\Support\Collection' => $items]);
+                }
+
+                foreach ($items as $item) {
+                    $response = App::call([$this, $action->action], [Model::class => $item, $this->property('model') => $item]);
+                }
+
+                return $response;
+            }
         }
         // Non per item action
-        return App::call([$this, $action->action]);
+        if (! empty($action->property('action'))) {
+            return App::call([$this, $action->action]);
+        }
+        return abort(404);
     }
 
     /**
