@@ -200,6 +200,7 @@ class NotificationController extends CrudController
                 ob_flush();
                 flush();
             }
+            $lastResponseTime = time();
             while (true) {
                 // Show new messages.
                 $notifications = Auth::user()->unreadNotifications()->where('created_at', '>', Carbon::createFromTimestamp($lastCreatedAt))->get();
@@ -209,6 +210,7 @@ class NotificationController extends CrudController
                     echo 'data: '.json_encode(['type' => 'items', 'items' => $notificationItems])."\n\n";
                     ob_flush();
                     flush();
+                    $lastResponseTime = time();
                 }
 
                 // Prevent Maximum execution time of N seconds exceeded error.
@@ -219,6 +221,15 @@ class NotificationController extends CrudController
 
                     return;
                 }
+
+                // Prevent keep alive timeout
+                if (time() - $lastResponseTime >= 10) {
+                    echo "data: []\n\n";
+                    ob_flush();
+                    flush();
+                    $lastResponseTime = time();
+                }
+
                 sleep(1);
             }
         });
