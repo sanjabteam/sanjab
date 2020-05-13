@@ -7,6 +7,7 @@ let store = new Vuex.Store({
     state: {
         notificationItems: [],
         notificationEnabled: true,
+        notificationsEventCreated: false
     },
     mutations: {
         setNotificationItems (state, notificationItems) {
@@ -24,8 +25,18 @@ let store = new Vuex.Store({
                     window.sanjab.notificationEventSource.close();
                     window.sanjab.notificationEventSource = undefined;
                 }
-                if (window.sanjab.notificationEventSource === undefined) {
-                    var self = this;
+                var self = this;
+                // Allow only one event source per user.
+                if (localStorage.sanjabNotificationTabId && localStorage.sanjabNotificationTabId != sanjabBrowserTabId && localStorage.sanjabNotificationLastTimeEventSource && parseInt(localStorage.sanjabNotificationLastTimeEventSource) + 610 > parseInt((new Date()).getTime()/1000)) {
+                    sanjabBroadcastChannel.addEventListener('message', function (event) {
+                        if (typeof event.data == 'object' && event.data.type == 'change_notification_event_source' && event.data.tab == sanjabBrowserTabId) {
+                            self.commit('loadNotification');
+                        }
+                        if (typeof event.data == 'object' && event.data.type == 'set_notifications') {
+                            state.notificationItems = event.data.items;
+                        }
+                    });
+                } else if (window.sanjab.notificationEventSource === undefined) {
                     window.sanjab.notificationEventSource = new EventSource(sanjabUrl('/notifications/stream?force=' + forceRefresh + '&time=' + ((parseInt(Date.now() / 1000) - window.sanjab.serverTimeDiff) - 5)));
                     window.sanjab.notificationEventSource.addEventListener('message', function (event) {
                         let data = JSON.parse(event.data);
@@ -35,8 +46,21 @@ let store = new Vuex.Store({
                             self.commit('loadNotification');
                         } else if (data.type == 'items') {
                             state.notificationItems = data.items;
+                            sanjabBroadcastChannel.postMessage({type: 'set_notifications', items: data.items});
                         }
                     }, false);
+
+                    localStorage.sanjabNotificationLastTimeEventSource = parseInt((new Date()).getTime()/1000);
+                    if (! state.notificationsLoaded) {
+                        window.addEventListener('beforeunload', function () {
+                            localStorage.removeItem('sanjabNotificationTabId');
+                            if (sanjabBrowserTabs.length > 0) {
+                                sanjabBroadcastChannel.postMessage({type: 'change_notification_event_source', tab: sanjabBrowserTabs.filter((tabId) => tabId != sanjabBrowserTabId)[0]});
+                            }
+                        });
+                        localStorage.sanjabNotificationTabId = sanjabBrowserTabId;
+                        state.notificationsEventCreated = true;
+                    }
                 }
             }
         },
@@ -71,7 +95,7 @@ store.watch((state) => state.notificationItems, function (newValue, oldValue) {
                         }
                     }
                     if (notifiedBefore == null) {
-                        if (item.notificationSound === true) {
+                        if (item.notificationSound === true && window.sanjab.notificationEventSource) {
                             sanjabPlayNotificationSound();
                         }
                         if (item.notificationToast === true) {

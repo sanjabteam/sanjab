@@ -30,13 +30,16 @@ try {
     console.error(e);
 }
 
-require('./material-dashboard');
-require('./scripts');
-Vue.use(require('./plugin').default);
-
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+window.sanjabBroadcastChannel = new BroadcastChannel('sanjab_' + btoa(window.location.host));
+window.sanjabBrowserTabId = sessionStorage.sanjabBrowserTabId ? sessionStorage.sanjabBrowserTabId : sessionStorage.sanjabBrowserTabId = ('sanjab_' + Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString());
+
+require('./material-dashboard');
+require('./scripts');
+Vue.use(require('./plugin').default);
 
 if (document.querySelector('#sanjab_navbar_app')) {
     window.sanjabSearchApp = new Vue({

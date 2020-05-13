@@ -113,6 +113,53 @@ function loadScreenSaver() {
     }
 }
 
+function setActiveBrowserTabId() {
+    if (document.hidden == false) {
+        window.sanjabActiveBrowserTabId = sanjabBrowserTabId;
+        localStorage.sanjabActiveBrowserTabId = sanjabBrowserTabId;
+    }
+}
+
+function loadTabsInformation() {
+    if (localStorage.sanjabBrowserTabsLock == true) {
+        return setTimeout(loadTabsInformation, 10);
+    }
+
+    window.addEventListener('storage', function (event) {
+        if (event.key == 'sanjabBrowserTabs') {
+            try {
+                window.sanjabBrowserTabs = JSON.parse(event.newValue);
+            } catch (exception) {}
+        }
+        if (event.key == 'sanjabActiveBrowserTabId') {
+            window.sanjabActiveBrowserTabId = event.newValue;
+        }
+    });
+
+    window.addEventListener('beforeunload', function () {
+        localStorage.sanjabBrowserTabsLock = true;
+        browserTabs = localStorage.sanjabBrowserTabs ? JSON.parse(localStorage.sanjabBrowserTabs) : [];
+        browserTabs = browserTabs.filter((t) => t != sanjabBrowserTabId);
+        localStorage.sanjabBrowserTabs = JSON.stringify(browserTabs);
+        localStorage.sanjabBrowserTabsLock = false;
+    });
+
+    window.sanjabActiveBrowserTabId = localStorage.sanjabActiveBrowserTabId ? localStorage.sanjabActiveBrowserTabId : sanjabBrowserTabId;
+    document.addEventListener('visibilitychange', setActiveBrowserTabId);
+    window.addEventListener('focus', setActiveBrowserTabId);
+
+    localStorage.sanjabBrowserTabsLock = true;
+    let browserTabs = null;
+    try {
+        browserTabs = localStorage.sanjabBrowserTabs ? JSON.parse(localStorage.sanjabBrowserTabs) : [];
+    } catch (e) {}
+    browserTabs = browserTabs instanceof Array ? browserTabs : [];
+    browserTabs = browserTabs.concat([sanjabBrowserTabId]).filter((x, i, a) => a.indexOf(x) == i);
+    localStorage.sanjabBrowserTabs = JSON.stringify(browserTabs);
+    window.sanjabBrowserTabs = browserTabs;
+    localStorage.sanjabBrowserTabsLock = false;
+}
+
 $('body').on('focus', '.bmd-form-group > input.form-control', (e) =>  $(e.target).parent().addClass("is-focused"));
 $('body').on('blur', '.bmd-form-group > input.form-control', (e) =>  $(e.target).parent().removeClass("is-focused"));
 $('body').on('focus', '.bmd-form-group > div > input.form-control', (e) =>  $(e.target).parent().parent().addClass("is-focused"));
@@ -136,6 +183,7 @@ $(document).ready(function () {
     if ($(".screen-saver-content h1").text().length == 0) {
         loadScreenSaver();
     }
+    loadTabsInformation();
 
     if ($(".sidebar-wrapper").length > 0 && $(".nav-item.active").length > 0 && window.height > 991) {
         $(".sidebar-wrapper").animate({scrollTop: $(".nav-item.active").offset().top - ($(".sidebar-wrapper").height() / 2.5) }, 25);
