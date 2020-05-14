@@ -86,6 +86,22 @@ window.sanjabPlayNotificationSound = function () {
 };
 
 /**
+ * Lock local storage
+ */
+window.sanjabLockLocalStorage = function (name, callback) {
+    if (localStorage.getItem('sanjabLock' + name) != null && parseInt(new Date().getTime() / 1000) - parseInt(localStorage.getItem('sanjabLock' + name)) <= 5) {
+        return setTimeout(() => sanjabLockLocalStorage(name, callback), 50);
+    }
+    localStorage.setItem('sanjabLock' + name, parseInt(new Date().getTime() / 1000));
+    let result = callback();
+    if (result instanceof Promise) {
+        result.then(() => localStorage.removeItem('sanjabLock' + name));
+    } else {
+        localStorage.removeItem('sanjabLock' + name);
+    }
+}
+
+/**
  * Screen saver setup.
  */
 function loadScreenSaver() {
@@ -113,6 +129,9 @@ function loadScreenSaver() {
     }
 }
 
+/**
+ * Set active tab on change browser tab
+ */
 function setActiveBrowserTabId() {
     if (document.hidden == false) {
         window.sanjabActiveBrowserTabId = sanjabBrowserTabId;
@@ -120,15 +139,14 @@ function setActiveBrowserTabId() {
     }
 }
 
+/**
+ * Load information about tabs
+ */
 function loadTabsInformation() {
-    if (localStorage.sanjabBrowserTabsLock == true) {
-        return setTimeout(loadTabsInformation, 10);
-    }
-
     window.addEventListener('storage', function (event) {
         if (event.key == 'sanjabBrowserTabs') {
             try {
-                window.sanjabBrowserTabs = JSON.parse(event.newValue);
+                window.sanjabBrowserTabs = Object.keys(JSON.parse(event.newValue));
             } catch (exception) {}
         }
         if (event.key == 'sanjabActiveBrowserTabId') {
@@ -137,27 +155,52 @@ function loadTabsInformation() {
     });
 
     window.addEventListener('beforeunload', function () {
-        localStorage.sanjabBrowserTabsLock = true;
-        browserTabs = localStorage.sanjabBrowserTabs ? JSON.parse(localStorage.sanjabBrowserTabs) : [];
-        browserTabs = browserTabs.filter((t) => t != sanjabBrowserTabId);
-        localStorage.sanjabBrowserTabs = JSON.stringify(browserTabs);
-        localStorage.sanjabBrowserTabsLock = false;
+        sanjabLockLocalStorage('sanjabBrowserTabs', function () {
+            browserTabs = localStorage.sanjabBrowserTabs ? JSON.parse(localStorage.sanjabBrowserTabs) : {};
+            if (typeof browserTabs[sanjabBrowserTabId] != 'undefined') {
+                delete browserTabs[sanjabBrowserTabId];
+            }
+            localStorage.sanjabBrowserTabs = JSON.stringify(browserTabs);
+        });
     });
 
     window.sanjabActiveBrowserTabId = localStorage.sanjabActiveBrowserTabId ? localStorage.sanjabActiveBrowserTabId : sanjabBrowserTabId;
     document.addEventListener('visibilitychange', setActiveBrowserTabId);
     window.addEventListener('focus', setActiveBrowserTabId);
 
-    localStorage.sanjabBrowserTabsLock = true;
-    let browserTabs = null;
-    try {
-        browserTabs = localStorage.sanjabBrowserTabs ? JSON.parse(localStorage.sanjabBrowserTabs) : [];
-    } catch (e) {}
-    browserTabs = browserTabs instanceof Array ? browserTabs : [];
-    browserTabs = browserTabs.concat([sanjabBrowserTabId]).filter((x, i, a) => a.indexOf(x) == i);
-    localStorage.sanjabBrowserTabs = JSON.stringify(browserTabs);
-    window.sanjabBrowserTabs = browserTabs;
-    localStorage.sanjabBrowserTabsLock = false;
+    sanjabLockLocalStorage('sanjabBrowserTabs', function () {
+        let browserTabs = null;
+        try {
+            browserTabs = localStorage.sanjabBrowserTabs ? JSON.parse(localStorage.sanjabBrowserTabs) : {};
+        } catch (e) {}
+        browserTabs = browserTabs instanceof Object ? browserTabs : {};
+        browserTabs[sanjabBrowserTabId] = parseInt(Date.now()/1000);
+        localStorage.sanjabBrowserTabs = JSON.stringify(browserTabs);
+        window.sanjabBrowserTabs = Object.keys(browserTabs);
+    });
+
+    setInterval(function () {
+        sanjabLockLocalStorage('sanjabBrowserTabs', function () {
+            let browserTabs = null;
+            try {
+                browserTabs = localStorage.sanjabBrowserTabs ? JSON.parse(localStorage.sanjabBrowserTabs) : {};
+            } catch (e) {}
+            browserTabs = browserTabs instanceof Object ? browserTabs : {};
+            browserTabs[sanjabBrowserTabId] = parseInt(Date.now()/1000);
+
+            // Remove outdated browser tabs
+            if (sanjabActiveBrowserTabId == sanjabBrowserTabId) {
+                for (let i in browserTabs) {
+                    if (parseInt(Date.now()/1000) - browserTabs[i] > 15) {
+                        delete browserTabs[i];
+                    }
+                }
+            }
+
+            localStorage.sanjabBrowserTabs = JSON.stringify(browserTabs);
+            window.sanjabBrowserTabs = Object.keys(browserTabs);
+        });
+    }, 10000);
 }
 
 $('body').on('focus', '.bmd-form-group > input.form-control', (e) =>  $(e.target).parent().addClass("is-focused"));

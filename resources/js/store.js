@@ -27,7 +27,7 @@ let store = new Vuex.Store({
                 }
                 var self = this;
                 // Allow only one event source per user.
-                if (localStorage.sanjabNotificationTabId && localStorage.sanjabNotificationTabId != sanjabBrowserTabId && localStorage.sanjabNotificationLastTimeEventSource && parseInt(localStorage.sanjabNotificationLastTimeEventSource) + 610 > parseInt((new Date()).getTime()/1000)) {
+                if (localStorage.sanjabNotificationTabId && localStorage.sanjabNotificationTabId != sanjabBrowserTabId && localStorage.sanjabNotificationLastTimeEventSource && parseInt(localStorage.sanjabNotificationLastTimeEventSource) + 610 > parseInt(Date.now()/1000)) {
                     sanjabBroadcastChannel.addEventListener('message', function (event) {
                         if (typeof event.data == 'object' && event.data.type == 'change_notification_event_source' && event.data.tab == sanjabBrowserTabId) {
                             self.commit('loadNotification');
@@ -50,12 +50,17 @@ let store = new Vuex.Store({
                         }
                     }, false);
 
-                    localStorage.sanjabNotificationLastTimeEventSource = parseInt((new Date()).getTime()/1000);
-                    if (! state.notificationsLoaded) {
+                    localStorage.sanjabNotificationLastTimeEventSource = parseInt(Date.now()/1000);
+                    if (! state.notificationsEventCreated) {
                         window.addEventListener('beforeunload', function () {
                             localStorage.removeItem('sanjabNotificationTabId');
                             if (sanjabBrowserTabs.length > 0) {
                                 sanjabBroadcastChannel.postMessage({type: 'change_notification_event_source', tab: sanjabBrowserTabs.filter((tabId) => tabId != sanjabBrowserTabId)[0]});
+                            }
+                        });
+                        sanjabBroadcastChannel.addEventListener('message', function (event) {
+                            if (typeof event.data == 'object' && event.data.type == 'mark_notifications_as_read') {
+                                self.commit('markAsRead');
                             }
                         });
                         localStorage.sanjabNotificationTabId = sanjabBrowserTabId;
@@ -66,11 +71,15 @@ let store = new Vuex.Store({
         },
         markAsRead() {
             var self = this;
-            axios.get(sanjabUrl('notifications/mark-as-read'))
-                .then(function (response) {
-                    self.commit('loadNotification', true);
-                })
-                .catch(function (error) {});
+            if (window.sanjab.notificationEventSource === undefined) {
+                sanjabBroadcastChannel.postMessage({type: 'mark_notifications_as_read'});
+            } else {
+                axios.get(sanjabUrl('notifications/mark-as-read'))
+                    .then(function (response) {
+                        self.commit('loadNotification', true);
+                    })
+                    .catch(function (error) {});
+            }
         },
     }
 });
@@ -84,14 +93,14 @@ store.watch((state) => state.notificationItems, function (newValue, oldValue) {
                 if (item.notificationSound === true || item.notificationToast === true) {
                     let notifiedBefore = null;
                     if (typeof item.id !== 'undefined') {
-                        notifiedBefore = localStorage.getItem('sanjab_notification_' + item.id);
+                        notifiedBefore = localStorage.getItem('sanjabNotification_' + item.id);
                         if (notifiedBefore == null) {
-                            localStorage.setItem('sanjab_notification_' + item.id, parseInt(Date.now()/1000));
+                            localStorage.setItem('sanjabNotification_' + item.id, parseInt(Date.now()/1000));
                         }
                     } else {
-                        notifiedBefore = localStorage.getItem('sanjab_notification_' + JSON.stringify(item));
+                        notifiedBefore = localStorage.getItem('sanjabNotification_' + JSON.stringify(item));
                         if (notifiedBefore == null) {
-                            localStorage.setItem('sanjab_notification_' + JSON.stringify(item), parseInt(Date.now()/1000));
+                            localStorage.setItem('sanjabNotification_' + JSON.stringify(item), parseInt(Date.now()/1000));
                         }
                     }
                     if (notifiedBefore == null) {
