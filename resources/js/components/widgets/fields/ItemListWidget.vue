@@ -14,7 +14,7 @@
                 </b-col>
                 <b-col :cols="2">
                     <br>
-                    <b-button @click="removeOption(itemIndex)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip><i class="material-icons">delete</i></b-button>
+                    <b-button @click="removeOption(itemIndex)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip.hover.left><i class="material-icons">delete</i></b-button>
                 </b-col>
             </b-row>
         </b-card>
@@ -64,6 +64,10 @@
             errors: {
                 type: Object,
                 default: () => {return {};}
+            },
+            deleteConfirm: {
+                type: String,
+                default: null
             }
         },
         data() {
@@ -78,10 +82,25 @@
                 this.$emit("input", this.items);
                 setTimeout(() => $(".bmd-form-group input").trigger('change'), 250);
             },
-            removeOption(index) {
-                this.items.splice(index, 1);
-                this.$emit("input", this.items);
-                setTimeout(() => $(".bmd-form-group input").trigger('change'), 250);
+            removeOption(index) {var self = this;
+                if (this.deleteConfirm) {
+                    Swal.fire({
+                        title: self.deleteConfirm,
+                        showCancelButton: true,
+                        confirmButtonText: sanjabTrans('yes'),
+                        cancelButtonText: sanjabTrans('no'),
+                    }).then(function (result) {
+                        if (result.value) {
+                            self.items.splice(index, 1);
+                            self.$emit("input", self.items);
+                            setTimeout(() => $(".bmd-form-group input").trigger('change'), 250);
+                        }
+                    });
+                } else {
+                    this.items.splice(index, 1);
+                    this.$emit("input", this.items);
+                    setTimeout(() => $(".bmd-form-group input").trigger('change'), 250);
+                }
             },
             widgetErrors(widget, itemIndex) {
                 var errors = {};

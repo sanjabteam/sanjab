@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Input list of items with custom widgets.
+ *
+ * @method $this deleteConfirm(string $val)      if you want to show a confirm popup before delete set this to your message.
  */
 class HasManyWidget extends RelationWidget
 {
@@ -24,6 +26,7 @@ class HasManyWidget extends RelationWidget
         $this->sortable(false);
         $this->tag('item-list-widget');
         $this->viewTag('item-list-view');
+        $this->deleteConfirm(null);
     }
 
     protected function postStore(Request $request, Model $item)

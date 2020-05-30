@@ -12,7 +12,7 @@
         <b-table striped hover responsive :items="tableItems" :fields="fields" thead-class="d-none">
             <template v-slot:cell(delete)="data">
                 <b-button-group>
-                    <b-button @click="removeOption(data.index)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip><i class="material-icons">delete</i></b-button>
+                    <b-button @click="removeOption(data.index)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip.hover.left><i class="material-icons">delete</i></b-button>
                 </b-button-group>
             </template>
         </b-table>
@@ -37,6 +37,10 @@
             unique: {
                 type: Boolean,
                 default: false
+            },
+            deleteConfirm: {
+                type: String,
+                default: null
             }
         },
         data() {
@@ -75,8 +79,23 @@
                 }
             },
             removeOption(index) {
-                this.items.splice(index, 1);
-                this.$emit("input", this.items);
+                var self = this;
+                if (this.deleteConfirm) {
+                    Swal.fire({
+                        title: self.deleteConfirm,
+                        showCancelButton: true,
+                        confirmButtonText: sanjabTrans('yes'),
+                        cancelButtonText: sanjabTrans('no'),
+                    }).then(function (result) {
+                        if (result.value) {
+                            self.items.splice(index, 1);
+                            self.$emit("input", self.items);
+                        }
+                    });
+                } else {
+                    this.items.splice(index, 1);
+                    this.$emit("input", this.items);
+                }
             }
         },
         watch: {

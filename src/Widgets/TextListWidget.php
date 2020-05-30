@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method $this unique(boolean $val)            should each item be unique or not.
  * @method $this inputOptions(array $val)        array of new item input attributes.
  * @method $this itemRules(array|string $val)    rules per item.
+ * @method $this deleteConfirm(string $val)      if you want to show a confirm popup before delete set this to your message.
  */
 class TextListWidget extends Widget
 {
@@ -23,6 +24,7 @@ class TextListWidget extends Widget
         $this->viewTag('text-list-view');
         $this->inputOptions(['type' => 'text']);
         $this->unique(true);
+        $this->deleteConfirm(null);
     }
 
     public function validationRules(Request $request, string $type, Model $item = null): array
