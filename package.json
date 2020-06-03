@@ -1,7 +1,7 @@
 {
   "name": "sanjab",
   "description": "Laravel package to create admin panel.",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "license": "MIT",
   "private": false,
   "author": "Amir Alizadeh <amiralizadeh9480@gmail.com>",
