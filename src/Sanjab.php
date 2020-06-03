@@ -2,17 +2,22 @@
 
 namespace Sanjab;
 
+use Carbon\Carbon;
 use Exception;
 use EditorJS\EditorJS;
 use Sanjab\Cards\Card;
+use TusPhp\Cache\FileStore;
+use TusPhp\Events\TusEvent;
 use Sanjab\Helpers\MenuItem;
 use EditorJS\EditorJSException;
 use Sanjab\Helpers\SearchResult;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Log;
+use TusPhp\Tus\Server as TusServer;
 use Illuminate\Support\Facades\Auth;
 use Sanjab\Helpers\NotificationItem;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class Sanjab
@@ -310,26 +315,60 @@ class Sanjab
     /**
      * Clear unused uploads by uppy.
      *
-     * @param string $path
      * @return void
      */
-    public static function clearUploadCache(string $path = 'temp')
+    public static function clearUploadCache()
     {
-        foreach (Storage::disk('local')->files($path) as $file) {
-            // if last modified was more than 24 hours ago.
-            if (time() > Storage::disk('local')->lastModified($file) + 26400) {
-                Storage::disk('local')->delete($file);
+        foreach (Storage::disk('local')->files('temp') as $file) {
+            if (preg_match('/temp[\\/\\\\](.+)_tus_php.server.cache/', $file, $matches)) {
+                // if last modified was more than 24 hours ago.
+                if (time() > Storage::disk('local')->lastModified($file) + 86400) {
+                    Storage::disk('local')->delete($file);
+                    Storage::disk('local')->deleteDirectory('temp/'.$matches[1]);
+                } else {
+                    $tusServer = static::createTusServer($matches[1]);
+                    foreach ($tusServer->getCache()->keys() as $cacheKey) {
+                        $fileMeta = $tusServer->getCache()->get($cacheKey, true);
+                        if (empty($fileMeta['expires_at']) || Carbon::parse($fileMeta['expires_at'])->lt(now('GMT')->subHours(24))) {
+                            if ($tusServer->getCache()->delete($cacheKey)) {
+                                if (is_writable($fileMeta['file_path'])) {
+                                    unlink($fileMeta['file_path']);
+                                }
+                            }
+                        }
+                    }
+                }
             }
+        }
+    }
+
+    /**
+     * Create TUS server based on session id.
+     *
+     * @param string $sessionId
+     * @return TusServer
+     */
+    public static function createTusServer(string $sessionId)
+    {
+        if (! Storage::disk('local')->exists('temp/'.$sessionId)) {
+            Storage::disk('local')->makeDirectory('temp/'.$sessionId);
         }
 
-        // delete files inside subdirectories.
-        foreach (Storage::disk('local')->directories($path) as $subDirectory) {
-            static::clearUploadCache($subDirectory);
-            // if all files inside directory deleted. then delete directory self also.
-            if (count(Storage::disk('local')->files($subDirectory)) == 0) {
-                Storage::disk('local')->deleteDirectory($subDirectory);
-            }
-        }
+        $server = new TusServer(
+            new FileStore(Storage::disk('local')->path('temp/'), $sessionId.'_tus_php.server.cache')
+        );
+
+        $server->event()->addListener('tus-server.upload.complete', function (TusEvent $event) {
+            $uploadedFiles = Session::get('sanjab_uppy_files');
+            $uploadedFiles[$event->getFile()->getKey()] = $event->getFile()->details();
+            Session::put('sanjab_uppy_files', $uploadedFiles);
+        });
+
+        $server
+            ->setApiPath('/admin/helpers/uppy/upload')
+            ->setUploadDir(Storage::disk('local')->path('temp/'.$sessionId));
+
+        return $server;
     }
 
     /**

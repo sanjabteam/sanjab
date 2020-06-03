@@ -4,15 +4,11 @@ namespace Sanjab;
 
 use Bouncer;
 use ReCaptcha\ReCaptcha;
-use TusPhp\Cache\FileStore;
-use TusPhp\Events\TusEvent;
-use TusPhp\Tus\Server as TusServer;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use ReCaptcha\RequestMethod\CurlPost;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
@@ -162,25 +158,7 @@ class SanjabServiceProvider extends ServiceProvider
     public function registerTus()
     {
         $this->app->singleton('sanjab-tus-server', function ($app) {
-            if (! Storage::disk('local')->exists('temp/'.Session::getId())) {
-                Storage::disk('local')->makeDirectory('temp/'.Session::getId());
-            }
-
-            $server = new TusServer(
-                new FileStore(Storage::disk('local')->path('temp/'), Session::getId().'_tus_php.server.cache')
-            );
-
-            $server->event()->addListener('tus-server.upload.complete', function (TusEvent $event) {
-                $uploadedFiles = Session::get('sanjab_uppy_files');
-                $uploadedFiles[$event->getFile()->getKey()] = $event->getFile()->details();
-                Session::put('sanjab_uppy_files', $uploadedFiles);
-            });
-
-            $server
-                ->setApiPath('/admin/helpers/uppy/upload')
-                ->setUploadDir(Storage::disk('local')->path('temp/'.Session::getId()));
-
-            return $server;
+            return Sanjab::createTusServer(Session::getId());
         });
     }
 
