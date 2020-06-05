@@ -27,6 +27,7 @@ SanjabPlugin.install = function (Vue, options) {
 
     Vue.use(require('bootstrap-vue').default);
     Vue.use(require('vue-quill-editor').default);
+    Vue.use(require('vue-datetime').default);
 
     Vue.prototype.sanjabTrans = sanjabTrans;
     Vue.prototype.numberFormat = numberFormat;

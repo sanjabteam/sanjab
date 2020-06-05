@@ -17,6 +17,7 @@
 @import '~elfinder-material-theme/Material/css/theme-light.min.css';
 @import '~material-dashboard/assets/scss/material-dashboard.scss';
 @import '~chart.js/dist/Chart.min.css';
+@import '~vue-datetime/dist/vue-datetime.css';
 @import './variables.scss';
 @import './material-dashboard-rtl.css';
 
@@ -436,6 +437,18 @@ html, .sidebar-wrapper {
 
         .sanjab-seperator-widget {
             border-bottom: 1px solid  map-get($material-colors, $theme);
+        }
+
+        .vdatetime-popup__header,
+        .vdatetime-calendar__month__day--selected > span > span,
+        .vdatetime-calendar__month__day--selected:hover > span > span {
+            background: map-get($material-colors, $theme);
+        }
+
+        .vdatetime-year-picker__item--selected,
+        .vdatetime-time-picker__item--selected,
+        .vdatetime-popup__actions__button {
+            color: map-get($material-colors, $theme);
         }
     }
 }
