@@ -77,7 +77,7 @@ class DateTimeWidget extends Widget
     /**
      * Format time as 12 hour.
      *
-     * @param boolean $val
+     * @param bool $val
      * @return $this
      */
     public function use12HourFormat(bool $val = true)
@@ -89,7 +89,7 @@ class DateTimeWidget extends Widget
     }
 
     /**
-     * Minimum date time
+     * Minimum date time.
      *
      * @param Carbon $val
      * @return $this
@@ -103,7 +103,7 @@ class DateTimeWidget extends Widget
     }
 
     /**
-     * Maximum date time
+     * Maximum date time.
      *
      * @param Carbon $val
      * @return $this

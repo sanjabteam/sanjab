@@ -7,6 +7,7 @@ use Sanjab\Widgets\Widget;
 use Illuminate\Http\Request;
 use Sanjab\Models\TempModel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Handle helper for Widgets that containing child widgets inside.
@@ -32,7 +33,11 @@ trait SubWidgets
         $rules = [
             $this->name => array_merge($this->property('rules.'.$type, []), ['array']),
         ];
-        $values = $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+
+        $values = optional($item)->{$this->property('name')} instanceof Collection ?
+                    $item->{$this->property('name')} :
+                    $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+
         foreach ($values as $key => $requestValues) {
             $widgetRequest = $this->widgetRequest($request, $key);
             foreach ($this->widgets as $widget) {
@@ -52,7 +57,11 @@ trait SubWidgets
             $this->name         => $this->title,
             $this->name.'.*'    => $this->title,
         ];
-        $values = $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+
+        $values = optional($item)->{$this->property('name')} instanceof Collection ?
+                    $item->{$this->property('name')} :
+                    $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+
         foreach ($values as $key => $requestValues) {
             $widgetRequest = $this->widgetRequest($request, $key);
             foreach ($this->widgets as $widget) {
@@ -69,7 +78,11 @@ trait SubWidgets
     public function validationMessages(Request $request, string $type, Model $item = null): array
     {
         $messages = [];
-        $values = $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+
+        $values = optional($item)->{$this->property('name')} instanceof Collection ?
+                    $item->{$this->property('name')} :
+                    $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+
         foreach ($values as $key => $requestValues) {
             foreach ($this->widgets as $widget) {
                 $widgetRequest = $this->widgetRequest($request, $key);
@@ -85,7 +98,7 @@ trait SubWidgets
     protected function modifyResponse(stdClass $response, Model $item)
     {
         $responseItems = [];
-        if (is_array($item->{ $this->property('name') }) || $item->{ $this->property('name') } instanceof \Illuminate\Database\Eloquent\Collection) {
+        if (is_array($item->{ $this->property('name') }) || $item->{ $this->property('name') } instanceof Collection) {
             foreach ($item->{ $this->property('name') } as $key => $itemModel) {
                 if (! ($itemModel instanceof \Illuminate\Database\Eloquent\Model)) {
                     $itemModel = $this->arrayToModel($itemModel);
@@ -107,13 +120,18 @@ trait SubWidgets
         $values = [];
         if (is_array($request->input($this->name))) {
             foreach ($request->input($this->name) as $key => $requestValue) {
-                if (isset($requestValue['__id']) && $item && is_array($item->{ $this->name }) && isset($item->{ $this->name }[$requestValue['__id']])) {
+                if (isset($requestValue['__id']) &&
+                    $item &&
+                    (is_array($item->{ $this->name }) || $item->{ $this->name } instanceof Collection)
+                    && isset($item->{ $this->name }[$requestValue['__id']])
+                ) {
                     $values[$key] = $item->{ $this->name }[$requestValue['__id']];
                 } else {
                     $values[$key] = [];
                 }
             }
         }
+
         $values = $this->arraysToModels($request, $values);
         $editedRequest = $request->input($this->property('name'));
         foreach ($values as $key => $requestValues) {
@@ -163,7 +181,11 @@ trait SubWidgets
         if (is_array($request->input($this->property('name')))) {
             foreach ($request->input($this->property('name')) as $key => $requestValues) {
                 if (is_array($requestValues) && isset($attributes[$key])) {
-                    $models[$key] = $this->arrayToModel($attributes[$key]);
+                    if ($attributes[$key] instanceof Model) {
+                        $models[$key] = $attributes[$key];
+                    } else {
+                        $models[$key] = $this->arrayToModel($attributes[$key]);
+                    }
                 } else {
                     $models[$key] = new TempModel();
                 }

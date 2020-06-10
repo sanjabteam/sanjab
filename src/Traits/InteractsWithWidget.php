@@ -34,7 +34,7 @@ trait InteractsWithWidget
         $controllerAction = $request->input('action');
         $controllerActionParameters = [];
         if ($request->filled('item')) {
-            $controllerActionParameters[] = $request->input('item');
+            $controllerActionParameters['id'] = $request->input('item');
         }
         App::call([$controllerInsatance, $controllerAction], $controllerActionParameters);
 

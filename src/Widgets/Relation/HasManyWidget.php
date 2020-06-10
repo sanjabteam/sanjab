@@ -19,6 +19,8 @@ class HasManyWidget extends RelationWidget
         'widgets',
     ];
 
+    protected $values;
+
     public function init()
     {
         $this->onIndex(false);
@@ -29,29 +31,36 @@ class HasManyWidget extends RelationWidget
         $this->deleteConfirm(null);
     }
 
-    protected function postStore(Request $request, Model $item)
+    protected function preStore(Request $request, Model $item)
     {
-        $values = [];
+        $this->values = [];
         if (is_array($request->input($this->name))) {
             foreach ($request->input($this->name) as $key => $requestValue) {
                 if (isset($requestValue['__id']) && ($item->{ $this->name } instanceof \Illuminate\Database\Eloquent\Collection) && isset($item->{ $this->name }[$requestValue['__id']])) {
-                    $values[$key] = $item->{ $this->name }[$requestValue['__id']];
+                    $this->values[$key] = $item->{ $this->name }[$requestValue['__id']];
                 } else {
-                    $values[$key] = new $this->relatedModel;
+                    $this->values[$key] = new $this->relatedModel;
                 }
             }
         }
 
-        foreach ($values as $key => $requestValues) {
+        foreach ($this->values as $key => $requestValues) {
             $widgetRequest = $this->widgetRequest($request, $key);
             foreach ($this->widgets as $widget) {
-                $widget->doPreStore($widgetRequest, $values[$key]);
+                $widget->doPreStore($widgetRequest, $this->values[$key]);
+            }
+        }
+    }
+
+    protected function postStore(Request $request, Model $item)
+    {
+        foreach ($this->values as $key => $requestValues) {
+            $widgetRequest = $this->widgetRequest($request, $key);
+            foreach ($this->widgets as $widget) {
+                $widget->doStore($widgetRequest, $this->values[$key]);
             }
             foreach ($this->widgets as $widget) {
-                $widget->doStore($widgetRequest, $values[$key]);
-            }
-            foreach ($this->widgets as $widget) {
-                $widget->doPostStore($widgetRequest, $values[$key]);
+                $widget->doPostStore($widgetRequest, $this->values[$key]);
             }
         }
         $item->{ $this->name }()->whereNotIn(
@@ -59,12 +68,12 @@ class HasManyWidget extends RelationWidget
             array_values(array_filter(
                 array_map(function ($ritem) {
                     return $ritem->id;
-                }, $values),
+                }, $this->values),
                 function ($rid) {
                     return $rid != null;
                 }
             ))
         )->delete();
-        $item->{ $this->name }()->saveMany($values);
+        $item->{ $this->name }()->saveMany($this->values);
     }
 }
