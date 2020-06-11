@@ -35,6 +35,9 @@ class UppyWidgetController extends SanjabController
         }
 
         $response = app('sanjab-tus-server')->serve();
+        if (! empty($response->headers->get('location'))) {
+            $response->headers->set('location', rtrim(url('/'), '/').'/'.ltrim(array_get(parse_url($response->headers->get('location')), 'path'), '/'));
+        }
         $response->send();
 
         return response('', $response->getStatusCode());
