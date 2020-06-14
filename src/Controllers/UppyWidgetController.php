@@ -55,12 +55,12 @@ class UppyWidgetController extends SanjabController
         $file = $request->input('path');
         if (in_array($disk, array_keys(config('filesystems.disks')))) {
             if (Storage::disk($disk)->exists($file)) {
-                $file = Storage::disk($disk)->path($file);
                 if ($request->input('thumb') == 'true' && in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
-                    return Image::make($file)->fit(128, 128)->response();
+                    return Image::make(Storage::disk($disk)->get($file))->fit(128, 128)->response();
                 }
 
-                return response()->file($file);
+                return response(Storage::disk($disk)->get($file))
+                        ->header('Content-Type', Storage::disk($disk)->mimeType($file));
             }
         }
 
