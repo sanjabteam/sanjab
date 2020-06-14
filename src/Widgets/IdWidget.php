@@ -17,10 +17,6 @@ class IdWidget extends NumberWidget
         $this->onCreate(false)->onEdit(false);
     }
 
-    public function init()
-    {
-    }
-
     protected function store(Request $request, Model $item): void
     {
     }
