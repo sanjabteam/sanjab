@@ -59,6 +59,9 @@ trait CardHandler
         usort($this->cards, function ($a, $b) {
             return $a->order > $b->order;
         });
+        foreach ($this->cards as $key => $card) {
+            $this->cards[$key]->controllerProperties['index'] = $key;
+        }
     }
 
     /**

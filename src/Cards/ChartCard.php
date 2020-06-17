@@ -8,9 +8,10 @@ use Sanjab\Helpers\ChartData;
 /**
  * Chart card.
  *
- * @method $this chartTag(string $val)      tag of chart.
- * @method $this height(int $height)        height of chart.
- * @method $this borderless(bool $val)      by default is true. if you want a border around card set this to false.
+ * @method $this chartTag(string $val)          tag of chart.
+ * @method $this height(int $height)            height of chart.
+ * @method $this borderless(bool $val)          by default is true. if you want a border around card set this to false.
+ * @method $this formatCallback(string $val)    a javascript function to format callback.
  */
 class ChartCard extends Card
 {

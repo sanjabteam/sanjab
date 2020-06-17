@@ -31,6 +31,14 @@
             borderless: {
                 type: Boolean,
                 default: true
+            },
+            chartOptions: {
+                type: Object,
+                default: () => {}
+            },
+            formatCallback: {
+                type: String,
+                default: "function (value) { return value; }"
             }
         },
         data() {
@@ -53,17 +61,41 @@
                 };
             },
             options() {
-                return {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    title: {
-                        display: this.title != null,
-                        text: this.title
+                var self = this;
+                return Object.assign(
+                    {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        title: {
+                            display: this.title != null,
+                            text: this.title
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            callbacks: {
+                                label: function(tooltipItem, data) {
+                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+
+                                    label += (new Function("{return " + self.formatCallback + "};")).call(null).call(null, tooltipItem.yLabel)
+                                    return label;
+                                }
+                            }
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        return (new Function("{return " + self.formatCallback + "};")).call(null).call(null, value);
+                                    }
+                                }
+                            }]
+                        }
                     },
-                    tooltips: {
-                        mode: 'index'
-                    }
-                };
+                    this.chartOptions
+                );
             }
         },
     }
