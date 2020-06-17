@@ -55,6 +55,17 @@ class NotificationController extends CrudController
                                 $response->text = array_get($item->data, 'text');
                             });
 
+        $this->actions[] = Action::create(trans('sanjab::sanjab.show'))
+                            ->perItem(true)
+                            ->variant('warning')
+                            ->icon('remove_red_eye')
+                            ->authorize(function ($notification) {
+                                return array_get($notification->data, 'url') != null;
+                            })
+                            ->url(function ($notification) {
+                                return route('sanjab.notifications.open-url', ['id' => $notification->id]);
+                            })
+                            ->target('_blank');
         $this->actions[] = Action::create(trans('sanjab::sanjab.i_read'))
                             ->perItem(true)
                             ->variant('success')
