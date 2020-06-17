@@ -22,8 +22,8 @@ var SanjabPlugin = {store};
 SanjabPlugin.install = function (Vue, options) {
     Quill.register('modules/imageUpload', ImageUpload);
     Quill.register(Quill.import('attributors/class/color'), true);
-    Quill.register(Quill.import('attributors/style/size'), true);
-    Quill.register(Quill.import('attributors/style/align'), true);
+    Quill.register(Quill.import('attributors/class/align'), true);
+    Quill.register(Quill.import('attributors/class/size'), true);
 
     Vue.use(require('bootstrap-vue').default);
     Vue.use(require('vue-quill-editor').default);

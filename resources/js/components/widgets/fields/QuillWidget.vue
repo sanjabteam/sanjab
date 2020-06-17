@@ -1,6 +1,7 @@
 <template>
     <quill-editor v-model="mutableValue"
-                :options="editorOptions" />
+                :options="editorOptions"
+                ref="editor" />
 </template>
 
 <script>
@@ -11,8 +12,16 @@
                 default: ""
             },
         },
+        mounted () {
+            if (document.dir == "rtl" && (this.value == null || this.value.length == 0) && (this.mutableValue == null || this.mutableValue.length == 0)) {
+                this.$refs.editor.quill.format('direction', 'rtl');
+                this.$refs.editor.quill.format('align', 'right');
+            }
+            setTimeout(() => this.loaded = true, 250);
+        },
         data() {
             return {
+                loaded: false,
                 mutableValue: "",
                 editorOptions: {
                     placeholder: sanjabTrans('insert_text_here'),
@@ -50,7 +59,9 @@
         },
         watch: {
             mutableValue(newValue, oldValue) {
-                this.$emit('input', newValue);
+                if (this.loaded) {
+                    this.$emit('input', newValue);
+                }
             },
             value(newValue, oldValue) {
                 setTimeout(() => this.mutableValue = this.value, 250);
@@ -61,14 +72,13 @@
 
 <style lang="scss">
     html[dir="rtl"] {
-        .ql-editor {
-            text-align: right;
-        }
-        .ql-editor * {
-            text-align: right;
-        }
         .ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
             right: -14px !important;
+        }
+
+        .ql-editor.ql-blank:before {
+            direction: rtl;
+            text-align: right;
         }
     }
 </style>
