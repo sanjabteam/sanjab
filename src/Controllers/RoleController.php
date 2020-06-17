@@ -31,7 +31,7 @@ class RoleController extends CrudController
     {
         if ($item == null || $item->name != 'super_admin') {
             $this->widgets[] = TextWidget::create('name', trans('sanjab::sanjab.name'))
-                            ->rules('required|string|regex:/[A-Za-z0-9_]+/|unique:bouncer_roles,name,'.optional($item)->id.',id');
+                            ->rules('required|string|regex:/^[A-Za-z0-9_]+$/|unique:bouncer_roles,name,'.optional($item)->id.',id');
         }
         $this->widgets[] = TextWidget::create('title', trans('sanjab::sanjab.title'))
                             ->rules('required|string');

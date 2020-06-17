@@ -3,7 +3,7 @@
         <cards-list :cards="cards" :data="cardsData" />
         <b-row>
             <b-col md="5" class="my-1">
-                <b-button v-for="(action, index) in generalActions" @click="onActionClick(action)" :variant="action.variant" :href="action.url ? action.url : 'javascript:void(0);'" :key="index" :title="action.title" v-b-tooltip><i class="material-icons">{{ action.icon }}</i>{{ action.title }}</b-button>
+                <b-button v-for="(action, index) in generalActions" @click="onActionClick(action)" :variant="action.variant" :href="action.url ? action.url : 'javascript:void(0);'" :key="index" :title="action.title" :target="action.target" v-b-tooltip><i class="material-icons">{{ action.icon }}</i>{{ action.title }}</b-button>
             </b-col>
             <b-col md="5" class="my-1">
                 <b-input-group v-if="properties.searchable">
@@ -55,7 +55,7 @@
         <!-- Bulk actions -->
         <b-collapse id="bulk_actions_collapse" v-model="bulkActionsVisible">
              <b-button-group>
-                <b-button v-for="(action) in bulkActions" :key="action.index" :disabled="selectedBulk.filter((bulkItem) => bulkItem.__can[action.index]).length != selectedBulk.length" @click="onActionClick(action, selectedBulk)" :variant="action.variant" href="javascript:void(0);" :title="action.title" v-b-tooltip>
+                <b-button v-for="(action) in bulkActions" :key="action.index" :disabled="selectedBulk.filter((bulkItem) => bulkItem.__can[action.index]).length != selectedBulk.length" @click="onActionClick(action, selectedBulk)" :variant="action.variant" href="javascript:void(0);" :target="action.target" :title="action.title" v-b-tooltip>
                     <i class="material-icons">{{ action.icon }}</i>
                     {{ action.title }}
                 </b-button>
@@ -94,7 +94,7 @@
             </template>
             <template v-slot:cell(actions)="row">
                 <b-button-group>
-                    <b-button v-for="(action) in perItemActions" :key="action.index" v-if="row.item.__can[action.index] == true" @click="onActionClick(action, row.item)" :variant="action.variant" :href="row.item.__action_url[action.index] ? row.item.__action_url[action.index] : 'javascript:void(0);'" size="sm" :title="action.title" v-b-tooltip>
+                    <b-button v-for="(action) in perItemActions" :key="action.index" v-if="row.item.__can[action.index] == true" @click="onActionClick(action, row.item)" :variant="action.variant" :href="row.item.__action_url[action.index] ? row.item.__action_url[action.index] : 'javascript:void(0);'" :target="action.target" size="sm" :title="action.title" v-b-tooltip>
                         <i class="material-icons">{{ action.icon }}</i>
                     </b-button>
                 </b-button-group>
