@@ -9,13 +9,18 @@
             </b-col>
         </b-row>
         <br>
-        <b-table striped hover responsive :items="tableItems" :fields="fields" thead-class="d-none">
-            <template v-slot:cell(delete)="data">
-                <b-button-group>
-                    <b-button @click="removeOption(data.index)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip.hover.left><i class="material-icons">delete</i></b-button>
-                </b-button-group>
-            </template>
-        </b-table>
+        <b-table-simple striped hover responsive>
+            <draggable v-model="items" tag="b-tbody" :disabled="! draggable" @end="onEnd">
+                <tr v-for="(item, index) in items" :key="index" :style="{cursor: draggable ? 'move' : 'default'}">
+                    <b-td>{{ item }}</b-td>
+                    <b-td>
+                        <b-button-group>
+                            <b-button @click="removeOption(index)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip.hover.left><i class="material-icons">delete</i></b-button>
+                        </b-button-group>
+                    </b-td>
+                </tr>
+            </draggable>
+        </b-table-simple>
     </div>
 </template>
 
@@ -41,22 +46,20 @@
             deleteConfirm: {
                 type: String,
                 default: null
+            },
+            reversed: {
+                type: Boolean,
+                default: true,
+            },
+            draggable: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
             return {
                 newItem: "",
-                items: [],
-                fields: [
-                    {
-                        key: 'name',
-                        sortable: false
-                    },
-                    {
-                        key: 'delete',
-                        sortable: false
-                    },
-                ]
+                items: []
             }
         },
         methods: {
@@ -72,7 +75,11 @@
                                 return;
                             }
                         }
-                        this.items.unshift(this.newItem);
+                        if (this.reversed) {
+                            this.items.unshift(this.newItem);
+                        } else {
+                            this.items.push(this.newItem);
+                        }
                         this.newItem = "";
                         this.$emit("input", this.items);
                     }
@@ -96,21 +103,15 @@
                     this.items.splice(index, 1);
                     this.$emit("input", this.items);
                 }
+            },
+            onEnd() {
+                this.$emit("input", this.items);
             }
         },
         watch: {
             value(newValue, oldValue) {
                 this.items = newValue;
             }
-        },
-        computed: {
-            tableItems() {
-                var out = [];
-                for (var i in this.items) {
-                    out.push({name: this.items[i], delete:null});
-                }
-                return out;
-            }
-        },
+        }
     }
 </script>

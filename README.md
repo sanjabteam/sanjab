@@ -123,6 +123,7 @@ Contributions are welcome! Please read [Contributing Guide](./.github/CONTRIBUTI
 - [Vue bootstrap typeahead](https://github.com/alexurquhart/vue-bootstrap-typeahead)
 - [Vue Chart.js](https://github.com/apertureless/vue-chartjs)
 - [Vue-date-time](https://github.com/mariomka/vue-datetime)
+- [Vue Draggable](https://github.com/SortableJS/Vue.Draggable)
 - [Vue editor.js](https://github.com/changjoo-park/vue-editor-js)
 - [Vue quill editor](https://github.com/surmon-china/vue-quill-editor)
 - [Vue select](https://github.com/sagalbot/vue-select)

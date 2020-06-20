@@ -3,21 +3,26 @@
         <b-button variant="success" type="button" @click="addOption" block>
             {{ sanjabTrans('add') }}
         </b-button>
-        <b-card v-for="(item, itemIndex) in items" :key="itemIndex">
-            <b-row>
-                <b-col :cols="10">
-                    <b-row>
-                        <b-col v-for="(widget, index) in widgets" :key="index" :cols="widget.cols">
-                            <component :is="widget.groupTag" :widget="widget" :properties="properties" :errors="widgetErrors(widget, itemIndex)" :crud-type="crudType" v-model="items[itemIndex][widget.name]" />
-                        </b-col>
-                    </b-row>
-                </b-col>
-                <b-col :cols="2">
-                    <br>
-                    <b-button @click="removeOption(itemIndex)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip.hover.left><i class="material-icons">delete</i></b-button>
-                </b-col>
-            </b-row>
-        </b-card>
+        <draggable v-model="items" :disabled="! draggable" @end="onEnd" handle=".draggable-handle">
+            <b-card v-for="(item, itemIndex) in items" :key="itemIndex">
+                <b-row>
+                    <b-col :cols="10">
+                        <b-row>
+                            <b-col v-for="(widget, index) in widgets" :key="index" :cols="widget.cols">
+                                <component :is="widget.groupTag" :widget="widget" :properties="properties" :errors="widgetErrors(widget, itemIndex)" :crud-type="crudType" v-model="items[itemIndex][widget.name]" />
+                            </b-col>
+                        </b-row>
+                    </b-col>
+                    <b-col :cols="2">
+                        <br>
+                        <b-button-group>
+                            <b-button v-if="draggable" class="draggable-handle" style="cursor:move" variant="success" size="sm"><i class="material-icons">drag_handle</i></b-button>
+                            <b-button @click="removeOption(itemIndex)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip.hover.left><i class="material-icons">delete</i></b-button>
+                        </b-button-group>
+                    </b-col>
+                </b-row>
+            </b-card>
+        </draggable>
         <hr />
     </div>
 </template>
@@ -68,6 +73,14 @@
             deleteConfirm: {
                 type: String,
                 default: null
+            },
+            reversed: {
+                type: Boolean,
+                default: true,
+            },
+            draggable: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -78,7 +91,11 @@
         },
         methods: {
             addOption() {
-                this.items.unshift({});
+                if (this.reversed) {
+                    this.items.unshift({});
+                } else {
+                    this.items.push({});
+                }
                 this.$emit("input", this.items);
                 setTimeout(() => $(".bmd-form-group input").trigger('change'), 250);
             },
@@ -101,6 +118,9 @@
                     this.$emit("input", this.items);
                     setTimeout(() => $(".bmd-form-group input").trigger('change'), 250);
                 }
+            },
+            onEnd() {
+                this.$emit("input", this.items);
             },
             widgetErrors(widget, itemIndex) {
                 var errors = {};

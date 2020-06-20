@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.2.4
+* ItemListWidget/TextListWiget can be draggable/sortable now.
+
 ## v0.2.0
 * DateTimeWidget added.
 

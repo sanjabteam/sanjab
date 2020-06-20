@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method $this inputOptions(array $val)        array of new item input attributes.
  * @method $this itemRules(array|string $val)    rules per item.
  * @method $this deleteConfirm(string $val)      if you want to show a confirm popup before delete set this to your message.
+ * @method $this reversed(bool $val)             insert new item at begin instead of end. default is true.
+ * @method $this draggable(bool $val)            is inserted items draggable or not.
  */
 class TextListWidget extends Widget
 {

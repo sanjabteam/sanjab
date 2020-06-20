@@ -35,6 +35,7 @@ SanjabPlugin.install = function (Vue, options) {
 
     Vue.component('vue-bootstrap-typeahead', require('vue-bootstrap-typeahead').default);
     Vue.component('tags-input', require('@voerro/vue-tagsinput').default);
+    Vue.component('draggable', require('vuedraggable').default);
 
     let chartTypes = {'bar-chart': VueChartJs.Bar,'horizontal-bar-chart': VueChartJs.HorizontalBar,'doughnut-chart': VueChartJs.Doughnut,'line-chart': VueChartJs.Line,'pie-chart': VueChartJs.Pie,'polar-area-chart': VueChartJs.PolarArea,'radar-chart': VueChartJs.Radar,'bubble-chart': VueChartJs.Bubble,'scatter-chart': VueChartJs.Scatter};
 
