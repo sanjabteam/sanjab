@@ -3,12 +3,6 @@
 namespace Sanjab\Widgets;
 
 use Carbon\Carbon;
-use DateTime;
-use DateTimeZone;
-use Illuminate\Http\Request;
-use Sanjab\Helpers\SearchType;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Timezone select widget.

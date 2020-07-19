@@ -37,9 +37,21 @@
                 </b-row>
             </b-card>
 
+            <b-button v-if="readonly" variant="warning" :href="sanjabUrl('/modules/' + properties.route + '/' + item.id + '/edit')" :title="sanjabTrans('edit')" v-b-tooltip>
+                <b-spinner v-if="loading" small></b-spinner>
+                {{ sanjabTrans('edit') }}
+            </b-button>
             <b-button v-if="!readonly" variant="success" type="submit" :disabled="loading">
                 <b-spinner v-if="loading" small></b-spinner>
-                {{ item == null ? sanjabTrans('create') : sanjabTrans('edit') }}
+                {{ sanjabTrans('save') }}
+            </b-button>
+            <b-button v-if="readonly == false && formUrl == null" @click="onSubmit('continue')" variant="primary" type="button" :disabled="loading">
+                <b-spinner v-if="loading" small></b-spinner>
+                {{ sanjabTrans('save_and_edit_this') }}
+            </b-button>
+            <b-button v-if="readonly == false && formUrl == null && (item == null || item.id == null)" @click="onSubmit('add_more')" variant="warning" type="button" :disabled="loading">
+                <b-spinner v-if="loading" small></b-spinner>
+                {{ sanjabTrans('save_and_add_more') }}
             </b-button>
         </b-form>
     </div>
@@ -93,7 +105,7 @@
             };
         },
         methods: {
-            onSubmit() {
+            onSubmit(type = 'continue') {
                 var self = this;
                 self.loading = true;
                 axios({
@@ -111,7 +123,17 @@
                             window.location.reload();
                         }
                     } else {
-                        window.location.href = sanjabUrl('/modules/' + self.properties.route);
+                        if (type == 'continue') {
+                            if (self.item && self.item.id) {
+                                window.location.reload();
+                            } else {
+                                window.location.href = sanjabUrl('/modules/' + self.properties.route + '/' + response.data.id + '/edit');
+                            }
+                        } else if (type == 'add_more') {
+                            window.location.href = sanjabUrl('/modules/' + self.properties.route + '/create');
+                        } else {
+                            window.location.href = sanjabUrl('/modules/' + self.properties.route);
+                        }
                     }
                 }).catch(function (error) {
                     self.loading = false;

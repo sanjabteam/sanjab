@@ -9,7 +9,7 @@
 @import '~quill/dist/quill.snow.css';
 @import '~quill/dist/quill.bubble.css';
 @import '~vue-bootstrap-typeahead/dist/VueBootstrapTypeahead.css';
-@import '~uppy/dist/uppy.min.css';
+@import '~uppy/dist/uppy.css';
 @import '~@voerro/vue-tagsinput/dist/style.css';
 @import '~jquery-ui-bundle/jquery-ui.min.css';
 @import '~shabnam-font/dist/font-face.css';
@@ -184,8 +184,8 @@ a.image-author {
     opacity: 0.4;
 }
 
-body.swal2-shown:not(.swal2-toast-shown) > [aria-hidden="true"] {
-    filter: blur(3px);
+.swal2-container.swal2-center.swal2-backdrop-show, .uppy-Dashboard-overlay {
+    backdrop-filter: blur(3px);
 }
 
 body > * {
@@ -201,7 +201,6 @@ body > * {
         margin-left: auto;
     }
 }
-
 
 @media (max-width: 991px) {
     .screen-saver .sidebar {
@@ -223,10 +222,16 @@ body > * {
     padding-left: 20px;
 }
 
+.item-list-widget-buttons {
+    position: absolute;
+    right: 3px;
+    top: -6px;
+}
 
 /** RTL **/
 
 html[dir="rtl"] {
+
     .custom-control-label::after, .custom-control-label::before {
         right: -20px !important;
     }
@@ -262,6 +267,12 @@ html[dir="rtl"] {
 
     .sidebar .badge {
         float: left;
+    }
+
+    .item-list-widget-buttons {
+        position: absolute;
+        right: unset;
+        left: 3px;
     }
 }
 

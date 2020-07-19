@@ -30,6 +30,7 @@ SanjabPlugin.install = function (Vue, options) {
     Vue.use(require('vue-datetime').default);
 
     Vue.prototype.sanjabTrans = sanjabTrans;
+    Vue.prototype.sanjabUrl = sanjabUrl;
     Vue.prototype.numberFormat = numberFormat;
     Vue.prototype.$sanjabStore = store;
 

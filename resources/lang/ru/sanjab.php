@@ -72,6 +72,9 @@ return [
     'readen' => 'Прочитано',
     'text' => 'Текст',
     'icons' => 'Иконки',
+    'save' => 'спасти',
+    'save_and_edit_this' => 'Сохранить и редактировать это',
+    'save_and_add_more' => 'Сохранить и добавить больше',
 
     'are_you_sure' => 'Вы уверены?',
     'are_you_sure_you_want_to_delete?' => 'Вы действительно хотите удалить?',

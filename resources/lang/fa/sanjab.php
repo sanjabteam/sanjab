@@ -73,6 +73,9 @@ return [
     'text' => 'متن',
     'icons' => 'آیکون ها',
     'please_wait' => 'لطفا صبر کنید...',
+    'save' => 'ذخیره',
+    'save_and_edit_this' => 'ذخیره و اصلاح همین',
+    'save_and_add_more' => 'ذخیره و افزودن بیشتر',
 
     'are_you_sure' => 'آیا مطمئن هستید؟',
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',

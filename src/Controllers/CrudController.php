@@ -176,7 +176,7 @@ abstract class CrudController extends SanjabController
         // Success toast
         Session::flash('sanjab_success', trans('sanjab::sanjab.:item_created_successfully', ['item' => $this->property('title')]));
 
-        return ['success' => true];
+        return ['success' => true, 'id' => $item->id];
     }
 
     /**

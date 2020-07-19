@@ -73,6 +73,9 @@ return [
     'text' => 'Text',
     'icons' => 'Icons',
     'please_wait' => 'Please wait...',
+    'save' => 'Save',
+    'save_and_edit_this' => 'Save & Edit this',
+    'save_and_add_more' => 'Save & Add more',
 
     'are_you_sure' => 'Are you sure?',
     'are_you_sure_you_want_to_delete?' => 'Are you sure you want to delete?',

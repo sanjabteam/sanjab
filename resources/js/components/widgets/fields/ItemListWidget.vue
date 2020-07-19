@@ -6,21 +6,16 @@
         <draggable v-model="items" :disabled="! draggable" @end="onEnd" handle=".draggable-handle">
             <b-card v-for="(item, itemIndex) in items" :key="itemIndex">
                 <b-row>
-                    <b-col :cols="10">
-                        <b-row>
-                            <b-col v-for="(widget, index) in widgets" :key="index" :cols="widget.cols">
-                                <component :is="widget.groupTag" :widget="widget" :properties="properties" :errors="widgetErrors(widget, itemIndex)" :crud-type="crudType" v-model="items[itemIndex][widget.name]" />
-                            </b-col>
-                        </b-row>
-                    </b-col>
-                    <b-col :cols="2">
-                        <br>
-                        <b-button-group>
-                            <b-button v-if="draggable" class="draggable-handle" style="cursor:move" variant="success" size="sm"><i class="material-icons">drag_handle</i></b-button>
-                            <b-button @click="removeOption(itemIndex)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip.hover.left><i class="material-icons">delete</i></b-button>
-                        </b-button-group>
-                    </b-col>
+                    <template v-for="(widget, index) in widgets">
+                        <b-col v-if="showWidget(widget, item)" :key="index" :cols="widget.cols">
+                            <component :is="widget.groupTag" :widget="widget" :properties="properties" :errors="widgetErrors(widget, itemIndex)" :crud-type="crudType" v-model="items[itemIndex][widget.name]" />
+                        </b-col>
+                    </template>
                 </b-row>
+                <b-button-group class="item-list-widget-buttons">
+                    <b-button v-if="draggable" class="draggable-handle" style="cursor:move" variant="success" size="sm"><i class="material-icons">drag_handle</i></b-button>
+                    <b-button @click="removeOption(itemIndex)" variant="danger" size="sm" :title="sanjabTrans('delete')" v-b-tooltip.hover.left><i class="material-icons">delete</i></b-button>
+                </b-button-group>
             </b-card>
         </draggable>
         <hr />
@@ -138,6 +133,9 @@
                     }
                 }
                 return errors;
+            },
+            showWidget (widget, item) {
+                return ((typeof item.__id === 'undefined' && widget.onCreate) || (typeof item.__id !== 'undefined' && widget.onEdit));
             }
         },
         watch: {
