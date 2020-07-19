@@ -112,10 +112,6 @@
         display: flex !important;
         justify-content: center;
         align-items: center;
-
-        i {
-            right: 1px;
-        }
     }
 
     .btn.sanjab-preview-image-remove-button {
@@ -130,10 +126,6 @@
         right: unset !important;
         transform: translateX(-50%);
         left: 50%;
-
-        i {
-            right: 1px;
-        }
     }
     .other-file-type {
         position: relative;
@@ -163,11 +155,15 @@
         .btn.sanjab-preview-image-remove-button {
             right: 38px;
         }
+
+        .btn.sanjab-preview-video-remove-button i, .btn.sanjab-preview-image-remove-button i {
+            right: 1px;
+        }
     }
 
     html[dir="ltr"] {
         .btn.sanjab-preview-image-remove-button {
-            left: 38px;
+            left: 62px;
         }
     }
 

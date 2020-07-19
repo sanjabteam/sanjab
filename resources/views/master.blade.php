@@ -15,7 +15,7 @@
         @yield('header')
     </head>
 
-    <body class="@if(!Route::is('sanjab.unsupported-browser') && time() - Session::get('sanjab_hide_screen_saver') > 300) screen-saver @endif">
+    <body class="@if(!Route::is('sanjab.unsupported-browser') && time() - Session::get('sanjab_hide_screen_saver') > 3600) screen-saver @endif">
         <div class="wrapper">
             @if(!isset($simple) || !$simple)
                 <div class="sidebar"

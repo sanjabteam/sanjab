@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-button variant="success" type="button" @click="addOption" block>
+        <b-button v-if="max === null || items.length < max" variant="success" type="button" @click="addOption" block>
             {{ sanjabTrans('add') }}
         </b-button>
         <draggable v-model="items" :disabled="! draggable" @end="onEnd" handle=".draggable-handle">
@@ -57,6 +57,10 @@
             translation: {
                 type: Boolean,
                 default: false
+            },
+            max: {
+                type: Number,
+                default: null
             },
             properties: {
                 type: Object,

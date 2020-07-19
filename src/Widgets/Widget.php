@@ -544,6 +544,18 @@ abstract class Widget extends PropertiesHolder
     }
 
     /**
+     * Prevent show in create, edit form.
+     *
+     * @return $this
+     */
+    public function readOnly()
+    {
+        $this->onCreate(false)->onEdit(false);
+
+        return $this;
+    }
+
+    /**
      * Clone current widget.
      *
      * @return static

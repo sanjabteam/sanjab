@@ -7,7 +7,7 @@
             </b-col>
             <b-col md="5" class="my-1">
                 <b-input-group v-if="properties.searchable">
-                    <b-form-input @keyup="onFilterChanged" :value="filter" :placeholder="sanjabTrans('search') + '...'"></b-form-input>
+                    <b-form-input @keyup="onFilterChanged" :value="filter" :placeholder="sanjabTrans('search') + '...'" class="mt-1"></b-form-input>
                     <b-button-group>
                         <b-button v-b-toggle.advanced_search_collapse variant="primary" size="sm" :title="sanjabTrans('advanced_search')" v-b-tooltip>
                             <i class="material-icons">search</i>

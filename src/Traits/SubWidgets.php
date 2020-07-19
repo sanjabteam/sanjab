@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Handle helper for Widgets that containing child widgets inside.
+ *
+ * @method $this max(int $val)      maximum count.
  */
 trait SubWidgets
 {
@@ -33,6 +35,10 @@ trait SubWidgets
         $rules = [
             $this->name => array_merge($this->property('rules.'.$type, []), ['array']),
         ];
+
+        if (! empty($this->property('max'))) {
+            $rules[$this->name][] = 'max:'.$this->property('max');
+        }
 
         $values = optional($item)->{$this->property('name')} instanceof Collection ?
                     $item->{$this->property('name')} :
@@ -98,8 +104,12 @@ trait SubWidgets
     protected function modifyResponse(stdClass $response, Model $item)
     {
         $responseItems = [];
-        if (is_array($item->{ $this->property('name') }) || $item->{ $this->property('name') } instanceof Collection) {
-            foreach ($item->{ $this->property('name') } as $key => $itemModel) {
+        $items = $item->{ $this->property('name') };
+        if ($items instanceof \Illuminate\Database\Eloquent\Model) {
+            $items = [$items];
+        }
+        if (is_array($items) || $items instanceof Collection) {
+            foreach ($items as $key => $itemModel) {
                 if (! ($itemModel instanceof \Illuminate\Database\Eloquent\Model)) {
                     $itemModel = $this->arrayToModel($itemModel);
                 }

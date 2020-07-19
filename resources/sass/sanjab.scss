@@ -13,13 +13,13 @@
 @import '~@voerro/vue-tagsinput/dist/style.css';
 @import '~jquery-ui-bundle/jquery-ui.min.css';
 @import '~shabnam-font/dist/font-face.css';
-@import '../assets/thirdparty/elfinder/css/elfinder.min.css';
+@import '../assets/thirdparty/elfinder/css/elfinder.min.scss';
 @import '~elfinder-material-theme/Material/css/theme-light.min.css';
 @import '~material-dashboard/assets/scss/material-dashboard.scss';
 @import '~chart.js/dist/Chart.min.css';
 @import '~vue-datetime/dist/vue-datetime.css';
 @import './variables.scss';
-@import './material-dashboard-rtl.css';
+@import './material-dashboard-rtl.scss';
 
 .navbar-nav .dropdown {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -193,6 +193,8 @@ body > * {
 }
 
 .sanjab-icons-list {
+    overflow: hidden;
+
     i {
         width: 20px;
         margin-right: auto;
@@ -311,6 +313,7 @@ html[lang="fa"] {
 
     &::-webkit-scrollbar-track {
         border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
         background-color: rgba(0, 0, 0, 0.3);
     }
@@ -319,6 +322,7 @@ html[lang="fa"] {
 html, .sidebar-wrapper {
     &::-webkit-scrollbar-track {
         border-radius: 10px;
+        box-shadow: inset 0 0 0 rgba(0,0,0,0.0);
         -webkit-box-shadow: inset 0 0 0 rgba(0,0,0,0.0);
         background-color: rgba(0, 0, 0, 0);
     }
@@ -334,6 +338,7 @@ html, .sidebar-wrapper {
     }
 
     &:hover::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
         background-color: #222;
     }
