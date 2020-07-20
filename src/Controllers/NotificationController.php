@@ -108,7 +108,10 @@ class NotificationController extends CrudController
     public static function notifications(): array
     {
         $output = [];
-        if (Schema::hasTable('notifications') && in_array('Illuminate\Notifications\Notifiable', class_uses(Sanjab::userModel()))) {
+        if (!(Schema::hasTable('notifications') && in_array('Illuminate\Notifications\Notifiable', class_uses(Sanjab::userModel())))){
+
+        return $output;
+    } 
             $output[] = NotificationItem::create('notifications')
                 ->title(trans('sanjab::sanjab.notifications'))
                 ->badge(Auth::user()->unreadNotifications()->where('data', 'LIKE', '%"text":%')->count());
@@ -119,21 +122,22 @@ class NotificationController extends CrudController
                 $notifications = Auth::user()->notifications()->where('data', 'LIKE', '%"text":%')->latest()->limit(5)->get();
             }
             foreach ($notifications as $notification) {
-                if (isset($notification->data['text'])) {
+                if (!isset($notification->data['text'])){
+            continue;} 
                     $url = array_get($notification->data, 'url');
                     $output[0]->addItem(
                         $notification->data['text'],
                         $url ? route('sanjab.notifications.open-url', ['id' => $notification->id]) : '#',
                         ['id' => $notification->id, 'notificationSound' => array_get($notification->data, 'sound', false), 'notificationToast' => array_get($notification->data, 'toast', false)]
                     );
-                }
+                
             }
             $output[0]->addDivider();
             if ($notifications->count() > 0 && $notifications->first()->read_at == null) {
                 $output[0]->addItem(trans('sanjab::sanjab.i_read'), 'javascript:window.sanjabApp.$sanjabStore.commit("markAsRead")');
             }
             $output[0]->addItem(trans('sanjab::sanjab.all'), route('sanjab.modules.notifications.index'), ['active' => true]);
-        }
+        
 
         return $output;
     }

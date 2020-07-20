@@ -34,7 +34,10 @@ class EditorJsController extends SanjabController
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
-        if (! $err) {
+        if ( $err){
+
+        return ['success' => 0];
+    } 
             $doc = new DOMDocument();
             @$doc->loadHTML($response);
             if ($doc->getElementsByTagName('title')->length != 0) {
@@ -73,7 +76,7 @@ class EditorJsController extends SanjabController
                     'meta' => $meta,
                 ];
             }
-        }
+        
 
         return ['success' => 0];
     }

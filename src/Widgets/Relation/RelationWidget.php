@@ -50,7 +50,8 @@ abstract class RelationWidget extends Widget
 
     public function postInit()
     {
-        if (empty($this->property('searchFields'))) {
+        if (!empty($this->property('searchFields'))){
+    return;} 
             $matches = null;
             preg_match_all('/%([A-Za-z0-9_]+)/', $this->property('format'), $matches);
             $searchFields = [];
@@ -61,7 +62,7 @@ abstract class RelationWidget extends Widget
                 $searchFields[] = $match;
             }
             $this->searchFields($searchFields);
-        }
+        
     }
 
     protected function store(Request $request, Model $item)
@@ -194,7 +195,10 @@ abstract class RelationWidget extends Widget
      */
     public function getOptions()
     {
-        if (! is_array($this->cachedOptions)) {
+        if ( is_array($this->cachedOptions)){
+
+        return $this->cachedOptions;
+    } 
             $this->cachedOptions = [];
             if ($this->property('withNull')) {
                 $this->cachedOptions[] = [$this->property('optionsLabelKey') => $this->property('withNull'), 'value' => null];
@@ -232,7 +236,7 @@ abstract class RelationWidget extends Widget
                 }
                 $this->cachedOptions[] = [$this->property('optionsLabelKey') => $text, 'value' => $option->{ $this->{$this->relationKey} }];
             }
-        }
+        
 
         return $this->cachedOptions;
     }
