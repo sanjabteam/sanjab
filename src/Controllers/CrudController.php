@@ -86,7 +86,8 @@ abstract class CrudController extends SanjabController
             })) > 0
         ) {
             foreach ($this->widgets as $widget) {
-                if (is_array($widget->getSearchTypes())) {
+                if (!is_array($widget->getSearchTypes())){
+            continue;} 
                     $searchType = array_first(
                         array_filter($widget->getSearchTypes(), function ($searchType) use ($request, $widget) {
                             return $searchType->type == $request->input('searchTypes.'.$widget->name);
@@ -101,7 +102,7 @@ abstract class CrudController extends SanjabController
                             }
                         });
                     }
-                }
+                
             }
         }
 
@@ -111,9 +112,10 @@ abstract class CrudController extends SanjabController
         });
         // filter options
         $items->where(function ($query) use ($request) {
-            if (isset($this->filters[$request->input('filterOption')])) {
+            if (!isset($this->filters[$request->input('filterOption')])){
+        return;} 
                 $this->filters[$request->input('filterOption')]->property('query')($query);
-            }
+            
         });
 
         // Do sort
@@ -381,7 +383,8 @@ abstract class CrudController extends SanjabController
      */
     final protected function initCrud(string $type, Model $item = null): void
     {
-        if (isset($this->sanjabCrudInitialized) == false || $this->sanjabCrudInitialized == false) {
+        if (!(isset($this->sanjabCrudInitialized) == false || $this->sanjabCrudInitialized == false)){
+    return;} 
             $model = $this->property('model');
             $this->initWidgets($model);
 
@@ -452,7 +455,7 @@ abstract class CrudController extends SanjabController
             // Sort cards
             $this->sortCards();
             $this->sanjabCrudInitialized = true;
-        }
+        
     }
 
     /**
@@ -495,36 +498,40 @@ abstract class CrudController extends SanjabController
      */
     final protected function querySearch(Builder $query, $search)
     {
-        if (! empty($search)) {
+        if ( empty($search)){
+    return;} 
             $query->where(function ($query) use ($search) {
                 // Non translated widgets search.
                 foreach ($this->widgets as $widget) {
-                    if (! $widget->property('translation')) {
+                    if ( $widget->property('translation')){
+                continue;} 
                         $query->orWhere(function ($query) use ($widget, $search) {
                             $widget->doSearch($query, null, $search);
                         });
-                    }
+                    
                 }
 
                 // translated widgets search
                 // first check any translated widget exists or not
                 if (count(array_filter($this->widgets, function ($widget) {
                     return $widget->property('translation');
-                })) > 0) {
+                })) <= 0){
+            return;} 
                     $query->orWhereHas('translations', function (Builder $query) use ($search) {
                         $query->where(function (Builder $query) use ($search) {
                             foreach ($this->widgets as $widget) {
-                                if ($widget->property('translation')) {
+                                if (!$widget->property('translation')){
+                            continue;} 
                                     $query->orWhere(function ($query) use ($widget, $search) {
                                         $widget->doSearch($query, null, $search);
                                     });
-                                }
+                                
                             }
                         });
                     });
-                }
+                
             });
-        }
+        
     }
 
     /**
@@ -541,13 +548,14 @@ abstract class CrudController extends SanjabController
         if (! empty($sort)) {
             foreach ($this->widgets as $widget) {
                 foreach ($widget->getTableColumns() as $tableColumn) {
-                    if ($sort == $tableColumn->key) {
+                    if ($sort != $tableColumn->key){
+                continue;} 
                         $widget->doOrder(
                             $query,
                             $sort,
                             $sortDesc ? 'desc' : 'asc'
                         );
-                    }
+                    
                 }
             }
         } else {
@@ -583,7 +591,10 @@ abstract class CrudController extends SanjabController
                         return Auth::user()->cannot('viewAny'.static::property('permissionsKey'), static::property('model'));
                     }),
         ];
-        if (static::property('menuParentText')) {
+        if (!static::property('menuParentText')){
+
+        return $menu;
+    } 
             return [
                 MenuItem::create('javascript:void(0);')
                     ->title(static::property('menuParentText'))
@@ -591,9 +602,6 @@ abstract class CrudController extends SanjabController
                     ->addChildren($menu),
             ];
         }
-
-        return $menu;
-    }
 
     public static function permissions(): array
     {
@@ -608,16 +616,22 @@ abstract class CrudController extends SanjabController
         if (static::property('editable')) {
             $permission->addPermission(trans('sanjab::sanjab.edit_:item', ['item' => static::property('title')]), 'update'.static::property('permissionsKey'), static::property('model'));
         }
-        if (static::property('deletable')) {
+        if (!static::property('deletable')){
+
+        return [$permission];
+    } 
             $permission->addPermission(trans('sanjab::sanjab.delete_:item', ['item' => static::property('title')]), 'delete'.static::property('permissionsKey'), static::property('model'));
-        }
+        
 
         return [$permission];
     }
 
     public static function dashboardCards(): array
     {
-        if (static::property('defaultDashboardCards') && Auth::user()->can('viewAny'.static::property('permissionsKey'), static::property('model'))) {
+        if (!(static::property('defaultDashboardCards') && Auth::user()->can('viewAny'.static::property('permissionsKey'), static::property('model')))){
+
+        return [];
+    } 
             $model = static::property('model');
             $items = $model::query();
             app(static::class)->queryScope($items);
@@ -631,14 +645,14 @@ abstract class CrudController extends SanjabController
             ];
         }
 
-        return [];
-    }
-
     public static function globalSearch(string $search): array
     {
         $results = [];
         // Authorize can user access to items list atleasts.
-        if (Auth::user()->can('viewAny'.static::property('permissionsKey'), static::property('model')) && static::property('globalSearch')) {
+        if (!(Auth::user()->can('viewAny'.static::property('permissionsKey'), static::property('model')) && static::property('globalSearch'))){
+
+        return $results;
+    } 
             $controllerInsatance = app(static::class);
             App::call([$controllerInsatance, 'index']);
             $model = static::property('model');
@@ -672,7 +686,8 @@ abstract class CrudController extends SanjabController
                     $itemName = str_replace('%'.$match, $item->{ $match }, $itemName);
                 }
                 // Check searched string exists in formated output.
-                if (preg_match('/.*'.preg_quote($search).'.*/', $itemName)) {
+                if (!preg_match('/.*'.preg_quote($search).'.*/', $itemName)){
+            continue;} 
                     if (static::property('editable') && Auth::user()->can('edit'.static::property('permissionsKey'), $item)) {
                         // Link to item's edit if user can edit
                         $results[] = SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $itemName, 'part' => static::property('titles')]), route('sanjab.modules.'.static::property('route').'.edit', ['id' => $item->id]))
@@ -686,9 +701,9 @@ abstract class CrudController extends SanjabController
                         $results[] = SearchResult::create(trans('sanjab::sanjab.:item_in_:part', ['item' => $itemName, 'part' => static::property('titles')]), route('sanjab.modules.'.static::property('route').'.index'))
                                                     ->icon(static::property('icon'));
                     }
-                }
+                
             }
-        }
+        
 
         return $results;
     }

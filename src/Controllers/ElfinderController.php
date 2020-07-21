@@ -46,7 +46,8 @@ class ElfinderController extends SanjabController
         $roots = [];
         foreach (config('sanjab.elfinder.disks') as $disk => $alias) {
             $filesystem = Storage::disk($disk);
-            if (count($allowedDisks) == 0 || in_array($disk, $allowedDisks)) {
+            if (!(count($allowedDisks) == 0 || in_array($disk, $allowedDisks))){
+        continue;} 
                 if ($filesystem->getDriver()->getAdapter() instanceof \League\Flysystem\Adapter\Local) {
                     $roots[] = [
                         'driver'        => 'LocalFileSystem',
@@ -80,7 +81,7 @@ class ElfinderController extends SanjabController
                     }
                     $roots[] = $information;
                 }
-            }
+            
         }
         $conncetor = new elFinderConnector(new elFinder([
             'roots' => $roots,
