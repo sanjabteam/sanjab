@@ -1,8 +1,8 @@
 <div align="center">
     <img src="./images/logo.svg" width="200" height="200">
 </div>
-<h1 align="center">Sanjab</h1>
-<h2 align="center">Yet another admin package for Laravel.</h2>
+<h1 align="center">Sanjab Laravel admin package</h1>
+<h2 align="center">Admin panel package for Laravel</h2>
 
 <div align="center">
 
@@ -17,7 +17,7 @@
 
 </div>
 
-Sanjab is a [Laravel](http://laravel.com/) package that helping laravel developers create an admin panel for projects quickly.
+Sanjab is a [Laravel](http://laravel.com/) package that helping Laravel developers create an admin panel for projects quickly.
 
 - [Screebshots](#screebshots)
 - [Features](#features)
