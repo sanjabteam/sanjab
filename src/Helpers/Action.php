@@ -97,22 +97,21 @@ class Action extends PropertiesHolder
      */
     public function getActionUrl(Model $item = null)
     {
-        if (!is_callable($this->property('url'))){
-
-        return $this->property('url');
-    } 
-            if ($this->property('bulkUrl')) {
-                $result = $this->property('url')(collect([$item]));
-                if (is_array($result)) {
-                    return array_first($result);
-                }
-                if ($result instanceof \Illuminate\Support\Collection) {
-                    return $result->first();
-                }
-
-                return $result;
+        if (! is_callable($this->property('url'))) {
+            return $this->property('url');
+        }
+        if ($this->property('bulkUrl')) {
+            $result = $this->property('url')(collect([$item]));
+            if (is_array($result)) {
+                return array_first($result);
+            }
+            if ($result instanceof \Illuminate\Support\Collection) {
+                return $result->first();
             }
 
-            return $this->property('url')($item);
+            return $result;
         }
+
+        return $this->property('url')($item);
+    }
 }

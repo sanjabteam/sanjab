@@ -378,7 +378,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -388,7 +388,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -398,7 +398,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -408,7 +408,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -418,7 +418,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -428,7 +428,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -438,7 +438,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -448,7 +448,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event ( not for soft delete )
+     * Model event ( not for soft delete ).
      *
      * @param Model $item
      * @return void
@@ -458,7 +458,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event ( not for soft delete )
+     * Model event ( not for soft delete ).
      *
      * @param Model $item
      * @return void
@@ -468,7 +468,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event ( for soft deletes only )
+     * Model event ( for soft deletes only ).
      *
      * @param Model $item
      * @return void
@@ -478,7 +478,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event ( for soft deletes only )
+     * Model event ( for soft deletes only ).
      *
      * @param Model $item
      * @return void
@@ -488,7 +488,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -498,7 +498,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event
+     * Model event.
      *
      * @param Model $item
      * @return void
@@ -508,7 +508,7 @@ trait WidgetHandler
     }
 
     /**
-     * Model event when any change happening to database
+     * Model event when any change happening to database.
      *
      * @param Model $item
      * @return void

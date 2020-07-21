@@ -34,49 +34,47 @@ class EditorJsController extends SanjabController
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
-        if ( $err){
+        if ($err) {
+            return ['success' => 0];
+        }
+        $doc = new DOMDocument();
+        @$doc->loadHTML($response);
+        if ($doc->getElementsByTagName('title')->length != 0) {
+            $meta = [];
+            $meta['title'] = $doc->getElementsByTagName('title')->item(0)->nodeValue;
 
-        return ['success' => 0];
-    } 
-            $doc = new DOMDocument();
-            @$doc->loadHTML($response);
-            if ($doc->getElementsByTagName('title')->length != 0) {
-                $meta = [];
-                $meta['title'] = $doc->getElementsByTagName('title')->item(0)->nodeValue;
-
-                $nodes = $doc->getElementsByTagName('link');
-                for ($i = 0; $i < $nodes->length; $i++) {
-                    $node = $nodes->item($i);
-                    if (in_array(mb_strtolower($node->getAttribute('rel')), ['icon', 'shortcut icon'])) {
-                        $meta['image'] = $node->getAttribute('href');
-                    }
+            $nodes = $doc->getElementsByTagName('link');
+            for ($i = 0; $i < $nodes->length; $i++) {
+                $node = $nodes->item($i);
+                if (in_array(mb_strtolower($node->getAttribute('rel')), ['icon', 'shortcut icon'])) {
+                    $meta['image'] = $node->getAttribute('href');
                 }
-
-                $nodes = $doc->getElementsByTagName('meta');
-                for ($i = 0; $i < $nodes->length; $i++) {
-                    $node = $nodes->item($i);
-                    if (in_array(mb_strtolower($node->getAttribute('name')), ['description', 'og:description'])) {
-                        $meta['description'] = $node->getAttribute('content');
-                    }
-                    if (mb_strtolower($node->getAttribute('name')) == 'og:image') {
-                        $meta['image'] = $node->getAttribute('content');
-                    }
-                }
-
-                if (isset($meta['image'])) {
-                    if (! filter_var($meta['image'], FILTER_VALIDATE_URL)) {
-                        $url = parse_url($request->input('url'));
-                        $meta['image'] = $url['scheme'].'://'.$url['host'].'/'.ltrim($meta['image'], '/');
-                    }
-                    $meta['image'] = ['url' => $meta['image']];
-                }
-
-                return [
-                    'success' => 1,
-                    'meta' => $meta,
-                ];
             }
-        
+
+            $nodes = $doc->getElementsByTagName('meta');
+            for ($i = 0; $i < $nodes->length; $i++) {
+                $node = $nodes->item($i);
+                if (in_array(mb_strtolower($node->getAttribute('name')), ['description', 'og:description'])) {
+                    $meta['description'] = $node->getAttribute('content');
+                }
+                if (mb_strtolower($node->getAttribute('name')) == 'og:image') {
+                    $meta['image'] = $node->getAttribute('content');
+                }
+            }
+
+            if (isset($meta['image'])) {
+                if (! filter_var($meta['image'], FILTER_VALIDATE_URL)) {
+                    $url = parse_url($request->input('url'));
+                    $meta['image'] = $url['scheme'].'://'.$url['host'].'/'.ltrim($meta['image'], '/');
+                }
+                $meta['image'] = ['url' => $meta['image']];
+            }
+
+            return [
+                'success' => 1,
+                'meta' => $meta,
+            ];
+        }
 
         return ['success' => 0];
     }

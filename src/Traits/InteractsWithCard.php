@@ -43,8 +43,7 @@ trait InteractsWithCard
         if (! isset($cards[$request->input('index')])) {
             return abort(400, 'Card '.$request->input('index').' is not valid.');
         }
-            $card = $cards[$request->input('index')];
-        
+        $card = $cards[$request->input('index')];
 
         return [$controllerInsatance, $card];
     }
