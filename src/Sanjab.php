@@ -93,10 +93,9 @@ class Sanjab
                 if (class_exists($controller) && is_subclass_of($controller, \Sanjab\Controllers\SanjabController::class)) {
                     return true;
                 }
-                    Log::error("'$controller' is not a valid sanjab controller.");
+                Log::error("'$controller' is not a valid sanjab controller.");
 
-                    return false;
-                
+                return false;
             }
         );
     }
@@ -112,40 +111,38 @@ class Sanjab
         if (! Auth::check()) {
             return [];
         }
-        if (static::$menuItems != null){
-
-        return static::$menuItems;
-    } 
-            static::$menuItems = [];
-            $index = 0;
-            foreach (static::controllers() as $controller) {
-                foreach ($controller::menus() as $menuItemKey => $menuItem) {
-                    if (! $menuItem instanceof MenuItem) {
-                        throw new Exception("Some menu item in '$controller' is not a MenuItem type.");
-                    }
-                    $menuItem->key = $index++;
-                    if ($menuItem->hasChildren() == false || ! isset(static::$menuItems[$menuItem->title])) {
-                        static::$menuItems[$menuItem->title] = $menuItem;
-                    } else {
-                        foreach ($menuItem->getChildren() as $childItem) {
-                            static::$menuItems[$menuItem->title]
+        if (static::$menuItems != null) {
+            return static::$menuItems;
+        }
+        static::$menuItems = [];
+        $index = 0;
+        foreach (static::controllers() as $controller) {
+            foreach ($controller::menus() as $menuItemKey => $menuItem) {
+                if (! $menuItem instanceof MenuItem) {
+                    throw new Exception("Some menu item in '$controller' is not a MenuItem type.");
+                }
+                $menuItem->key = $index++;
+                if ($menuItem->hasChildren() == false || ! isset(static::$menuItems[$menuItem->title])) {
+                    static::$menuItems[$menuItem->title] = $menuItem;
+                } else {
+                    foreach ($menuItem->getChildren() as $childItem) {
+                        static::$menuItems[$menuItem->title]
                                 ->addChild($childItem);
-                        }
                     }
                 }
             }
-            static::$menuItems = array_filter(static::$menuItems, function ($menuItem) {
-                return ! $menuItem->isHidden();
-            });
-            usort(static::$menuItems, function ($a, $b) {
-                if ($a->order == $b->order) {
-                    return $a->key > $b->key ? 1 : -1;
-                }
+        }
+        static::$menuItems = array_filter(static::$menuItems, function ($menuItem) {
+            return ! $menuItem->isHidden();
+        });
+        usort(static::$menuItems, function ($a, $b) {
+            if ($a->order == $b->order) {
+                return $a->key > $b->key ? 1 : -1;
+            }
 
-                return $a->order > $b->order ? 1 : -1;
-            });
-            static::$menuItems = array_values(static::$menuItems);
-        
+            return $a->order > $b->order ? 1 : -1;
+        });
+        static::$menuItems = array_values(static::$menuItems);
 
         return static::$menuItems;
     }
@@ -162,26 +159,24 @@ class Sanjab
         if (! Auth::check()) {
             return [];
         }
-        if (!(static::$notificationItems == null || $forceRefresh)){
-
-        return static::$notificationItems;
-    } 
-            static::$notificationItems = [];
-            foreach (static::controllers() as $controller) {
-                foreach ($controller::notifications() as $notificationItem) {
-                    if (! $notificationItem instanceof NotificationItem) {
-                        throw new Exception("Some permission item in '$controller' is not a NotificationItem type.");
-                    }
-                    static::$notificationItems[] = $notificationItem;
+        if (! (static::$notificationItems == null || $forceRefresh)) {
+            return static::$notificationItems;
+        }
+        static::$notificationItems = [];
+        foreach (static::controllers() as $controller) {
+            foreach ($controller::notifications() as $notificationItem) {
+                if (! $notificationItem instanceof NotificationItem) {
+                    throw new Exception("Some permission item in '$controller' is not a NotificationItem type.");
                 }
+                static::$notificationItems[] = $notificationItem;
             }
-            static::$notificationItems = array_filter(static::$notificationItems, function ($notificationItem) {
-                return ! $notificationItem->isHidden();
-            });
-            usort(static::$notificationItems, function ($a, $b) {
-                return $a->order > $b->order;
-            });
-        
+        }
+        static::$notificationItems = array_filter(static::$notificationItems, function ($notificationItem) {
+            return ! $notificationItem->isHidden();
+        });
+        usort(static::$notificationItems, function ($a, $b) {
+            return $a->order > $b->order;
+        });
 
         return static::$notificationItems;
     }
@@ -205,31 +200,29 @@ class Sanjab
      */
     public static function permissionItems(): array
     {
-        if (static::$permissionItems != null){
-
-        return static::$permissionItems;
-    } 
-            static::$permissionItems = static::$customPermissionItems;
-            foreach (static::controllers() as $controller) {
-                foreach ($controller::permissions() as $permissionItem) {
-                    if (! $permissionItem instanceof PermissionItem) {
-                        throw new Exception("Some permission item in '$controller' is not a PermissionItem type.");
-                    }
-                    if (! isset(static::$permissionItems[$permissionItem->groupName])) {
-                        static::$permissionItems[$permissionItem->groupName] = $permissionItem;
-                    } else {
-                        foreach ($permissionItem->permissions() as $permission) {
-                            static::$permissionItems[$permissionItem->groupName]
+        if (static::$permissionItems != null) {
+            return static::$permissionItems;
+        }
+        static::$permissionItems = static::$customPermissionItems;
+        foreach (static::controllers() as $controller) {
+            foreach ($controller::permissions() as $permissionItem) {
+                if (! $permissionItem instanceof PermissionItem) {
+                    throw new Exception("Some permission item in '$controller' is not a PermissionItem type.");
+                }
+                if (! isset(static::$permissionItems[$permissionItem->groupName])) {
+                    static::$permissionItems[$permissionItem->groupName] = $permissionItem;
+                } else {
+                    foreach ($permissionItem->permissions() as $permission) {
+                        static::$permissionItems[$permissionItem->groupName]
                                 ->addPermission($permission['title'], $permission['name'], $permission['model']);
-                        }
                     }
                 }
             }
-            static::$permissionItems = array_values(static::$permissionItems);
-            usort(static::$permissionItems, function ($a, $b) {
-                return $a->order > $b->order;
-            });
-        
+        }
+        static::$permissionItems = array_values(static::$permissionItems);
+        usort(static::$permissionItems, function ($a, $b) {
+            return $a->order > $b->order;
+        });
 
         return static::$permissionItems;
     }
@@ -242,23 +235,21 @@ class Sanjab
      */
     public static function dashboardCards(): array
     {
-        if (static::$dashboardCards != null){
-
-        return static::$dashboardCards;
-    } 
-            static::$dashboardCards = [];
-            foreach (static::controllers() as $controller) {
-                foreach ($controller::dashboardCards() as $dashboardCard) {
-                    if (! $dashboardCard instanceof Card) {
-                        throw new Exception("Some dashboard card item in '$controller' is not a Card type.");
-                    }
-                    static::$dashboardCards[] = $dashboardCard;
+        if (static::$dashboardCards != null) {
+            return static::$dashboardCards;
+        }
+        static::$dashboardCards = [];
+        foreach (static::controllers() as $controller) {
+            foreach ($controller::dashboardCards() as $dashboardCard) {
+                if (! $dashboardCard instanceof Card) {
+                    throw new Exception("Some dashboard card item in '$controller' is not a Card type.");
                 }
+                static::$dashboardCards[] = $dashboardCard;
             }
-            usort(static::$dashboardCards, function ($a, $b) {
-                return $a->order > $b->order;
-            });
-        
+        }
+        usort(static::$dashboardCards, function ($a, $b) {
+            return $a->order > $b->order;
+        });
 
         return static::$dashboardCards;
     }
@@ -311,20 +302,14 @@ class Sanjab
             if ($err) {
                 return;
             }
-                $response = json_decode($response, true);
-                if (!is_array($response)){
-
+            $response = json_decode($response, true);
+            if (! is_array($response)) {
                 return;
-            
-        } 
-                    $out = array_random($response);
-                    if (is_array($out) && isset($out['image']) && isset($out['link']) && isset($out['author'])) {
-                        return $out;
-                    }
-                
-
-                return;
-            
+            }
+            $out = array_random($response);
+            if (is_array($out) && isset($out['image']) && isset($out['link']) && isset($out['author'])) {
+                return $out;
+            }
         });
     }
 
@@ -336,24 +321,22 @@ class Sanjab
     public static function clearUploadCache()
     {
         foreach (Storage::disk('local')->files('temp') as $file) {
-            if (!preg_match('/temp[\\/\\\\](.+)_tus_php.server.cache/', $file, $matches)){
-        continue;} 
-                // if last modified was more than 24 hours ago.
-                if (time() > Storage::disk('local')->lastModified($file) + 86400) {
-                    Storage::disk('local')->delete($file);
-                    Storage::disk('local')->deleteDirectory('temp/'.$matches[1]);
-                } else {
-                    $tusServer = static::createTusServer($matches[1]);
-                    foreach ($tusServer->getCache()->keys() as $cacheKey) {
-                        $fileMeta = $tusServer->getCache()->get($cacheKey, true);
-                        if (empty($fileMeta['expires_at']) || Carbon::parse($fileMeta['expires_at'])->lt(now('GMT')->subHours(24)) && $tusServer->getCache()->delete($cacheKey) && is_writable($fileMeta['file_path'])) {
-                                    unlink($fileMeta['file_path']);
-                                
-                            
-                        }
+            if (! preg_match('/temp[\\/\\\\](.+)_tus_php.server.cache/', $file, $matches)) {
+                continue;
+            }
+            // if last modified was more than 24 hours ago.
+            if (time() > Storage::disk('local')->lastModified($file) + 86400) {
+                Storage::disk('local')->delete($file);
+                Storage::disk('local')->deleteDirectory('temp/'.$matches[1]);
+            } else {
+                $tusServer = static::createTusServer($matches[1]);
+                foreach ($tusServer->getCache()->keys() as $cacheKey) {
+                    $fileMeta = $tusServer->getCache()->get($cacheKey, true);
+                    if (empty($fileMeta['expires_at']) || Carbon::parse($fileMeta['expires_at'])->lt(now('GMT')->subHours(24)) && $tusServer->getCache()->delete($cacheKey) && is_writable($fileMeta['file_path'])) {
+                        unlink($fileMeta['file_path']);
                     }
                 }
-            
+            }
         }
     }
 
@@ -409,21 +392,21 @@ class Sanjab
                 $controller = 'App\Http\Controllers\\'.$controller;
             }
         }
-        if (!(class_exists($controller) && is_subclass_of($controller, \Sanjab\Controllers\SanjabController::class))){
-    return;} 
-            $regex = "/\\'controllers\\' => ((\[|array\s*\()[^\]\)]*\s*(\]|\)))/";
-            $config = file_get_contents(config_path('sanjab.php'));
-            preg_match_all($regex, $config, $controllerResult);
-            $controllerResult = $controllerResult[1][0];
-            $controllerResult = eval('return '.$controllerResult.';');
-            $controllerResult[] = $controller;
-            $controllerResult = array_unique($controllerResult);
-            $controllerResult = array_map(function ($controller) {
-                return $controller.'::class';
-            }, $controllerResult);
-            $controllerResult = "'controllers' => [\n        ".implode(",\n        ", $controllerResult).",\n    ]";
-            file_put_contents(config_path('sanjab.php'), preg_replace($regex, $controllerResult, $config));
-        
+        if (! (class_exists($controller) && is_subclass_of($controller, \Sanjab\Controllers\SanjabController::class))) {
+            return;
+        }
+        $regex = "/\\'controllers\\' => ((\[|array\s*\()[^\]\)]*\s*(\]|\)))/";
+        $config = file_get_contents(config_path('sanjab.php'));
+        preg_match_all($regex, $config, $controllerResult);
+        $controllerResult = $controllerResult[1][0];
+        $controllerResult = eval('return '.$controllerResult.';');
+        $controllerResult[] = $controller;
+        $controllerResult = array_unique($controllerResult);
+        $controllerResult = array_map(function ($controller) {
+            return $controller.'::class';
+        }, $controllerResult);
+        $controllerResult = "'controllers' => [\n        ".implode(",\n        ", $controllerResult).",\n    ]";
+        file_put_contents(config_path('sanjab.php'), preg_replace($regex, $controllerResult, $config));
     }
 
     /**

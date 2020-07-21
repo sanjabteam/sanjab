@@ -46,42 +46,42 @@ class ElfinderController extends SanjabController
         $roots = [];
         foreach (config('sanjab.elfinder.disks') as $disk => $alias) {
             $filesystem = Storage::disk($disk);
-            if (!(count($allowedDisks) == 0 || in_array($disk, $allowedDisks))){
-        continue;} 
-                if ($filesystem->getDriver()->getAdapter() instanceof \League\Flysystem\Adapter\Local) {
-                    $roots[] = [
-                        'driver'        => 'LocalFileSystem',
-                        'path'          => $filesystem->getDriver()->getAdapter()->getPathPrefix(),
-                        'URL'           => $filesystem->getDriver()->getConfig()->get('url'),
-                        'accessControl' => 'access',
-                        'alias'         => $alias,
-                        'attributes'    => [
-                            [
-                                'pattern' => '/^(.*\/)?\.(.+)/',
-                                'hidden' => true,
-                            ],
+            if (! (count($allowedDisks) == 0 || in_array($disk, $allowedDisks))) {
+                continue;
+            }
+            if ($filesystem->getDriver()->getAdapter() instanceof \League\Flysystem\Adapter\Local) {
+                $roots[] = [
+                    'driver'        => 'LocalFileSystem',
+                    'path'          => $filesystem->getDriver()->getAdapter()->getPathPrefix(),
+                    'URL'           => $filesystem->getDriver()->getConfig()->get('url'),
+                    'accessControl' => 'access',
+                    'alias'         => $alias,
+                    'attributes'    => [
+                        [
+                            'pattern' => '/^(.*\/)?\.(.+)/',
+                            'hidden' => true,
                         ],
-                    ];
-                } else {
-                    $information = [
-                        'driver'        => 'Flysystem',
-                        'filesystem'    => $filesystem->getDriver(),
-                        'accessControl' => 'access',
-                        'alias'         => $alias,
-                        'tmbPath'    => 'thumbnails',
-                        'attributes'    => [
-                            [
-                                'pattern' => '/^(.*\/)?\.(.+)/',
-                                'hidden' => true,
-                            ],
+                    ],
+                ];
+            } else {
+                $information = [
+                    'driver'        => 'Flysystem',
+                    'filesystem'    => $filesystem->getDriver(),
+                    'accessControl' => 'access',
+                    'alias'         => $alias,
+                    'tmbPath'    => 'thumbnails',
+                    'attributes'    => [
+                        [
+                            'pattern' => '/^(.*\/)?\.(.+)/',
+                            'hidden' => true,
                         ],
-                    ];
-                    if (! empty($filesystem->getDriver()->getConfig()->get('url'))) {
-                        $information['URL'] = $filesystem->getDriver()->getConfig()->get('url');
-                    }
-                    $roots[] = $information;
+                    ],
+                ];
+                if (! empty($filesystem->getDriver()->getConfig()->get('url'))) {
+                    $information['URL'] = $filesystem->getDriver()->getConfig()->get('url');
                 }
-            
+                $roots[] = $information;
+            }
         }
         $conncetor = new elFinderConnector(new elFinder([
             'roots' => $roots,

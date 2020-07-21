@@ -97,22 +97,22 @@ class ElFinderWidget extends Widget
 
     protected function modifyRequest(Request $request, Model $item = null)
     {
-        if (!is_array($request->input($this->property('name')))){
-    return;} 
-            $files = [];
-            $fakeUploadedFiles = [];
-            foreach ($request->input($this->property('name')) as $fileInfo) {
-                if (!(is_array($fileInfo) && isset($fileInfo['value']) && Storage::disk($this->property('disk'))->exists($fileInfo['value']))){
-            continue;} 
-                    $files[] = $fileInfo['value'];
-                    $fakeUploadedFiles[] = new UploadedFile(Storage::disk($this->property('disk'))->path($fileInfo['value']), $fileInfo['value'], Storage::disk($this->property('disk'))->mimeType($fileInfo['value']), 0, true);
-                
+        if (! is_array($request->input($this->property('name')))) {
+            return;
+        }
+        $files = [];
+        $fakeUploadedFiles = [];
+        foreach ($request->input($this->property('name')) as $fileInfo) {
+            if (! (is_array($fileInfo) && isset($fileInfo['value']) && Storage::disk($this->property('disk'))->exists($fileInfo['value']))) {
+                continue;
             }
-            $request->merge([
-                $this->property('name') => $files,
-                $this->property('name').'_fake' => $fakeUploadedFiles,
-            ]);
-        
+            $files[] = $fileInfo['value'];
+            $fakeUploadedFiles[] = new UploadedFile(Storage::disk($this->property('disk'))->path($fileInfo['value']), $fileInfo['value'], Storage::disk($this->property('disk'))->mimeType($fileInfo['value']), 0, true);
+        }
+        $request->merge([
+            $this->property('name') => $files,
+            $this->property('name').'_fake' => $fakeUploadedFiles,
+        ]);
     }
 
     public function validationRules(Request $request, string $type, Model $item = null): array

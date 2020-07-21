@@ -50,19 +50,19 @@ abstract class RelationWidget extends Widget
 
     public function postInit()
     {
-        if (!empty($this->property('searchFields'))){
-    return;} 
-            $matches = null;
-            preg_match_all('/%([A-Za-z0-9_]+)/', $this->property('format'), $matches);
-            $searchFields = [];
-            foreach ($matches[1] as $match) {
-                if (method_exists($this->getModelInstance(), 'isTranslationAttribute') && $this->getModelInstance()->isTranslationAttribute($match)) {
-                    $match = 'translations.'.$match;
-                }
-                $searchFields[] = $match;
+        if (! empty($this->property('searchFields'))) {
+            return;
+        }
+        $matches = null;
+        preg_match_all('/%([A-Za-z0-9_]+)/', $this->property('format'), $matches);
+        $searchFields = [];
+        foreach ($matches[1] as $match) {
+            if (method_exists($this->getModelInstance(), 'isTranslationAttribute') && $this->getModelInstance()->isTranslationAttribute($match)) {
+                $match = 'translations.'.$match;
             }
-            $this->searchFields($searchFields);
-        
+            $searchFields[] = $match;
+        }
+        $this->searchFields($searchFields);
     }
 
     protected function store(Request $request, Model $item)
@@ -195,17 +195,16 @@ abstract class RelationWidget extends Widget
      */
     public function getOptions()
     {
-        if ( is_array($this->cachedOptions)){
-
-        return $this->cachedOptions;
-    } 
-            $this->cachedOptions = [];
-            if ($this->property('withNull')) {
-                $this->cachedOptions[] = [$this->property('optionsLabelKey') => $this->property('withNull'), 'value' => null];
-            }
-            $options = $this->relatedModel::query();
-            $this->property('query')($options);
-            $options = Cache::remember(
+        if (is_array($this->cachedOptions)) {
+            return $this->cachedOptions;
+        }
+        $this->cachedOptions = [];
+        if ($this->property('withNull')) {
+            $this->cachedOptions[] = [$this->property('optionsLabelKey') => $this->property('withNull'), 'value' => null];
+        }
+        $options = $this->relatedModel::query();
+        $this->property('query')($options);
+        $options = Cache::remember(
                 'sanjab_relation_options_cache_'.hash(
                     'sha512',
                     $options->getConnection()->getName()
@@ -219,24 +218,23 @@ abstract class RelationWidget extends Widget
                 }
             );
 
-            $format = $this->property('format');
-            $matches = [[], []];
-            if (is_string($format)) {
-                preg_match_all('/%([A-Za-z0-9_]+)/', $format, $matches);
-            }
-            foreach ($options as $option) {
-                $text = null;
-                if (is_callable($format)) {
-                    $text = $format($option);
-                } else {
-                    $text = $format;
-                    foreach ($matches[1] as $match) {
-                        $text = str_replace('%'.$match, $option->{ $match }, $text);
-                    }
+        $format = $this->property('format');
+        $matches = [[], []];
+        if (is_string($format)) {
+            preg_match_all('/%([A-Za-z0-9_]+)/', $format, $matches);
+        }
+        foreach ($options as $option) {
+            $text = null;
+            if (is_callable($format)) {
+                $text = $format($option);
+            } else {
+                $text = $format;
+                foreach ($matches[1] as $match) {
+                    $text = str_replace('%'.$match, $option->{ $match }, $text);
                 }
-                $this->cachedOptions[] = [$this->property('optionsLabelKey') => $text, 'value' => $option->{ $this->{$this->relationKey} }];
             }
-        
+            $this->cachedOptions[] = [$this->property('optionsLabelKey') => $text, 'value' => $option->{ $this->{$this->relationKey} }];
+        }
 
         return $this->cachedOptions;
     }

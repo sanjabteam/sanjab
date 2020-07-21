@@ -36,10 +36,11 @@ class RoleController extends CrudController
         $this->widgets[] = TextWidget::create('title', trans('sanjab::sanjab.title'))
                             ->rules('required|string');
 
-        if (!($item == null || $item->name != 'super_admin')){
-    return;} 
-            foreach (Sanjab::permissionItems() as $key => $permissionItem) {
-                $checkboxGroup = CheckboxGroupWidget::create('permissions_'.$key, $permissionItem->groupName)
+        if (! ($item == null || $item->name != 'super_admin')) {
+            return;
+        }
+        foreach (Sanjab::permissionItems() as $key => $permissionItem) {
+            $checkboxGroup = CheckboxGroupWidget::create('permissions_'.$key, $permissionItem->groupName)
                     ->all(true)
                     ->customStore(function ($request, $data) {
                     })
@@ -47,33 +48,32 @@ class RoleController extends CrudController
                         foreach ($permissionItem->permissions() as $permission) {
                             Bouncer::disallow($data->name)->to($permission['name'], $permission['model']);
                         }
-                        if (!is_array($request->input('permissions_'.$key))){
-                    return;} 
-                            foreach ($permissionItem->permissions() as $permission) {
-                                if (!in_array($permission['name'].'__'.str_replace('\\', '___', $permission['model']), $request->input('permissions_'.$key))){
-                            continue;} 
-                                    Bouncer::allow($data->name)->to($permission['name'], $permission['model']);
-                                
+                        if (! is_array($request->input('permissions_'.$key))) {
+                            return;
+                        }
+                        foreach ($permissionItem->permissions() as $permission) {
+                            if (! in_array($permission['name'].'__'.str_replace('\\', '___', $permission['model']), $request->input('permissions_'.$key))) {
+                                continue;
                             }
-                        
+                            Bouncer::allow($data->name)->to($permission['name'], $permission['model']);
+                        }
                     })
                     ->customModifyResponse(function (stdClass $response, Model $item) use ($key, $permissionItem) {
                         $currentPermissions = [];
                         foreach ($permissionItem->permissions() as $permission) {
-                            if (!($item && $item->can($permission['name'], $permission['model']))){
-                        continue;} 
-                                $currentPermissions[] = $permission['name'].'__'.str_replace('\\', '___', $permission['model']);
-                            
+                            if (! ($item && $item->can($permission['name'], $permission['model']))) {
+                                continue;
+                            }
+                            $currentPermissions[] = $permission['name'].'__'.str_replace('\\', '___', $permission['model']);
                         }
                         $response->{ 'permissions_'.$key } = $currentPermissions;
                     });
 
-                foreach ($permissionItem->permissions() as $permission) {
-                    $checkboxGroup->addOption($permission['name'].'__'.str_replace('\\', '___', $permission['model']), $permission['title']);
-                }
-                $this->widgets[] = $checkboxGroup;
+            foreach ($permissionItem->permissions() as $permission) {
+                $checkboxGroup->addOption($permission['name'].'__'.str_replace('\\', '___', $permission['model']), $permission['title']);
             }
-        
+            $this->widgets[] = $checkboxGroup;
+        }
     }
 
     public static function permissions(): array
