@@ -1,6 +1,6 @@
 <?php
 
-namespace Sajab\Tests\Feature;
+namespace Sanjab\Tests\Feature;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
