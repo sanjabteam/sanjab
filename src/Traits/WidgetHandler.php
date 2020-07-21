@@ -364,7 +364,151 @@ trait WidgetHandler
     }
 
     /**
-     * Model event when any change happening to database.
+     * Add widgets to widgets list.
+     *
+     * @param \Sanjab\Widgets\Widget|array $item
+     * @return $this
+     */
+    public function addWidgets($widgets)
+    {
+        $widgets = is_array($widgets) ? $widgets : func_get_args();
+        $this->widgets = array_merge($this->widgets, $widgets);
+
+        return $this;
+    }
+
+    /**
+     * Model event
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onRetrieved(Model $item)
+    {
+    }
+
+    /**
+     * Model event
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onCreating(Model $item)
+    {
+    }
+
+    /**
+     * Model event
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onCreated(Model $item)
+    {
+    }
+
+    /**
+     * Model event
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onUpdating(Model $item)
+    {
+    }
+
+    /**
+     * Model event
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onUpdated(Model $item)
+    {
+    }
+
+    /**
+     * Model event
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onSaving(Model $item)
+    {
+    }
+
+    /**
+     * Model event
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onSaved(Model $item)
+    {
+    }
+
+    /**
+     * Model event ( not for soft delete )
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onDeleting(Model $item)
+    {
+    }
+
+    /**
+     * Model event ( not for soft delete )
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onDeleted(Model $item)
+    {
+    }
+
+    /**
+     * Model event ( for soft deletes only )
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onSoftDeleting(Model $item)
+    {
+    }
+
+    /**
+     * Model event ( for soft deletes only )
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onSoftDeleted(Model $item)
+    {
+    }
+
+    /**
+     * Model event
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onRestoring(Model $item)
+    {
+    }
+
+    /**
+     * Model event
+     *
+     * @param Model $item
+     * @return void
+     */
+    protected function onRestored(Model $item)
+    {
+    }
+
+    /**
+     * Model event when any change happening to database
      *
      * @param Model $item
      * @return void
