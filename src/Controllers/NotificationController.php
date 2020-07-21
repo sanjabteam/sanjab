@@ -202,13 +202,14 @@ class NotificationController extends CrudController
         $lastCreatedAt = $request->input('time');
         Session::save();
         $response = response()->stream(function () use ($request, $lastCreatedAt) {
+            if (ob_get_level() > 0) {
+                ob_end_clean();
+            }
             echo 'data: '.json_encode(['type' => 'start'])."\n\n";
-            ob_flush();
             flush();
             if ($request->input('force') == 'true') {
                 $notificationItems = Sanjab::notificationItems(true);
                 echo 'data: '.json_encode(['type' => 'items', 'items' => $notificationItems])."\n\n";
-                ob_flush();
                 flush();
             }
             $lastResponseTime = time();
@@ -219,7 +220,6 @@ class NotificationController extends CrudController
                     $lastCreatedAt = $notifications->max('created_at')->timestamp;
                     $notificationItems = Sanjab::notificationItems(true);
                     echo 'data: '.json_encode(['type' => 'items', 'items' => $notificationItems])."\n\n";
-                    ob_flush();
                     flush();
                     $lastResponseTime = time();
                 }
@@ -227,7 +227,6 @@ class NotificationController extends CrudController
                 // Prevent Maximum execution time of N seconds exceeded error.
                 if ((microtime(true) - LARAVEL_START) + 3 >= intval(ini_get('max_execution_time'))) {
                     echo 'data: '.json_encode(['type' => 'close'])."\n\n";
-                    ob_flush();
                     flush();
 
                     return;
@@ -236,7 +235,6 @@ class NotificationController extends CrudController
                 // Prevent keep alive timeout
                 if (time() - $lastResponseTime >= 10) {
                     echo "data: []\n\n";
-                    ob_flush();
                     flush();
                     $lastResponseTime = time();
                 }
