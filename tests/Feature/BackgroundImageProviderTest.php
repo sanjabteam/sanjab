@@ -1,6 +1,6 @@
 <?php
 
-namespace Sajab\Tests\Feature;
+namespace Sanjab\Tests\Feature;
 
 use Sanjab\Sanjab;
 use Sanjab\Tests\TestCase;

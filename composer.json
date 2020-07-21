@@ -39,7 +39,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Sanjab\\": "src"
+            "Sanjab\\": "src/"
         },
         "files": [
             "./src/Helpers/helpers.php"

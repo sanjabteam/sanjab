@@ -1,6 +1,6 @@
 <?php
 
-namespace Sajab\Tests\Feature;
+namespace Sanjab\Tests\Feature;
 
 use Sanjab\Tests\TestCase;
 use Sanjab\Tests\App\Models\User;
