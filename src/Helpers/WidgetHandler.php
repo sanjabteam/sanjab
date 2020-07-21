@@ -404,6 +404,16 @@ trait WidgetHandler
     }
 
     /**
+     * Widgets Merge.
+     *
+     * @param array $item
+     * @return void
+     */
+    public function addWidgets($widgets){
+        $this->widgets = array_merge($this->widgets, $widgets);
+    }
+
+    /**
      * Model event
      *
      * @param Model $item
