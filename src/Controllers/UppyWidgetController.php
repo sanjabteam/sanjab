@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class UppyWidgetController extends SanjabController
@@ -20,24 +19,26 @@ class UppyWidgetController extends SanjabController
      */
     public function upload(Request $request, $any = null)
     {
-        if ($request->isMethod('get') && $any && is_array(Session::get('sanjab_uppy_files.'.$any))) {
-            if (! File::exists(Session::get('sanjab_uppy_files.'.$any)['file_path'])) {
+        $uppyFile = session('sanjab_uppy_files.'.$any);
+        if ($request->isMethod('get') && $any && is_array($uppyFile)) {
+            if (! File::exists($uppyFile['file_path'])) {
                 sleep(1);
             }
 
-            if (File::exists(Session::get('sanjab_uppy_files.'.$any)['file_path'])) {
-                if ($request->input('thumb') == 'true' && in_array(strtolower(pathinfo(Session::get('sanjab_uppy_files.'.$any)['file_path'], PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
-                    return Image::make(Session::get('sanjab_uppy_files.'.$any)['file_path'])->fit(128, 128)->response();
+            if (File::exists($uppyFile['file_path'])) {
+                if ($request->input('thumb') == 'true' && $this->hasImageExtension($uppyFile['file_path'])) {
+                    return Image::make($uppyFile['file_path'])->fit(128, 128)->response();
                 }
 
-                return response()->file(Session::get('sanjab_uppy_files.'.$any)['file_path']);
+                return response()->file($uppyFile['file_path']);
             }
         }
 
         $response = app('sanjab-tus-server')->serve();
         if (! empty($response->headers->get('location'))) {
-            $response->headers->set('location', rtrim(url('/'), '/').'/'.ltrim(array_get(parse_url($response->headers->get('location')), 'path'), '/'));
+            $response->headers->set('location', $this->makeLocationHeader($response));
         }
+
         $response->send();
 
         return response('', $response->getStatusCode());
@@ -53,23 +54,39 @@ class UppyWidgetController extends SanjabController
     {
         $disk = $request->input('disk', 'public');
         $file = $request->input('path');
-        if (in_array($disk, array_keys(config('filesystems.disks')))) {
-            if (Storage::disk($disk)->exists($file)) {
-                if ($request->input('thumb') == 'true' && in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
-                    return Image::make(Storage::disk($disk)->get($file))->fit(128, 128)->response();
-                }
-
-                return response(Storage::disk($disk)->get($file))
-                        ->header('Content-Type', Storage::disk($disk)->mimeType($file));
-            }
+        if (! in_array($disk, array_keys(config('filesystems.disks')))) {
+            abort(404);
         }
 
-        return abort(404);
+        if ($this->file($disk)->exists($file)) {
+            if ($request->input('thumb') == 'true' && $this->hasImageExtension($file)) {
+                return Image::make($this->file($disk, $file))->fit(128, 128)->response();
+            }
+
+            return response($this->file($disk, $file))->header('Content-Type', $this->file($disk)->mimeType($file));
+        }
     }
 
     public static function routes(): void
     {
         Route::any('/helpers/uppy/upload/{any?}', static::class.'@upload')->name('helpers.uppy.upload')->where('any', '.*');
         Route::get('/helpers/uppy/preview', static::class.'@preview')->name('helpers.uppy.preview');
+    }
+
+    public function file($disk, $file = null)
+    {
+        $f = Storage::disk($disk);
+
+        return $file ? $f->get($file) : $f;
+    }
+
+    private function hasImageExtension($file)
+    {
+        return in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']);
+    }
+
+    private function makeLocationHeader($response)
+    {
+        return rtrim(url('/'), '/').'/'.ltrim(array_get(parse_url($response->headers->get('location')), 'path'), '/');
     }
 }
