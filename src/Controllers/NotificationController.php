@@ -246,7 +246,7 @@ class NotificationController extends CrudController
         });
         $response->headers->set('Content-Type', 'text/event-stream');
         $response->headers->set('X-Accel-Buffering', 'no');
-        $response->headers->set('Cach-Control', 'no-cache');
+        $response->headers->set('Cache-Control', 'no-cache');
         $response->headers->set('Connection', 'keep-alive');
 
         return $response;
