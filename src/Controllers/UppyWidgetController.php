@@ -26,7 +26,7 @@ class UppyWidgetController extends SanjabController
             }
 
             if (File::exists($uppyFile['file_path'])) {
-                if ($request->input('thumb') == 'true' && $this->hasImageExt($uppyFile['file_path'])) {
+                if ($request->input('thumb') == 'true' && $this->hasImageExtension($uppyFile['file_path'])) {
                     return Image::make($uppyFile['file_path'])->fit(128, 128)->response();
                 }
 
@@ -59,12 +59,18 @@ class UppyWidgetController extends SanjabController
         }
 
         if ($this->file($disk)->exists($file)) {
-            if ($request->input('thumb') == 'true' && $this->hasImageExt($file)) {
+            if ($request->input('thumb') == 'true' && $this->hasImageExtension($file)) {
                 return Image::make($this->file($disk, $file))->fit(128, 128)->response();
             }
 
             return response($this->file($disk, $file))->header('Content-Type', $this->file($disk)->mimeType($file));
         }
+    }
+
+    public static function routes(): void
+    {
+        Route::any('/helpers/uppy/upload/{any?}', static::class.'@upload')->name('helpers.uppy.upload')->where('any', '.*');
+        Route::get('/helpers/uppy/preview', static::class.'@preview')->name('helpers.uppy.preview');
     }
 
     public function file($disk, $file = null)
@@ -74,15 +80,9 @@ class UppyWidgetController extends SanjabController
         return $file ? $f->get($file) : $f;
     }
 
-    public static function routes(): void
+    private function hasImageExtension($file)
     {
-        Route::any('/helpers/uppy/upload/{any?}', static::class.'@upload')->name('helpers.uppy.upload')->where('any', '.*');
-        Route::get('/helpers/uppy/preview', static::class.'@preview')->name('helpers.uppy.preview');
-    }
-
-    private function hasImageExt($file)
-    {
-        return in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif',]);
+        return in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']);
     }
 
     private function makeLocationHeader($response)
