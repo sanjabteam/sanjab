@@ -10,7 +10,7 @@ use Sanjab\Tests\App\Models\User;
 use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Sanjab\Helpers\NotificationItem;
+use Sanjab\Plugins\Notification\NotificationItem;
 
 /**
  * Test everything working on \Sanjab\Tests\Controllers\TestController::class,.
@@ -59,11 +59,11 @@ class SanjabControllersTest extends TestCase
 
     public function testNotificationItems()
     {
-        $notificationItems = Sanjab::notificationItems();
+        $notificationItems = NotificationItem::get();
         $this->assertTrue(count($notificationItems) == 0);
 
         Auth::loginUsingId(User::where('email', 'admin@test.com')->firstOrFail()->id);
-        $notificationItems = Sanjab::notificationItems();
+        $notificationItems = NotificationItem::get();
         $this->assertFalse(count($notificationItems) == 0);
 
         $this->assertTrue(count(array_filter($notificationItems, function (NotificationItem $notificationItems) {

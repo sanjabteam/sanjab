@@ -1,6 +1,6 @@
 <?php
 
-namespace Sanjab\Controllers;
+namespace Sanjab\Plugins\Notification;
 
 use stdClass;
 use Carbon\Carbon;
@@ -12,7 +12,7 @@ use Sanjab\Widgets\ShowWidget;
 use Sanjab\Helpers\CrudProperties;
 use Sanjab\Widgets\CheckboxWidget;
 use Illuminate\Support\Facades\Auth;
-use Sanjab\Helpers\NotificationItem;
+use Sanjab\Plugins\Notification\NotificationItem;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -210,7 +210,7 @@ class NotificationController extends CrudController
             echo 'data: '.json_encode(['type' => 'start'])."\n\n";
             flush();
             if ($request->input('force') == 'true') {
-                $notificationItems = Sanjab::notificationItems(true);
+                $notificationItems = NotificationItem::get(true);
                 echo 'data: '.json_encode(['type' => 'items', 'items' => $notificationItems])."\n\n";
                 flush();
             }
@@ -220,7 +220,7 @@ class NotificationController extends CrudController
                 $notifications = Auth::user()->unreadNotifications()->where('created_at', '>', Carbon::createFromTimestamp($lastCreatedAt))->get();
                 if ($notifications->count() > 0) {
                     $lastCreatedAt = $notifications->max('created_at')->timestamp;
-                    $notificationItems = Sanjab::notificationItems(true);
+                    $notificationItems = NotificationItem::get(true);
                     echo 'data: '.json_encode(['type' => 'items', 'items' => $notificationItems])."\n\n";
                     flush();
                     $lastResponseTime = time();

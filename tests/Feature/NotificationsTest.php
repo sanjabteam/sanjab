@@ -1,10 +1,10 @@
 <?php
 
-namespace Sajab\Tests\Feature;
+namespace Sanjab\Tests\Feature;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Sanjab\Controllers\NotificationController;
+use Sanjab\Plugins\Notification\NotificationController;
 use Sanjab\Tests\TestCase;
 use Sanjab\Tests\App\Models\User;
 use Sanjab\Tests\App\Notifications\TestNotification;
