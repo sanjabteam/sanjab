@@ -49,7 +49,7 @@ class BelongsToPickerWidget extends RelationWidget
     public function getController()
     {
         if ($this->property('ajax') && isset($this->controllerProperties['controller']) == false && empty($this->property('ajaxController'))) {
-            throw new Exception("Please set ajax controller for '".$this->property('name')."'");
+            throw new \Exception("Please set ajax controller for '".$this->property('name')."'");
         }
         if (isset($this->controllerProperties['controller'])) {
             return $this->controllerProperties['controller'];
@@ -61,7 +61,7 @@ class BelongsToPickerWidget extends RelationWidget
     public function getControllerAction()
     {
         if ($this->property('ajax') && isset($this->controllerProperties['type']) == false && empty($this->property('ajaxControllerAction'))) {
-            throw new Exception("Please set ajax controller action for '".$this->property('name')."'");
+            throw new \Exception("Please set ajax controller action for '".$this->property('name')."'");
         }
         if (isset($this->controllerProperties['type'])) {
             return $this->controllerProperties['type'];
