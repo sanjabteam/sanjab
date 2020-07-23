@@ -6,7 +6,7 @@ use Sanjab\Cards\Card;
 use Sanjab\Helpers\MenuItem;
 use Sanjab\Helpers\SearchResult;
 use Sanjab\Helpers\PermissionItem;
-use Sanjab\Helpers\NotificationItem;
+use Sanjab\Plugins\Notification\NotificationItem;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;

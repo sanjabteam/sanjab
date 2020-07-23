@@ -15,7 +15,7 @@ use Sanjab\Helpers\PermissionItem;
 use Illuminate\Support\Facades\Log;
 use TusPhp\Tus\Server as TusServer;
 use Illuminate\Support\Facades\Auth;
-use Sanjab\Helpers\NotificationItem;
+use Sanjab\Plugins\Notification\NotificationItem;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Storage;
 class Sanjab
 {
     const SANJAB_CONTROLLERS = [
-        \Sanjab\Controllers\NotificationController::class,
+        \Sanjab\Plugins\Notification\NotificationController::class,
         \Sanjab\Controllers\AuthController::class,
         \Sanjab\Controllers\RoleController::class,
         \Sanjab\Controllers\QuillController::class,
@@ -44,13 +44,6 @@ class Sanjab
      * @var MenuItem[]
      */
     protected static $menuItems = null;
-
-    /**
-     * Menu items.
-     *
-     * @var NotificationItem[]
-     */
-    protected static $notificationItems = null;
 
     /**
      * Permission items.
