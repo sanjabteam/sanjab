@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Builder;
-use Sanjab\Plugins\Notification\NotificationItem;
 use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends CrudController
