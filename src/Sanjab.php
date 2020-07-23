@@ -149,29 +149,7 @@ class Sanjab
      */
     public static function notificationItems($forceRefresh = false): array
     {
-        if (! Auth::check()) {
-            return [];
-        }
-        if (! (static::$notificationItems == null || $forceRefresh)) {
-            return static::$notificationItems;
-        }
-        static::$notificationItems = [];
-        foreach (static::controllers() as $controller) {
-            foreach ($controller::notifications() as $notificationItem) {
-                if (! $notificationItem instanceof NotificationItem) {
-                    throw new Exception("Some permission item in '$controller' is not a NotificationItem type.");
-                }
-                static::$notificationItems[] = $notificationItem;
-            }
-        }
-        static::$notificationItems = array_filter(static::$notificationItems, function ($notificationItem) {
-            return ! $notificationItem->isHidden();
-        });
-        usort(static::$notificationItems, function ($a, $b) {
-            return $a->order > $b->order;
-        });
-
-        return static::$notificationItems;
+        return NotificationItem::get($forceRefresh);
     }
 
     /**

@@ -2,7 +2,11 @@
 
 namespace Sanjab\Plugins\Notification;
 
+use Exception;
+use Sanjab\Sanjab;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Sanjab\Helpers\PropertiesHolder;
 
 /**
  * @method $this title (string $value)     title of notification.
@@ -119,9 +123,9 @@ class NotificationItem extends PropertiesHolder
             return static::$notificationItems;
         }
         static::$notificationItems = [];
-        foreach (static::controllers() as $controller) {
+        foreach (Sanjab::controllers() as $controller) {
             foreach ($controller::notifications() as $notificationItem) {
-                if (! $notificationItem instanceof NotificationItem) {
+                if (! $notificationItem instanceof self) {
                     throw new Exception("Some permission item in '$controller' is not a NotificationItem type.");
                 }
                 static::$notificationItems[] = $notificationItem;

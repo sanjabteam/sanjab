@@ -3,8 +3,8 @@
 namespace Sanjab\Plugins\Notification;
 
 use stdClass;
-use Carbon\Carbon;
 use Exception;
+use Carbon\Carbon;
 use Sanjab\Sanjab;
 use Sanjab\Helpers\Action;
 use Illuminate\Http\Request;
@@ -12,12 +12,13 @@ use Sanjab\Widgets\ShowWidget;
 use Sanjab\Helpers\CrudProperties;
 use Sanjab\Widgets\CheckboxWidget;
 use Illuminate\Support\Facades\Auth;
-use Sanjab\Plugins\Notification\NotificationItem;
 use Illuminate\Support\Facades\Route;
+use Sanjab\Controllers\CrudController;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Builder;
+use Sanjab\Plugins\Notification\NotificationItem;
 use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends CrudController
