@@ -4,7 +4,7 @@ namespace Sanjab\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Sanjab\Helpers\NotificationItem;
+use Sanjab\Plugins\Notification\NotificationItem;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 

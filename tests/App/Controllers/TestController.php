@@ -7,7 +7,7 @@ use Sanjab\Helpers\MenuItem;
 use Sanjab\Helpers\SearchResult;
 use Sanjab\Helpers\MaterialIcons;
 use Sanjab\Helpers\PermissionItem;
-use Sanjab\Helpers\NotificationItem;
+use Sanjab\Plugins\Notification\NotificationItem;
 use Illuminate\Support\Facades\Route;
 use Sanjab\Controllers\SanjabController;
 

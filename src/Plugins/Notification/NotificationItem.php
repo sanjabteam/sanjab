@@ -1,6 +1,6 @@
 <?php
 
-namespace Sanjab\Helpers;
+namespace Sanjab\Plugins\Notification;
 
 use Illuminate\Support\Facades\App;
 
@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\App;
  */
 class NotificationItem extends PropertiesHolder
 {
+    /**
+     * Notification items.
+     *
+     * @var NotificationItem[]
+     */
+    protected static $notificationItems = null;
+
     protected $properties = [
         'icon' => 'notifications',
         'order' => 100,
@@ -94,5 +101,39 @@ class NotificationItem extends PropertiesHolder
         }
 
         return $out;
+    }
+
+    /**
+     * All controllers menu items.
+     *
+     * @param bool $forceRefresh  force use lastest version instead of cached data.
+     * @return NotificationItem[]
+     * @throws Exception
+     */
+    public static function get($forceRefresh = false): array
+    {
+        if (! Auth::check()) {
+            return [];
+        }
+        if (! (static::$notificationItems == null || $forceRefresh)) {
+            return static::$notificationItems;
+        }
+        static::$notificationItems = [];
+        foreach (static::controllers() as $controller) {
+            foreach ($controller::notifications() as $notificationItem) {
+                if (! $notificationItem instanceof NotificationItem) {
+                    throw new Exception("Some permission item in '$controller' is not a NotificationItem type.");
+                }
+                static::$notificationItems[] = $notificationItem;
+            }
+        }
+        static::$notificationItems = array_filter(static::$notificationItems, function ($notificationItem) {
+            return ! $notificationItem->isHidden();
+        });
+        usort(static::$notificationItems, function ($a, $b) {
+            return $a->order > $b->order;
+        });
+
+        return static::$notificationItems;
     }
 }
