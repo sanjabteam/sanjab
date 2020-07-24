@@ -18,13 +18,13 @@ class CheckboxWidgetController extends SanjabController
         [$controllerInsatance, $checkboxWidget] = $this->getInteractionInfo();
 
         if ($checkboxWidget->property('fastChange') == false) {
-            return abort(403);
+            abort(403);
         }
 
         $model = $controllerInsatance->property('model');
         // check model exist
         if (! class_exists($model)) {
-            return abort(400);
+            abort(400);
         }
 
         // Get item.

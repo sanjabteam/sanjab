@@ -349,7 +349,7 @@ abstract class CrudController extends SanjabController
             return App::call([$this, $action->action]);
         }
 
-        return abort(404);
+        abort(404);
     }
 
     /**
