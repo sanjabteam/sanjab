@@ -30,7 +30,7 @@ class SanjabMiddleware
 
         // Non admin users
         if ($request->user()->cannot('access_sanjab')) {
-            return abort(403);
+            abort(403);
         }
 
         $response = $next($request);

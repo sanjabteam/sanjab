@@ -25,10 +25,10 @@ trait InteractsWithCard
         ]);
         $controller = $request->input('controller');
         if (! class_exists($controller)) {
-            return abort(400, 'Controller is not valid.');
+            abort(400, 'Controller is not valid.');
         }
         if (! method_exists($controller, $request->input('action'))) {
-            return abort(400, 'Controller action is not valid.');
+            abort(400, 'Controller action is not valid.');
         }
         $controllerInsatance = app($request->input('controller'));
         $controllerAction = $request->input('action');
@@ -41,7 +41,7 @@ trait InteractsWithCard
         $card = null;
         $cards = $controllerInsatance->getCards();
         if (! isset($cards[$request->input('index')])) {
-            return abort(400, 'Card '.$request->input('index').' is not valid.');
+            abort(400, 'Card '.$request->input('index').' is not valid.');
         }
         $card = $cards[$request->input('index')];
 
