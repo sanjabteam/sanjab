@@ -40,9 +40,7 @@ trait SubWidgets
             $rules[$this->name][] = 'max:'.$this->property('max');
         }
 
-        $values = optional($item)->{$this->property('name')} instanceof Collection ?
-                    $item->{$this->property('name')} :
-                    $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+        $values = $this->getValues($request, $item);
 
         foreach ($values as $key => $requestValues) {
             $widgetRequest = $this->widgetRequest($request, $key);
@@ -64,9 +62,7 @@ trait SubWidgets
             $this->name.'.*'    => $this->title,
         ];
 
-        $values = optional($item)->{$this->property('name')} instanceof Collection ?
-                    $item->{$this->property('name')} :
-                    $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+        $values = $this->getValues($request, $item);
 
         foreach ($values as $key => $requestValues) {
             $widgetRequest = $this->widgetRequest($request, $key);
@@ -85,9 +81,7 @@ trait SubWidgets
     {
         $messages = [];
 
-        $values = optional($item)->{$this->property('name')} instanceof Collection ?
-                    $item->{$this->property('name')} :
-                    $this->arraysToModels($request, is_array(optional($item)->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+        $values = $this->getValues($request, $item);
 
         foreach ($values as $key => $requestValues) {
             foreach ($this->widgets as $widget) {
@@ -127,6 +121,28 @@ trait SubWidgets
 
     protected function modifyRequest(Request $request, Model $item = null)
     {
+        $values = $this->getValues($request, $item);
+        $editedRequest = $request->input($this->property('name'));
+        foreach ($values as $key => $requestValues) {
+            $widgetRequest = $this->widgetRequest($request, $key);
+            foreach ($this->widgets as $widget) {
+                $widget->doModifyRequest($widgetRequest, $requestValues);
+            }
+            $editedRequest[$key] = $widgetRequest->all();
+        }
+        $editedRequest = $editedRequest;
+        $request->merge([$this->property('name') => $editedRequest]);
+    }
+
+    /**
+     * Get values from request.
+     *
+     * @param Request $request
+     * @param Model $item
+     * @return array
+     */
+    protected function getValues(Request $request, Model $item = null)
+    {
         $values = [];
         if (is_array($request->input($this->name))) {
             foreach ($request->input($this->name) as $key => $requestValue) {
@@ -142,17 +158,7 @@ trait SubWidgets
             }
         }
 
-        $values = $this->arraysToModels($request, $values);
-        $editedRequest = $request->input($this->property('name'));
-        foreach ($values as $key => $requestValues) {
-            $widgetRequest = $this->widgetRequest($request, $key);
-            foreach ($this->widgets as $widget) {
-                $widget->doModifyRequest($widgetRequest, $requestValues);
-            }
-            $editedRequest[$key] = $widgetRequest->all();
-        }
-        $editedRequest = $editedRequest;
-        $request->merge([$this->property('name') => $editedRequest]);
+        return $this->arraysToModels($request, $values);
     }
 
     /**
