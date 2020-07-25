@@ -85,7 +85,7 @@ class SelectiveCard extends Card
     public function getController()
     {
         if (isset($this->controllerProperties['controller']) == false && empty($this->property('selectiveController'))) {
-            throw new Exception("Please set selective controller for '".$this->property('name')."'");
+            throw new \Exception("Please set selective controller for '".$this->property('name')."'");
         }
         if (! empty($this->property('selectiveController'))) {
             return $this->property('selectiveController');
@@ -102,7 +102,7 @@ class SelectiveCard extends Card
     public function getControllerAction()
     {
         if (isset($this->controllerProperties['type']) == false && empty($this->property('selectiveControllerAction'))) {
-            throw new Exception("Please set selective controller action for '".$this->property('name')."'");
+            throw new \Exception("Please set selective controller action for '".$this->property('name')."'");
         }
         if (! empty($this->property('selectiveControllerAction'))) {
             return $this->property('selectiveControllerAction');
@@ -119,7 +119,7 @@ class SelectiveCard extends Card
     public function getControllerIndex()
     {
         if (isset($this->controllerProperties['index']) == false && empty($this->property('selectiveControllerIndex'))) {
-            throw new Exception("Please set selective controller action for '".$this->property('name')."'");
+            throw new \Exception("Please set selective controller action for '".$this->property('name')."'");
         }
         if (! empty($this->property('selectiveControllerIndex'))) {
             return $this->property('selectiveControllerIndex');

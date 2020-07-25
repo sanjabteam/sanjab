@@ -23,11 +23,11 @@ class SelectiveCardController extends SanjabController
         $request->validate(['dataIndex' => 'required']);
         $cards = $selectiveCard->getCards();
         if (! isset($cards[$request->input('dataIndex')])) {
-            return abort(400, 'Card data index is invalide.');
+            abort(400, 'Card data index is invalide.');
         }
         $card = $cards[$request->input('dataIndex')];
         if (! isset($card['card'])) {
-            return abort(400, 'Selective card misconfigured.');
+            abort(400, 'Selective card misconfigured.');
         }
         $cardData = new stdClass;
         $card['card']->doModifyResponse($cardData);
