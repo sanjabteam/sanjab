@@ -35,10 +35,12 @@ class HasManyWidget extends RelationWidget
     protected function preStore(Request $request, Model $item)
     {
         $this->values = [];
-        if (is_array($request->input($this->name))) {
-            foreach ($request->input($this->name) as $key => $requestValue) {
-                if (isset($requestValue['__id']) && ($item->{ $this->name } instanceof Collection) && isset($item->{ $this->name }[$requestValue['__id']])) {
-                    $this->values[$key] = $item->{ $this->name }[$requestValue['__id']];
+
+        $name = $this->name;
+        if (is_array($request->input($name))) {
+            foreach ($request->input($name) as $key => $requestValue) {
+                if (isset($requestValue['__id']) && ($item->$name instanceof Collection) && isset($item->$name[$requestValue['__id']])) {
+                    $this->values[$key] = $item->$name[$requestValue['__id']];
                 } else {
                     $this->values[$key] = new $this->relatedModel;
                 }
@@ -64,7 +66,8 @@ class HasManyWidget extends RelationWidget
                 $widget->doPostStore($widgetRequest, $this->values[$key]);
             }
         }
-        $item->{ $this->name }()->whereNotIn(
+        $name = $this->name;
+        $item->$name()->whereNotIn(
             'id',
             array_values(array_filter(
                 array_map(function ($ritem) {
@@ -75,6 +78,6 @@ class HasManyWidget extends RelationWidget
                 }
             ))
         )->delete();
-        $item->{ $this->name }()->saveMany($this->values);
+        $item->$name()->saveMany($this->values);
     }
 }
