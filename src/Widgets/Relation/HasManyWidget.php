@@ -5,6 +5,7 @@ namespace Sanjab\Widgets\Relation;
 use Illuminate\Http\Request;
 use Sanjab\Traits\SubWidgets;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * Input list of items with custom widgets.
@@ -36,7 +37,7 @@ class HasManyWidget extends RelationWidget
         $this->values = [];
         if (is_array($request->input($this->name))) {
             foreach ($request->input($this->name) as $key => $requestValue) {
-                if (isset($requestValue['__id']) && ($item->{ $this->name } instanceof \Illuminate\Database\Eloquent\Collection) && isset($item->{ $this->name }[$requestValue['__id']])) {
+                if (isset($requestValue['__id']) && ($item->{ $this->name } instanceof Collection) && isset($item->{ $this->name }[$requestValue['__id']])) {
                     $this->values[$key] = $item->{ $this->name }[$requestValue['__id']];
                 } else {
                     $this->values[$key] = new $this->relatedModel;
