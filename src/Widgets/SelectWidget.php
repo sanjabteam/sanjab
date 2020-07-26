@@ -101,31 +101,32 @@ class SelectWidget extends Widget
                 return preg_match('/.*'.preg_quote($search).'.*/i', $selectOption);
             });
         }
+        $name = $this->property('name');
         switch ($type) {
             case 'equal':
-                $query->where($this->property('name'), $search);
+                $query->where($name, $search);
                 break;
             case 'not_equal':
-                $query->where($this->property('name'), '!=', $search);
+                $query->where($name, '!=', $search);
                 break;
             case 'similar':
                 if (count($filteredOptions) > 0) {
-                    $query->whereIn($this->property('name'), array_keys($filteredOptions));
+                    $query->whereIn($name, array_keys($filteredOptions));
                 }
                 break;
             case 'not_similar':
                 if (count($filteredOptions) > 0) {
-                    $query->whereNotIn($this->property('name'), array_keys($filteredOptions));
+                    $query->whereNotIn($name, array_keys($filteredOptions));
                 }
                 break;
             case 'in':
                 if (is_array($search) && count($search) > 0) {
-                    $query->whereIn($this->property('name'), $search);
+                    $query->whereIn($name, $search);
                 }
                 break;
             case 'not_in':
                 if (is_array($search) && count($search) > 0) {
-                    $query->whereNotIn($this->property('name'), $search);
+                    $query->whereNotIn($name, $search);
                 }
                 break;
             default:

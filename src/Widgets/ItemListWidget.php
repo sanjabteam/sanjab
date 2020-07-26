@@ -55,25 +55,27 @@ class ItemListWidget extends Widget
 
     protected function store(Request $request, Model $item)
     {
-        $values = $this->arraysToModels($request, $item->{$this->property('name')});
+        $name = $this->property('name');
+        $values = $this->arraysToModels($request, $item->$name);
         foreach ($values as $key => $requestValues) {
             $widgetRequest = $this->widgetRequest($request, $key);
             foreach ($this->widgets as $widget) {
                 $widget->doStore($widgetRequest, $values[$key]);
             }
         }
-        $item->{$this->property('name')} = $this->modelsToArrays($values);
+        $item->$name = $this->modelsToArrays($values);
     }
 
     protected function postStore(Request $request, Model $item)
     {
-        $values = $this->arraysToModels($request, is_array($item->{$this->property('name')}) ? $item->{$this->property('name')} : []);
+        $name = $this->property('name');
+        $values = $this->arraysToModels($request, is_array($item->$name) ? $item->$name : []);
         foreach ($values as $key => $requestValues) {
             $widgetRequest = $this->widgetRequest($request, $key);
             foreach ($this->widgets as $widget) {
                 $widget->doPostStore($widgetRequest, $values[$key]);
             }
         }
-        $item->{$this->property('name')} = $this->modelsToArrays($values);
+        $item->$name = $this->modelsToArrays($values);
     }
 }
