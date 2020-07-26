@@ -28,8 +28,6 @@ abstract class RelationWidget extends Widget
     protected $getters = [
         'options',
         'controller',
-        'controllerAction',
-        'controllerItem',
     ];
 
     protected $tempModelInstance = null;
@@ -205,18 +203,18 @@ abstract class RelationWidget extends Widget
         $options = $this->relatedModel::query();
         $this->property('query')($options);
         $options = Cache::remember(
-                'sanjab_relation_options_cache_'.hash(
-                    'sha512',
-                    $options->getConnection()->getName()
-                    .preg_replace('/laravel_reserved_\d+/', 'laravel_reserved', $options->toSql())
-                    .json_encode($options->getBindings())
-                    .json_encode($options->getEagerLoads())
-                ),
-                20,
-                function () use ($options) {
-                    return $options->get();
-                }
-            );
+            'sanjab_relation_options_cache_'.hash(
+                'sha512',
+                $options->getConnection()->getName()
+                .preg_replace('/laravel_reserved_\d+/', 'laravel_reserved', $options->toSql())
+                .json_encode($options->getBindings())
+                .json_encode($options->getEagerLoads())
+            ),
+            20,
+            function () use ($options) {
+                return $options->get();
+            }
+        );
 
         $format = $this->property('format');
         $matches = [[], []];

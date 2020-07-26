@@ -232,6 +232,12 @@ body > * {
     top: -6px;
 }
 
+html[dir="ltr"] {
+    .custom-control {
+        padding-left: 0;
+    }
+}
+
 /** RTL **/
 
 html[dir="rtl"] {

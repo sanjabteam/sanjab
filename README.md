@@ -106,6 +106,7 @@ Contributions are welcome! Please read [Contributing Guide](./.github/CONTRIBUTI
 - [Material design icons](https://github.com/google/material-design-icons)
 - [Notification Sound](https://www.zedge.net/ringtone/ecd91e5b-802b-3b88-834d-67c2f4534c5d)
 - [Open street map](https://www.openstreetmap.org)
+- [Opis Closure](https://github.com/opis/closure)
 - [Orchestral testbench](https://github.com/orchestral/testbench)
 - [QS](https://github.com/ljharb/qs)
 - [Quill](https://quilljs.com)

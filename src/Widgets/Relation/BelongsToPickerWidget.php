@@ -8,6 +8,7 @@ use Sanjab\Helpers\SearchType;
 use Sanjab\Widgets\TextWidget;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Session;
 
 /**
  * Belongs to relation picker.
@@ -15,8 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @method $this    orderColumn(string $val)            order by column.
  * @method $this    ajax(bool $val)                     load items with ajax.
  * @method $this    ajaxController(string $val)         controller holding widget working with ajax options.
- * @method $this    ajaxControllerAction(string $val)   controller action working with ajax options.
- * @method $this    ajaxControllerItem(string $val)     controller action parameter working with ajax options.
  * @method $this    creatable(callable $val)            create new if does not exists.
  * @method $this    creatableText(string $val)          creatable text.
  */
@@ -30,6 +29,15 @@ class BelongsToPickerWidget extends RelationWidget
         $this->indexTag('belongs-to-picker-view')->viewTag('belongs-to-picker-view');
         $this->orderColumn('id');
         $this->creatableText(trans('sanjab::sanjab.create'));
+    }
+
+    public function postInit()
+    {
+        parent::postInit();
+
+        if ($this->property('ajax')) {
+            Session::put('sanjab_relation_widget_'.$this->getController().'_'.$this->property('name'), serialize($this));
+        }
     }
 
     protected function store(Request $request, Model $item)
@@ -58,27 +66,6 @@ class BelongsToPickerWidget extends RelationWidget
         return $this->property('ajaxController');
     }
 
-    public function getControllerAction()
-    {
-        if ($this->property('ajax') && isset($this->controllerProperties['type']) == false && empty($this->property('ajaxControllerAction'))) {
-            throw new \Exception("Please set ajax controller action for '".$this->property('name')."'");
-        }
-        if (isset($this->controllerProperties['type'])) {
-            return $this->controllerProperties['type'];
-        }
-
-        return $this->property('ajaxControllerAction');
-    }
-
-    public function getControllerItem()
-    {
-        if (isset($this->controllerProperties['item'])) {
-            return optional($this->controllerProperties['item'])->id;
-        }
-
-        return optional($this->property('ajaxControllerItem'))->id;
-    }
-
     public function getOptions()
     {
         if ($this->property('ajax') &&
@@ -94,9 +81,9 @@ class BelongsToPickerWidget extends RelationWidget
     {
         return [
             $this->name => array_merge(
-                    $this->property('rules.'.$type, []),
-                    $this->property('creatable') && is_array($request->input($this->name)) && $request->input($this->name.'.create_new') == 'true' && ! empty($this->name.'.value') ? [] : ['exists:'.$this->getRelatedModelTable().','.$this->getOwnerKey()]
-                ),
+                $this->property('rules.'.$type, []),
+                $this->property('creatable') && is_array($request->input($this->name)) && $request->input($this->name.'.create_new') == 'true' && ! empty($this->name.'.value') ? [] : ['exists:'.$this->getRelatedModelTable().','.$this->getOwnerKey()]
+            ),
         ];
     }
 

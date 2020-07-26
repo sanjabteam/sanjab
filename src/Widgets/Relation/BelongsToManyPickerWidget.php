@@ -10,6 +10,7 @@ use Sanjab\Helpers\SearchType;
 use Sanjab\Widgets\TextWidget;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Session;
 
 /**
  * Belongs to many select box.
@@ -17,21 +18,12 @@ use Illuminate\Database\Eloquent\Builder;
  * @method $this    max(integer $val)                   maximum count of related.
  * @method $this    ajax(bool $val)                     should this work with ajax.
  * @method $this    ajaxController(string $val)         controller holding widget working with ajax options.
- * @method $this    ajaxControllerAction(string $val)   controller action working with ajax options.
- * @method $this    ajaxControllerItem(string $val)     controller action parameter working with ajax options.
  * @method $this    pivotValues(array $val)             pivot values.
  * @method $this    creatable(callable $val)            create new if does not exists.
  * @method $this    creatableText(string $val)          creatable text.
  */
 class BelongsToManyPickerWidget extends RelationWidget
 {
-    protected $getters = [
-        'options',
-        'controller',
-        'controllerAction',
-        'controllerItem',
-    ];
-
     public function init()
     {
         parent::init();
@@ -45,6 +37,15 @@ class BelongsToManyPickerWidget extends RelationWidget
         $this->creatableText(trans('sanjab::sanjab.create'));
     }
 
+    public function postInit()
+    {
+        parent::postInit();
+
+        if ($this->property('ajax')) {
+            Session::put('sanjab_relation_widget_'.$this->getController().'_'.$this->property('name'), serialize($this));
+        }
+    }
+
     public function getController()
     {
         if ($this->property('ajax') && isset($this->controllerProperties['controller']) == false && empty($this->property('ajaxController'))) {
@@ -55,27 +56,6 @@ class BelongsToManyPickerWidget extends RelationWidget
         }
 
         return $this->property('ajaxController');
-    }
-
-    public function getControllerAction()
-    {
-        if ($this->property('ajax') && isset($this->controllerProperties['type']) == false && empty($this->property('ajaxControllerAction'))) {
-            throw new Exception("Please set ajax controller action for '".$this->property('name')."'");
-        }
-        if (isset($this->controllerProperties['type'])) {
-            return $this->controllerProperties['type'];
-        }
-
-        return $this->property('ajaxControllerAction');
-    }
-
-    public function getControllerItem()
-    {
-        if (isset($this->controllerProperties['item'])) {
-            return optional($this->controllerProperties['item'])->id;
-        }
-
-        return optional($this->property('ajaxControllerItem'))->id;
     }
 
     protected function postStore(Request $request, Model $item)
