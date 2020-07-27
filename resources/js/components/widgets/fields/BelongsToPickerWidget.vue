@@ -101,8 +101,8 @@
                         clearTimeout(self.searchTimeout);
                         self.searchTimeout = null;
                     }
+                    loading(true);
                     self.searchTimeout = setTimeout(function () {
-                        loading(true);
                         self.searchTimeout = null;
                         let selectValues = [];
                         if (self.mutableValue instanceof Array) {
