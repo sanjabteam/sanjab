@@ -12,6 +12,8 @@
 @endsection
 
 @section('header')
+    <link rel="stylesheet" href="/vendor/sanjab/thirdparty/elfinder/css/elfinder.min.css" />
+    <link rel="stylesheet" href="/vendor/sanjab/thirdparty/elfinder/css/theme-light.min.css" />
     <style>
         @if($popup)
         .ui-resizable-handle {
