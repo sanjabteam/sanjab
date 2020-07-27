@@ -118,7 +118,6 @@ class DateTimeWidget extends Widget
         return $this;
     }
 
-
     /**
      * Get search types.
      *
