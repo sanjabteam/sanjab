@@ -80,4 +80,14 @@ class HasManyWidget extends RelationWidget
         )->delete();
         $item->$name()->saveMany($this->values);
     }
+
+    public function postInit()
+    {
+        foreach ($this->widgets as $key => $widget) {
+            $this->widgets[$key]->controllerProperties = $this->controllerProperties;
+            $this->widgets[$key]->controllerProperties['model'] = $this->getRelatedModel();
+            $this->widgets[$key]->postInit();
+            $this->widgets[$key]->postInitSearchWidgets();
+        }
+    }
 }
