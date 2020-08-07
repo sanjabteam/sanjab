@@ -90,7 +90,7 @@ class TagWidget extends Widget
     /**
      * Modify response.
      *
-     * @param object $respones
+     * @param stdClass $response
      * @param Model $item
      * @return void
      */
