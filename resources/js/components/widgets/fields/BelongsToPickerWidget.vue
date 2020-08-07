@@ -21,14 +21,6 @@
                 type: String,
                 default: null
             },
-            controllerAction: {
-                type: String,
-                default: null
-            },
-            controllerItem: {
-                type: [String, Number],
-                default: null
-            },
             name: {
                 type: String,
                 default: null
@@ -44,7 +36,11 @@
         },
         mounted () {
             this.options = this.$attrs.options;
-            this.mutableValue = this.value;
+            if (JSON.stringify(this.mutableValue) == JSON.stringify(this.value)) {
+                this.onSearch(null, (b) => {});
+            } else {
+                this.mutableValue = this.value;
+            }
         },
         watch: {
             mutableValue(newValue, oldValue) {
@@ -105,8 +101,8 @@
                         clearTimeout(self.searchTimeout);
                         self.searchTimeout = null;
                     }
+                    loading(true);
                     self.searchTimeout = setTimeout(function () {
-                        loading(true);
                         self.searchTimeout = null;
                         let selectValues = [];
                         if (self.mutableValue instanceof Array) {
@@ -121,9 +117,7 @@
                         axios.post(sanjabUrl('helpers/relation-widgets/options'), {
                             selected: selectValues,
                             controller: self.controller,
-                            action: self.controllerAction,
                             widget: self.name,
-                            item: self.controllerItem,
                             search: search
                         })
                         .then(function (response) {

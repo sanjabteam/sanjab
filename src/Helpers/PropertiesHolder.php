@@ -2,8 +2,10 @@
 
 namespace Sanjab\Helpers;
 
+use Closure;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
+use Opis\Closure\SerializableClosure;
 
 class PropertiesHolder implements Arrayable, JsonSerializable
 {
@@ -36,7 +38,12 @@ class PropertiesHolder implements Arrayable, JsonSerializable
     public function __call($method, $arguments)
     {
         if (count($arguments) == 1) {
-            $this->properties[$method] = array_first($arguments);
+            $value = array_first($arguments);
+            if ($value instanceof Closure) {
+                $this->properties[$method] = new SerializableClosure($value);
+            } else {
+                $this->properties[$method] = $value;
+            }
 
             return $this;
         }
@@ -106,7 +113,11 @@ class PropertiesHolder implements Arrayable, JsonSerializable
      */
     public function setProperty(string $key, $value)
     {
-        $this->properties[$key] = $value;
+        if ($value instanceof Closure) {
+            $this->properties[$key] = new SerializableClosure($value);
+        } else {
+            $this->properties[$key] = $value;
+        }
 
         return $this;
     }

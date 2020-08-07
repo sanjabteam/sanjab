@@ -50,7 +50,7 @@ class UppyWidget extends Widget
     }
 
     /**
-     * create new uppy widget just for videos.
+     * create new uppy widget just for audios.
      *
      * @return static
      */
@@ -76,7 +76,7 @@ class UppyWidget extends Widget
 
         $this->fileStoreCallBack(function (UploadedFile $file) {
             $extension = mb_strtolower($file->getClientOriginalExtension());
-            if (in_array(mb_strtolower($file->getClientOriginalExtension()), ['jpg', 'jpeg', 'png', 'gif'])) {
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
                 if ($this->property('extension')) {
                     $extension = mb_strtolower($this->property('extension'));
                 }
@@ -298,5 +298,49 @@ class UppyWidget extends Widget
         $this->setProperty('watermarkY', $y);
 
         return $this;
+    }
+
+    /**
+     * Model event.
+     *
+     * @param Model $item
+     * @return void
+     */
+    public function onUpdating(Model $item)
+    {
+        $name = $this->property('name');
+        $oldFiles = $item->fresh()->$name;
+        $newFiles = $item->$name;
+        if (! is_array($oldFiles)) {
+            $oldFiles = [$oldFiles];
+        }
+        if (! is_array($newFiles)) {
+            $newFiles = [$newFiles];
+        }
+        foreach (array_diff($oldFiles, $newFiles) as $oldFile) {
+            if (Storage::disk($this->property('disk'))->exists($oldFile)) {
+                Storage::disk($this->property('disk'))->delete($oldFile);
+            }
+        }
+    }
+
+    /**
+     * Model event ( not for soft delete ).
+     *
+     * @param Model $item
+     * @return void
+     */
+    public function onDeleting(Model $item)
+    {
+        $name = $this->property('name');
+        $files = $item->$name;
+        if (! is_array($files)) {
+            $files = [$files];
+        }
+        foreach ($files as $file) {
+            if (Storage::disk($this->property('disk'))->exists($file)) {
+                Storage::disk($this->property('disk'))->delete($file);
+            }
+        }
     }
 }

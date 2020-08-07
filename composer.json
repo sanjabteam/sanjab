@@ -29,6 +29,7 @@
         "league/flysystem": "^1.0",
         "league/flysystem-ziparchive": "^1.0",
         "nesbot/carbon": "^2.35",
+        "opis/closure": "^3.5",
         "silber/bouncer": "v1.0.0-rc.6|v1.0.0-rc.7",
         "studio-42/elfinder": "^2.1"
     },

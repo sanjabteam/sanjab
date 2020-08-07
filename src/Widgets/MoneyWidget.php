@@ -22,7 +22,6 @@ class MoneyWidget extends NumberWidget
         $this->tag('money-widget');
         $this->viewTag('money-view');
         $this->indexTag('money-view');
-        $this->decimal(',');
         $this->postfix(' $');
         $this->zeroAsNull(false);
     }

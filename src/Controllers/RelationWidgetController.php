@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Sanjab\Traits\InteractsWithWidget;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\ValidationException;
 
 class RelationWidgetController extends SanjabController
 {
@@ -18,7 +19,12 @@ class RelationWidgetController extends SanjabController
             'selected'   => 'nullable|array',
             'selected.*' => 'numeric',
         ]);
-        $relationWidget = $this->getInteractionInfo()[1];
+
+        if (session('sanjab_relation_widget_'.$request->input('controller').'_'.$request->input('widget')) == null) {
+            throw ValidationException::withMessages(['widget' => 'Widget is invalid']);
+        }
+
+        $relationWidget = unserialize(session('sanjab_relation_widget_'.$request->input('controller').'_'.$request->input('widget')));
         $model = $relationWidget->relatedModel;
 
         $items = $model::limit(100);
@@ -39,10 +45,13 @@ class RelationWidgetController extends SanjabController
                     }
                 }
             }
-            if (is_array($request->input('selected'))) {
+            if (is_array($request->input('selected')) && count($request->input('selected')) > 0) {
                 $query->orWhereIn('id', $request->input('selected'));
             }
         });
+        if ($request->filled('search') == false && (is_array($request->input('selected')) == false || count($request->input('selected')) == 0)) {
+            $items->inRandomOrder();
+        }
         $items = $items->get();
         $out = [];
         $format = $relationWidget->format;

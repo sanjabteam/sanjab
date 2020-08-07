@@ -1,121 +1,128 @@
 <template>
     <div>
-        <cards-list :cards="cards" :data="cardsData" />
-        <b-row>
-            <b-col md="5" class="my-1">
-                <b-button v-for="(action, index) in generalActions" @click="onActionClick(action)" :variant="action.variant" :href="action.url ? action.url : 'javascript:void(0);'" :key="index" :title="action.title" :target="action.target" v-b-tooltip><i class="material-icons">{{ action.icon }}</i>{{ action.title }}</b-button>
-            </b-col>
-            <b-col md="5" class="my-1">
-                <b-input-group v-if="properties.searchable">
-                    <b-form-input @keyup="onFilterChanged" :value="filter" :placeholder="sanjabTrans('search') + '...'" class="mt-1"></b-form-input>
-                    <b-button-group>
-                        <b-button v-b-toggle.advanced_search_collapse variant="primary" size="sm" :title="sanjabTrans('advanced_search')" v-b-tooltip>
-                            <i class="material-icons">search</i>
-                        </b-button>
-                    </b-button-group>
-                    <b-dropdown v-if="filterOptions.length > 0" variant="primary" size="sm" :title="sanjabTrans('filter')" v-b-tooltip no-caret>
-                        <template v-slot:button-content>
-                            <i class="material-icons">filter_list</i>
-                        </template>
-                        <b-dropdown-item :active="typeof filterOptions[filterOption] === 'undefined'" @click="changeFilterOption(null)">{{ sanjabTrans('all') }}</b-dropdown-item>
-                        <b-dropdown-item v-for="(fOption, fOptionIndex) in filterOptions" :key="fOptionIndex" :active="filterOption == fOptionIndex" @click="changeFilterOption(fOptionIndex)">{{ fOption.title }}</b-dropdown-item>
-                    </b-dropdown>
-                </b-input-group>
-            </b-col>
-            <b-col md="2" class="my-1">
-                <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
-            </b-col>
-        </b-row>
+        <div v-if="loaded">
+            <cards-list :cards="cards" :data="cardsData" />
+            <b-row>
+                <b-col md="5" class="my-1">
+                    <b-button v-for="(action, index) in generalActions" @click="onActionClick(action)" :variant="action.variant" :href="action.url ? action.url : 'javascript:void(0);'" :key="index" :title="action.title" :target="action.target" v-b-tooltip><i class="material-icons">{{ action.icon }}</i>{{ action.title }}</b-button>
+                </b-col>
+                <b-col md="5" class="my-1">
+                    <b-input-group v-if="properties.searchable">
+                        <b-form-input @keyup="onFilterChanged" :value="filter" :placeholder="sanjabTrans('search') + '...'" class="mt-1"></b-form-input>
+                        <b-button-group>
+                            <b-button v-b-toggle.advanced_search_collapse variant="primary" size="sm" :title="sanjabTrans('advanced_search')" v-b-tooltip>
+                                <i class="material-icons">search</i>
+                            </b-button>
+                        </b-button-group>
+                        <b-dropdown v-if="filterOptions.length > 0" variant="primary" size="sm" :title="sanjabTrans('filter')" v-b-tooltip no-caret>
+                            <template v-slot:button-content>
+                                <i class="material-icons">filter_list</i>
+                            </template>
+                            <b-dropdown-item :active="typeof filterOptions[filterOption] === 'undefined'" @click="changeFilterOption(null)">{{ sanjabTrans('all') }}</b-dropdown-item>
+                            <b-dropdown-item v-for="(fOption, fOptionIndex) in filterOptions" :key="fOptionIndex" :active="filterOption == fOptionIndex" @click="changeFilterOption(fOptionIndex)">{{ fOption.title }}</b-dropdown-item>
+                        </b-dropdown>
+                    </b-input-group>
+                </b-col>
+                <b-col md="2" class="my-1">
+                    <b-form-select v-model="perPage" :options="perPageOptions"></b-form-select>
+                </b-col>
+            </b-row>
 
-        <!-- Search -->
-        <b-collapse id="advanced_search_collapse">
-            <b-form @submit.prevent="onSearch">
-                <div v-for="(widget, index) in widgets" :key="index">
-                    <b-row v-if="widget.searchTypes != null">
-                        <b-col :sm="6" :md="2" class="my-4">
-                            {{ widget.title }}
-                        </b-col>
-                        <b-col :sm="6" :md="2">
-                             <b-form-select v-model="searchTypes[widget.name]" :options="searchTypeOptions(widget)"></b-form-select>
-                        </b-col>
-                        <b-col :sm="12" :md="8">
-                            <b-row v-for="(searchType, searchIndex) in widget.searchTypes" :key="index + '_' + searchIndex" v-show="searchType.type == searchTypes[widget.name]">
-                                <b-col v-for="(searchWidget, searchWidgetIndex) in searchType.widgets" :key="index + '_' + searchIndex + '_' + searchWidgetIndex">
-                                    <component :is="searchWidget.groupTag" v-model="search[widget.name][searchType.type][searchWidget.name]" :widget="searchWidget" :properties="properties" />
-                                </b-col>
-                            </b-row>
-                        </b-col>
-                    </b-row>
-                </div>
-                <b-button type="submit" class="my-2" variant="primary" block>{{ sanjabTrans('search') }}</b-button>
-            </b-form>
-        </b-collapse>
-        <!-- END search -->
+            <!-- Search -->
+            <b-collapse id="advanced_search_collapse">
+                <b-form @submit.prevent="onSearch">
+                    <div v-for="(widget, index) in widgets" :key="index">
+                        <b-row v-if="widget.searchTypes != null">
+                            <b-col :sm="6" :md="2" class="my-4">
+                                {{ widget.title }}
+                            </b-col>
+                            <b-col :sm="6" :md="2">
+                                 <b-form-select v-model="searchTypes[widget.name]" :options="searchTypeOptions(widget)"></b-form-select>
+                            </b-col>
+                            <b-col :sm="12" :md="8">
+                                <b-row v-for="(searchType, searchIndex) in widget.searchTypes" :key="index + '_' + searchIndex" v-show="searchType.type == searchTypes[widget.name]">
+                                    <b-col v-for="(searchWidget, searchWidgetIndex) in searchType.widgets" :key="index + '_' + searchIndex + '_' + searchWidgetIndex">
+                                        <component :is="searchWidget.groupTag" v-model="search[widget.name][searchType.type][searchWidget.name]" :widget="searchWidget" :properties="properties" />
+                                    </b-col>
+                                </b-row>
+                            </b-col>
+                        </b-row>
+                    </div>
+                    <b-button type="submit" class="my-2" variant="primary" block>{{ sanjabTrans('search') }}</b-button>
+                </b-form>
+            </b-collapse>
+            <!-- END search -->
 
-        <!-- Bulk actions -->
-        <b-collapse id="bulk_actions_collapse" v-model="bulkActionsVisible">
-             <b-button-group>
-                <b-button v-for="(action) in bulkActions" :key="action.index" :disabled="selectedBulk.filter((bulkItem) => bulkItem.__can[action.index]).length != selectedBulk.length" @click="onActionClick(action, selectedBulk)" :variant="action.variant" href="javascript:void(0);" :target="action.target" :title="action.title" v-b-tooltip>
-                    <i class="material-icons">{{ action.icon }}</i>
-                    {{ action.title }}
-                </b-button>
-            </b-button-group>
-        </b-collapse>
-        <!-- END Bulk actions -->
-
-        <div ref="beforeTable"></div>
-        <b-table
-            ref="table"
-            :items="items"
-            :fields="fields"
-            :current-page="page"
-            :per-page="perPage"
-            :filter="filter"
-            class="sanjab-crud-table"
-            striped
-            hover
-            responsive
-            show-empty
-        >
-            <template #table-busy>
-                <div class="text-center text-danger my-2">
-                    <b-spinner variant="default" class="align-middle">
-                    </b-spinner>
-                </div>
-            </template>
-            <template #empty>
-                <center>{{ sanjabTrans('there_are_no_records_to_show') }}</center>
-            </template>
-            <template #emptyfiltered>
-                <center>{{ sanjabTrans('no_records_found') }}</center>
-            </template>
-            <template v-slot:cell(bulk)="row">
-                <b-form-checkbox :id="'bulk_select_'+ row.index" v-model="selectedBulk" :value="row.item" />
-            </template>
-            <template v-slot:cell(actions)="row">
-                <b-button-group>
-                    <b-button v-for="(action) in perItemActions" :key="action.index" v-if="row.item.__can[action.index] == true" @click="onActionClick(action, row.item)" :variant="action.variant" :href="row.item.__action_url[action.index] ? row.item.__action_url[action.index] : 'javascript:void(0);'" :target="action.target" size="sm" :title="action.title" v-b-tooltip>
+            <!-- Bulk actions -->
+            <b-collapse id="bulk_actions_collapse" v-model="bulkActionsVisible">
+                 <b-button-group>
+                    <b-button v-for="(action) in bulkActions" :key="action.index" :disabled="selectedBulk.filter((bulkItem) => bulkItem.__can[action.index]).length != selectedBulk.length" @click="onActionClick(action, selectedBulk)" :variant="action.variant" href="javascript:void(0);" :target="action.target" :title="action.title" v-b-tooltip>
                         <i class="material-icons">{{ action.icon }}</i>
+                        {{ action.title }}
                     </b-button>
                 </b-button-group>
-            </template>
+            </b-collapse>
+            <!-- END Bulk actions -->
 
-            <template v-for="tableColumn in tableColumns" v-slot:[tableColumn.slotName]="row" >
-                <component :key="tableColumn.key" crud-type="index" :is="tableColumn.tag" :widget="tableColumn.widget" :data="row.item" />
-            </template>
-        </b-table>
-        <b-pagination
-            v-show="total/perPage > 1"
-            v-model="page"
-            :total-rows="total"
-            :per-page="perPage"
-            class="my-0"
-            variant="warning"
-            align="center"
-        />
-        <b-modal ref="actionModal" :title="currentAction.title" :size="currentAction.modalSize" hide-footer>
-            <component :is="currentAction.tag" :widgets="widgets" :item="this.actionItem" :items="this.actionItems" :properties="properties" v-bind="currentAction.tagAttributes">{{ currentAction.tagContent }}</component>
-        </b-modal>
+            <div ref="beforeTable"></div>
+            <b-table
+                ref="table"
+                :items="items"
+                :fields="fields"
+                :current-page="page"
+                :per-page="perPage"
+                :filter="filter"
+                :sort-by.sync="sortBy"
+                :sort-desc.sync="sortDesc"
+                class="sanjab-crud-table"
+                striped
+                hover
+                responsive
+                show-empty
+            >
+                <template #table-busy>
+                    <div class="text-center text-danger my-2">
+                        <b-spinner variant="default" class="align-middle">
+                        </b-spinner>
+                    </div>
+                </template>
+                <template #empty>
+                    <center>{{ sanjabTrans('there_are_no_records_to_show') }}</center>
+                </template>
+                <template #emptyfiltered>
+                    <center>{{ sanjabTrans('no_records_found') }}</center>
+                </template>
+                <template v-slot:cell(bulk)="row">
+                    <b-form-checkbox :id="'bulk_select_'+ row.index" v-model="selectedBulk" :value="row.item" />
+                </template>
+                <template v-slot:cell(actions)="row">
+                    <b-button-group>
+                        <b-button v-for="(action) in perItemActions" :key="action.index" v-if="row.item.__can[action.index] == true" @click="onActionClick(action, row.item)" :variant="action.variant" :href="row.item.__action_url[action.index] ? row.item.__action_url[action.index] : 'javascript:void(0);'" :target="action.target" size="sm" :title="action.title" v-b-tooltip>
+                            <i class="material-icons">{{ action.icon }}</i>
+                        </b-button>
+                    </b-button-group>
+                </template>
+
+                <template v-for="tableColumn in tableColumns" v-slot:[tableColumn.slotName]="row" >
+                    <component :key="tableColumn.key" crud-type="index" :is="tableColumn.tag" :widget="tableColumn.widget" :data="row.item" />
+                </template>
+            </b-table>
+            <b-pagination
+                v-show="total/perPage > 1"
+                v-model="page"
+                :total-rows="total"
+                :per-page="perPage"
+                class="my-0"
+                variant="warning"
+                align="center"
+            />
+            <b-modal ref="actionModal" :title="currentAction.title" :size="currentAction.modalSize" hide-footer>
+                <component :is="currentAction.tag" :widgets="widgets" :item="this.actionItem" :items="this.actionItems" :properties="properties" v-bind="currentAction.tagAttributes">{{ currentAction.tagContent }}</component>
+            </b-modal>
+        </div>
+        <div v-else align="center">
+            <b-spinner variant="default" style="width: 60px; height: 60px;"></b-spinner>
+        </div>
     </div>
 </template>
 
@@ -145,14 +152,17 @@
         },
         data() {
             return {
+                loaded: false,
                 page: 1,
                 perPage: this.properties.perPage,
-                total: 0,
+                total: 2000000000,
                 filter: "",
                 filterOption: null,
                 filterTimer: null,
                 search: {},
                 searchTypes: {},
+                sortBy: '',
+                sortDesc: false,
                 currentAction: {},
                 actionItem: null,
                 actionItems: null,
@@ -163,6 +173,36 @@
                 autoRefreshingTimer: null,
                 itemsCache: [],
             };
+        },
+        mounted () {
+            let query = qs.parse(window.location.search.replace(/^\?/, ''));
+            if (query instanceof Object) {
+                if (query.page) {
+                    this.page = parseInt(query.page);
+                }
+                if (query.perPage) {
+                    this.perPage = parseInt(query.perPage);
+                }
+                if (query.filter) {
+                    this.filter = query.filter;
+                }
+                if (query.filterOption) {
+                    this.filterOption = query.filterOption;
+                }
+                if (query.searchTypes) {
+                    this.searchTypes = query.searchTypes;
+                }
+                if (query.search) {
+                    this.search = query.search;
+                }
+                if (query.sortBy) {
+                    this.sortBy = query.sortBy;
+                }
+                if (query.sortDesc) {
+                    this.sortDesc = query.sortDesc == 'true' ? true : false;
+                }
+            }
+            this.loaded = true;
         },
         methods: {
             items(info, callback) {
@@ -179,6 +219,10 @@
                     clearTimeout(self.autoRefreshingTimer);
                     self.autoRefreshingTimer = null;
                 }
+
+                let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + qs.stringify(_.omit(info, ['apiUrl', 'currentPage', 'autoRefreshing', 'total']));
+                window.history.pushState({path:newUrl}, '', newUrl);
+
                 axios.get(sanjabUrl("/modules/" + this.properties.route), {
                     params: info,
                     paramsSerializer: params => qs.stringify(params)
@@ -332,8 +376,12 @@
                     var newSearchTypeValue = {};
                     newSearchTypeValue[widget.name] = null;
                     this.searchTypes = Object.assign(newSearchTypeValue, this.searchTypes);
+                }
+                if (typeof this.search[widget.name] === 'undefined') {
                     this.search[widget.name] = {};
-                    for (var i in widget.searchTypes) {
+                }
+                for (var i in widget.searchTypes) {
+                    if (typeof this.search[widget.name][widget.searchTypes[i].type] === 'undefined') {
                         this.search[widget.name][widget.searchTypes[i].type] = {};
                     }
                 }
@@ -399,7 +447,9 @@
         },
         watch: {
             page: function () {
-                $(this.$refs.beforeTable)[0].scrollIntoView();
+                if (this.$refs.beforeTable) {
+                    $(this.$refs.beforeTable)[0].scrollIntoView();
+                }
             },
             selectedBulk: {
                 deep: true,

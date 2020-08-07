@@ -72,6 +72,9 @@ abstract class Widget extends PropertiesHolder
     /**
      * create new widget.
      *
+     * @param  null  $name
+     * @param  null  $title
+     *
      * @return static
      */
     final public static function create($name = null, $title = null)
@@ -80,11 +83,9 @@ abstract class Widget extends PropertiesHolder
         if ($name) {
             $out->name($name);
         }
-        if (empty($title)) {
-            $out->title(str_replace('_', ' ', Str::title($name)));
-        } else {
-            $out->title($title);
-        }
+
+        $title = $title ?: str_replace('_', ' ', Str::title($name));
+        $out->title($title);
 
         return $out;
     }
@@ -103,6 +104,7 @@ abstract class Widget extends PropertiesHolder
      */
     public function postInit()
     {
+        //
     }
 
     /**
@@ -127,11 +129,7 @@ abstract class Widget extends PropertiesHolder
      */
     final public function getTableColumns()
     {
-        if ($this->property('onIndex')) {
-            return $this->tableColumns();
-        }
-
-        return [];
+        return $this->property('onIndex') ? $this->tableColumns() : [];
     }
 
     /**
@@ -222,24 +220,26 @@ abstract class Widget extends PropertiesHolder
      */
     protected function search(Builder $query, string $type = null, $search = null)
     {
+        $name = $this->property('name');
+
         switch ($type) {
             case 'empty':
-                $query->whereNull($this->property('name'))->orWhere($this->property('name'), '=', '');
+                $query->whereNull($name)->orWhere($name, '=', '');
                 break;
             case 'not_empty':
-                $query->whereNotNull($this->property('name'))->where($this->property('name'), '!=', '');
+                $query->whereNotNull($name)->where($name, '!=', '');
                 break;
             case 'equal':
-                $query->where($this->property('name'), 'LIKE', $search);
+                $query->where($name, 'LIKE', $search);
                 break;
             case 'not_equal':
-                $query->where($this->property('name'), 'NOT LIKE', $search);
+                $query->where($name, 'NOT LIKE', $search);
                 break;
             case 'not_similar':
-                $query->where($this->property('name'), 'NOT LIKE', '%'.$search.'%');
+                $query->where($name, 'NOT LIKE', '%'.$search.'%');
                 break;
             default:
-                $query->where($this->property('name'), 'LIKE', '%'.$search.'%');
+                $query->where($name, 'LIKE', '%'.$search.'%');
                 break;
         }
     }
@@ -281,12 +281,19 @@ abstract class Widget extends PropertiesHolder
      */
     public function doStore(Request $request, Model $item)
     {
+        return $this->storeAction($request, $item, 'customStore', 'store');
+    }
+
+    private function storeAction($request, $item, $propertyName, $action)
+    {
+        $propertyValue = $this->property($propertyName);
+
         if ($this->property('onStore')) {
-            if ($this->property('customStore')) {
-                return ($this->property('customStore'))($request, $item);
+            if ($propertyValue) {
+                return ($propertyValue)($request, $item);
             }
 
-            return $this->store($request, $item);
+            return $this->$action($request, $item);
         }
     }
 
@@ -299,7 +306,8 @@ abstract class Widget extends PropertiesHolder
      */
     protected function store(Request $request, Model $item)
     {
-        $item->{ $this->property('name') } = $request->input($this->property('name'));
+        $name = $this->property('name');
+        $item->$name = $request->input($name);
     }
 
     /**
@@ -311,13 +319,7 @@ abstract class Widget extends PropertiesHolder
      */
     public function doPreStore(Request $request, Model $item)
     {
-        if ($this->property('onStore')) {
-            if ($this->property('customPreStore')) {
-                return ($this->property('customPreStore'))($request, $item);
-            }
-
-            return $this->preStore($request, $item);
-        }
+        return $this->storeAction($request, $item, 'customPreStore', 'preStore');
     }
 
     /**
@@ -329,6 +331,7 @@ abstract class Widget extends PropertiesHolder
      */
     protected function preStore(Request $request, Model $item)
     {
+        //
     }
 
     /**
@@ -340,13 +343,7 @@ abstract class Widget extends PropertiesHolder
      */
     public function doPostStore(Request $request, Model $item)
     {
-        if ($this->property('onStore')) {
-            if ($this->property('customPostStore')) {
-                return ($this->property('customPostStore'))($request, $item);
-            }
-
-            return $this->postStore($request, $item);
-        }
+        return $this->storeAction($request, $item, 'customPostStore', 'postStore');
     }
 
     /**
@@ -358,6 +355,7 @@ abstract class Widget extends PropertiesHolder
      */
     protected function postStore(Request $request, Model $item)
     {
+        //
     }
 
     /**
@@ -399,6 +397,7 @@ abstract class Widget extends PropertiesHolder
      */
     protected function modifyRequest(Request $request, Model $item = null)
     {
+        //
     }
 
     /**
