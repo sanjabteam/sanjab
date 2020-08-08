@@ -4,7 +4,6 @@ namespace Sanjab\Widgets;
 
 use Illuminate\Http\Request;
 use Sanjab\Helpers\SearchType;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -44,13 +43,14 @@ class CheckboxWidget extends Widget
         $this->fastChangeControllerAuthorize(function (Model $item) {
             $controller = $this->getController();
 
-            return Auth::user()->can('edit'.$controller::property('permissionKey'), $item);
+            return auth()->user()->can('edit'.$controller::property('permissionKey'), $item);
         });
     }
 
     protected function store(Request $request, Model $item)
     {
-        $item->{ $this->property('name') } = $request->input($this->property('name')) == 'true';
+        $name = $this->property('name');
+        $item->$name = ($request->input($name) == 'true');
     }
 
     /**
