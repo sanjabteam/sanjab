@@ -82,33 +82,36 @@ class NumberWidget extends TextWidget
      */
     protected function search(Builder $query, string $type = null, $search = null)
     {
+        $name = $this->property('name');
         switch ($type) {
             case 'more':
-                $query->where($this->property('name'), '>', $search);
+                $query->where($name, '>', $search);
                 break;
             case 'more_or_eqaul':
-                $query->where($this->property('name'), '>=', $search);
+                $query->where($name, '>=', $search);
                 break;
             case 'less':
-                $query->where($this->property('name'), '<', $search);
+                $query->where($name, '<', $search);
                 break;
             case 'less_or_eqaul':
-                $query->where($this->property('name'), '<=', $search);
+                $query->where($name, '<=', $search);
                 break;
             case 'between':
-                $query->whereBetween($this->property('name'), [min(intval($search['first']), intval($search['second'])), max(intval($search['first']), intval($search['second']))]);
+                $query->whereBetween($name, [min(intval($search['first']), intval($search['second'])), max(intval($search['first']), intval($search['second'])
+                )]);
                 break;
             case 'not_between':
-                $query->whereNotBetween($this->property('name'), [min(intval($search['first']), intval($search['second'])), max(intval($search['first']), intval($search['second']))]);
+                $query->whereNotBetween($name, [min(intval($search['first']), intval($search['second'])), max(intval($search['first']), intval($search['second'])
+                )]);
                 break;
             case 'even':
-                $query->whereRaw('MOD('.$this->property('name').', 2) = 0');
+                $query->whereRaw('MOD('.$name.', 2) = 0');
                 break;
             case 'odd':
-                $query->whereRaw('MOD('.$this->property('name').', 2) = 1');
+                $query->whereRaw('MOD('.$name.', 2) = 1');
                 break;
             case 'divisible':
-                $query->whereRaw('MOD('.$this->property('name').', '.intval($search).') = 0');
+                $query->whereRaw('MOD('.$name.', '.intval($search).') = 0');
                 break;
             default:
                 parent::search($query, $type, $search);
