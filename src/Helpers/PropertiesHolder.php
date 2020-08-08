@@ -39,7 +39,7 @@ class PropertiesHolder implements Arrayable, JsonSerializable
     {
         if (count($arguments) == 1) {
             $value = array_first($arguments);
-            $this->setProperty($value, $method);
+            $this->setProperty($method, $value);
 
             return $this;
         }
@@ -107,7 +107,7 @@ class PropertiesHolder implements Arrayable, JsonSerializable
      * @param mixed $value
      * @return $this
      */
-    public function setProperty(string $key, $value)
+    public function setProperty($key, $value)
     {
         if ($value instanceof Closure) {
             $value = new SerializableClosure($value);
