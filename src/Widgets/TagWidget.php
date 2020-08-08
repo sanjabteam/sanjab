@@ -17,6 +17,7 @@ class TagWidget extends Widget
     protected $getters = [
         'existing-tags',
     ];
+
     protected $autocompleteOptions = [];
 
     public function init()
@@ -113,10 +114,13 @@ class TagWidget extends Widget
     /**
      * Returns validation rules.
      *
-     * @param Request $request
+     * @param  Request  $request
+     * @param  string  $type
+     * @param  \Illuminate\Database\Eloquent\Model|null  $item
+     *
+     * @return array
      * @property string $type 'create' or 'edit'.
      * @property Model|null $item
-     * @return array
      */
     public function validationRules(Request $request, string $type, Model $item = null): array
     {
