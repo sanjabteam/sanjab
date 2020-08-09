@@ -4,16 +4,18 @@ namespace Sanjab\Helpers;
 
 /**
  * @method $this groupName (string $value)  name of permission group
- * @method $this order (int $value)         order in checkgroups
+ * @method $this order (int $value)         order in checkGroups
  */
 class PermissionItem extends PropertiesHolder
 {
     protected $properties = [
         'order' => 100,
     ];
+
     protected $getters = [
         'permissions',
     ];
+
     protected $permissions = [];
 
     /**

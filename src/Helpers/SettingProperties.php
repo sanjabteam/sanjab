@@ -25,6 +25,8 @@ class SettingProperties extends PropertiesHolder
     /**
      * create new Menu item.
      *
+     * @param  null  $key
+     *
      * @return static
      */
     public static function create($key = null)
@@ -41,7 +43,8 @@ class SettingProperties extends PropertiesHolder
     /**
      * Badge to show beside menu.
      *
-     * @param callable $callback
+     * @param  callable  $badgeCallback
+     *
      * @return $this
      */
     public function badge(callable $badgeCallback)

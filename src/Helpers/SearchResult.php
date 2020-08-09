@@ -19,9 +19,12 @@ class SearchResult extends PropertiesHolder
     /**
      * create new Search result.
      *
-     * @property string $title  title of search result.
-     * @property string $url    url of search result.
+     * @param  null  $title
+     * @param  null  $url
+     *
      * @return static
+     * @property string $url    url of search result.
+     * @property string $title  title of search result.
      */
     public static function create($title = null, $url = null)
     {

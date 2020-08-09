@@ -31,6 +31,8 @@ class TableColumn extends PropertiesHolder
     /**
      * create new Menu item.
      *
+     * @param  null  $key
+     *
      * @return static
      */
     public static function create($key = null)
