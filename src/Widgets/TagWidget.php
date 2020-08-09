@@ -119,8 +119,6 @@ class TagWidget extends Widget
      * @param  \Illuminate\Database\Eloquent\Model|null  $item
      *
      * @return array
-     * @property string $type 'create' or 'edit'.
-     * @property Model|null $item
      */
     public function validationRules(Request $request, string $type, Model $item = null): array
     {
