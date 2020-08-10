@@ -52,6 +52,9 @@ class UppyWidget extends Widget
     /**
      * create new uppy widget just for audios.
      *
+     * @param  null  $name
+     * @param  null  $title
+     *
      * @return static
      */
     final public static function audio($name = null, $title = null)
@@ -271,7 +274,8 @@ class UppyWidget extends Widget
     /**
      * Allow to upload multiple files.
      *
-     * @property bool $val
+     * @param  bool  $val
+     *
      * @return $this
      */
     public function multiple($val = true)
@@ -318,8 +322,8 @@ class UppyWidget extends Widget
             $newFiles = [$newFiles];
         }
         foreach (array_diff($oldFiles, $newFiles) as $oldFile) {
-            if (Storage::disk($this->property('disk'))->exists($oldFile)) {
-                Storage::disk($this->property('disk'))->delete($oldFile);
+            if ($this->getDisk()->exists($oldFile)) {
+                $this->getDisk()->delete($oldFile);
             }
         }
     }
@@ -338,9 +342,14 @@ class UppyWidget extends Widget
             $files = [$files];
         }
         foreach ($files as $file) {
-            if (Storage::disk($this->property('disk'))->exists($file)) {
-                Storage::disk($this->property('disk'))->delete($file);
+            if ($this->getDisk()->exists($file)) {
+                $this->getDisk()->delete($file);
             }
         }
+    }
+
+    protected function getDisk()
+    {
+        return Storage::disk($this->property('disk'));
     }
 }
