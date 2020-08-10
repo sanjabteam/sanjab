@@ -52,6 +52,9 @@ class UppyWidget extends Widget
     /**
      * create new uppy widget just for audios.
      *
+     * @param  null  $name
+     * @param  null  $title
+     *
      * @return static
      */
     final public static function audio($name = null, $title = null)
@@ -110,11 +113,7 @@ class UppyWidget extends Widget
         $values = [];
         $oldValues = $item->{ $this->property('name') };
         if (! is_array($oldValues)) {
-            if (empty($oldValues)) {
-                $oldValues = [];
-            } else {
-                $oldValues = [$oldValues];
-            }
+            $oldValues = empty($oldValues) ? [] : [$oldValues];
         }
         if (is_array($request->input($this->property('name')))) {
             foreach ($request->input($this->property('name')) as $uploadedFile) {
@@ -135,19 +134,16 @@ class UppyWidget extends Widget
     {
         $files = $item->{ $this->property('name') };
         if (! is_array($files)) {
-            if (empty($files)) {
-                $files = [];
-            } else {
-                $files = [$files];
-            }
+            $files = empty($files) ? [] : [$files];
         }
         foreach ($files as $key => $value) {
             $value = trim($value, '\\/');
-            if (Storage::disk($this->property('disk'))->exists($value)) {
+            if ($this->getDisk()->exists($value)) {
+                $routeParams = ['path' => $value, 'disk' => $this->property('disk')];
                 $files[$key] = [
-                    'type' => Storage::disk($this->property('disk'))->mimeType($value),
-                    'preview' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk'), 'thumb' => 'true']),
-                    'link' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk')]),
+                    'type' => $this->getDisk()->mimeType($value),
+                    'preview' => route('sanjab.helpers.uppy.preview', $routeParams + ['thumb' => 'true']),
+                    'link' => route('sanjab.helpers.uppy.preview', $routeParams),
                     'value' => $value,
                 ];
             }
@@ -160,11 +156,7 @@ class UppyWidget extends Widget
         if (is_array($request->input($this->property('name')))) {
             $oldValues = optional($item)->{ $this->property('name') };
             if (! is_array($oldValues)) {
-                if (empty($oldValues)) {
-                    $oldValues = [];
-                } else {
-                    $oldValues = [$oldValues];
-                }
+                $oldValues = empty($oldValues) ? [] : [$oldValues];
             }
             foreach ($oldValues as $key => $oldValue) {
                 $oldValues[$key] = trim($oldValue, '/\\');
@@ -271,7 +263,8 @@ class UppyWidget extends Widget
     /**
      * Allow to upload multiple files.
      *
-     * @property bool $val
+     * @param  bool  $val
+     *
      * @return $this
      */
     public function multiple($val = true)
@@ -318,8 +311,8 @@ class UppyWidget extends Widget
             $newFiles = [$newFiles];
         }
         foreach (array_diff($oldFiles, $newFiles) as $oldFile) {
-            if (Storage::disk($this->property('disk'))->exists($oldFile)) {
-                Storage::disk($this->property('disk'))->delete($oldFile);
+            if ($this->getDisk()->exists($oldFile)) {
+                $this->getDisk()->delete($oldFile);
             }
         }
     }
@@ -338,9 +331,14 @@ class UppyWidget extends Widget
             $files = [$files];
         }
         foreach ($files as $file) {
-            if (Storage::disk($this->property('disk'))->exists($file)) {
-                Storage::disk($this->property('disk'))->delete($file);
+            if ($this->getDisk()->exists($file)) {
+                $this->getDisk()->delete($file);
             }
         }
+    }
+
+    protected function getDisk()
+    {
+        return Storage::disk($this->property('disk'));
     }
 }
