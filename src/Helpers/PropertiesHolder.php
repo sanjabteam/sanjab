@@ -38,10 +38,7 @@ class PropertiesHolder implements Arrayable, JsonSerializable
     public function __call($method, $arguments)
     {
         if (count($arguments) == 1) {
-            $value = array_first($arguments);
-            $this->setProperty($method, $value);
-
-            return $this;
+            $this->setProperty($method, array_first($arguments));
         }
 
         return $this;
@@ -49,12 +46,12 @@ class PropertiesHolder implements Arrayable, JsonSerializable
 
     public function __get($name)
     {
-        if (method_exists($this, 'get'.str_replace(['-', '_'], '', title_case($name)))) {
-            return call_user_func_array([$this, 'get'.str_replace(['-', '_'], '', title_case($name))], []);
+        $method = 'get'.str_replace(['-', '_'], '', title_case($name));
+        if (method_exists($this, $method)) {
+            return call_user_func_array([$this, $method], []);
         }
-        if (isset($this->properties[$name])) {
-            return $this->properties[$name];
-        }
+
+        return $this->properties[$name] ?? null;
     }
 
     /**
@@ -124,8 +121,6 @@ class PropertiesHolder implements Arrayable, JsonSerializable
      */
     public static function create()
     {
-        $out = new static;
-
-        return $out;
+        return new static;
     }
 }
