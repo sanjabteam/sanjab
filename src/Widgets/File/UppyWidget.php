@@ -113,11 +113,7 @@ class UppyWidget extends Widget
         $values = [];
         $oldValues = $item->{ $this->property('name') };
         if (! is_array($oldValues)) {
-            if (empty($oldValues)) {
-                $oldValues = [];
-            } else {
-                $oldValues = [$oldValues];
-            }
+            $oldValues = empty($oldValues) ? [] : [$oldValues];
         }
         if (is_array($request->input($this->property('name')))) {
             foreach ($request->input($this->property('name')) as $uploadedFile) {
@@ -138,19 +134,16 @@ class UppyWidget extends Widget
     {
         $files = $item->{ $this->property('name') };
         if (! is_array($files)) {
-            if (empty($files)) {
-                $files = [];
-            } else {
-                $files = [$files];
-            }
+            $files = empty($files) ? [] : [$files];
         }
         foreach ($files as $key => $value) {
             $value = trim($value, '\\/');
-            if (Storage::disk($this->property('disk'))->exists($value)) {
+            if ($this->getDisk()->exists($value)) {
+                $routeParams = ['path' => $value, 'disk' => $this->property('disk')];
                 $files[$key] = [
-                    'type' => Storage::disk($this->property('disk'))->mimeType($value),
-                    'preview' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk'), 'thumb' => 'true']),
-                    'link' => route('sanjab.helpers.uppy.preview', ['path' => $value, 'disk' => $this->property('disk')]),
+                    'type' => $this->getDisk()->mimeType($value),
+                    'preview' => route('sanjab.helpers.uppy.preview', $routeParams + ['thumb' => 'true']),
+                    'link' => route('sanjab.helpers.uppy.preview', $routeParams),
                     'value' => $value,
                 ];
             }
@@ -163,11 +156,7 @@ class UppyWidget extends Widget
         if (is_array($request->input($this->property('name')))) {
             $oldValues = optional($item)->{ $this->property('name') };
             if (! is_array($oldValues)) {
-                if (empty($oldValues)) {
-                    $oldValues = [];
-                } else {
-                    $oldValues = [$oldValues];
-                }
+                $oldValues = empty($oldValues) ? [] : [$oldValues];
             }
             foreach ($oldValues as $key => $oldValue) {
                 $oldValues[$key] = trim($oldValue, '/\\');
