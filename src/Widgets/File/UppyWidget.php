@@ -111,12 +111,13 @@ class UppyWidget extends Widget
     protected function store(Request $request, Model $item)
     {
         $values = [];
-        $oldValues = $item->{ $this->property('name') };
+        $name = $this->property('name');
+        $oldValues = $item->$name;
         if (! is_array($oldValues)) {
             $oldValues = empty($oldValues) ? [] : [$oldValues];
         }
-        if (is_array($request->input($this->property('name')))) {
-            foreach ($request->input($this->property('name')) as $uploadedFile) {
+        if (is_array($request->input($name))) {
+            foreach ($request->input($name) as $uploadedFile) {
                 if ($uploadedFile instanceof UploadedFile) {
                     $values[] = $this->property('fileStoreCallBack')($uploadedFile);
                 } elseif (in_array($uploadedFile, $oldValues)) {
@@ -127,12 +128,13 @@ class UppyWidget extends Widget
         if (! $this->property('multiple')) {
             $values = array_first($values);
         }
-        $item->{ $this->property('name') } = $values;
+        $item->$name = $values;
     }
 
     protected function modifyResponse(stdClass $response, Model $item)
     {
-        $files = $item->{ $this->property('name') };
+        $name = $this->property('name');
+        $files = $item->$name;
         if (! is_array($files)) {
             $files = empty($files) ? [] : [$files];
         }
@@ -148,13 +150,14 @@ class UppyWidget extends Widget
                 ];
             }
         }
-        $response->{ $this->property('name') } = $files;
+        $response->$name = $files;
     }
 
     protected function modifyRequest(Request $request, Model $item = null)
     {
-        if (is_array($request->input($this->property('name')))) {
-            $oldValues = optional($item)->{ $this->property('name') };
+        $name = $this->property('name');
+        if (is_array($request->input($name))) {
+            $oldValues = optional($item)->$name;
             if (! is_array($oldValues)) {
                 $oldValues = empty($oldValues) ? [] : [$oldValues];
             }
@@ -162,44 +165,40 @@ class UppyWidget extends Widget
                 $oldValues[$key] = trim($oldValue, '/\\');
             }
             $uploadedFiles = [];
-            foreach ($request->input($this->property('name')) as $fileInfo) {
-                if (is_array($fileInfo) && isset($fileInfo['value'])) {
-                    $fileInfo['value'] = preg_replace('/.*\/helpers\/uppy\/upload\//', '', $fileInfo['value']);
-                    if (is_array(Session::get('sanjab_uppy_files.'.$fileInfo['value'])) && File::exists(Session::get('sanjab_uppy_files.'.$fileInfo['value'])['file_path'])) {
-                        $fileInfo = Session::get('sanjab_uppy_files.'.$fileInfo['value']);
-                        $uploadedFiles[] = new UploadedFile($fileInfo['file_path'], $fileInfo['name'], File::mimeType($fileInfo['file_path']), 0, true);
-                    } elseif (in_array($fileInfo['value'], $oldValues)) {
-                        $uploadedFiles[] = $fileInfo['value'];
-                    }
+            foreach ($request->input($name) as $fileInfo) {
+                if (! is_array($fileInfo) || ! isset($fileInfo['value'])) {
+                    continue;
+                }
+
+                $fileInfo['value'] = preg_replace('/.*\/helpers\/uppy\/upload\//', '', $fileInfo['value']);
+                $sessionInfo = session('sanjab_uppy_files.'.$fileInfo['value']);
+                if (is_array($sessionInfo) && File::exists($sessionInfo['file_path'])) {
+                    $fileInfo = $sessionInfo;
+                    $uploadedFiles[] = new UploadedFile($fileInfo['file_path'], $fileInfo['name'], File::mimeType($fileInfo['file_path']), 0, true);
+                } elseif (in_array($fileInfo['value'], $oldValues)) {
+                    $uploadedFiles[] = $fileInfo['value'];
                 }
             }
-            $request->merge([$this->property('name') => $uploadedFiles]);
+            $request->merge([$name => $uploadedFiles]);
         }
     }
 
     public function validationRules(Request $request, string $type, Model $item = null): array
     {
-        $oldValues = optional($item)->{ $this->property('name') };
+        $name = $this->property('name');
+        $oldValues = optional($item)->$name;
         if (! is_array($oldValues)) {
-            if (empty($oldValues)) {
-                $oldValues = [];
-            } else {
-                $oldValues = [$oldValues];
-            }
+            $oldValues = empty($oldValues) ? [] : [$oldValues];
         }
 
         $fileRules = $this->property('fileRules');
         if (! is_array($fileRules)) {
-            if (empty($fileRules)) {
-                $fileRules = [];
-            } else {
-                $fileRules = explode('|', $fileRules);
-            }
+            $fileRules = empty($fileRules) ? [] : explode('|', $fileRules);
         }
 
         $rules = [$this->name => array_merge($this->property('rules.'.$type, []), ['array', 'min:'.$this->property('min'), 'max:'.($this->property('multiple') ? $this->property('max') : 1)])];
-        if (is_array($request->input($this->property('name')))) {
-            foreach ($request->input($this->property('name')) as $key => $uploadedFile) {
+        if (is_array($request->input($name))) {
+            foreach ($request->input($name) as $key => $uploadedFile) {
                 if ($uploadedFile instanceof UploadedFile) {
                     $rules[$this->name.'.'.$key] = array_merge($fileRules, ['file', 'mimetypes:'.implode(',', $this->property('mimeTypes')), 'max:'.$this->property('maxSize')]);
                 }
