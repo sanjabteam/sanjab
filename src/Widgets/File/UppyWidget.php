@@ -10,7 +10,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -336,6 +335,11 @@ class UppyWidget extends Widget
         }
     }
 
+    /**
+     * Get disk instance.
+     *
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
     protected function getDisk()
     {
         return Storage::disk($this->property('disk'));
