@@ -83,7 +83,8 @@ class NotificationItem extends PropertiesHolder
     /**
      * create new Menu item.
      *
-     * @property string $icon  icon
+     * @param  string|null  $icon
+     *
      * @return static
      */
     public static function create(string $icon = null)
