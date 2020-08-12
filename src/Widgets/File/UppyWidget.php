@@ -215,6 +215,7 @@ class UppyWidget extends Widget
         if (! is_array($types)) {
             $types = [$types];
         }
+
         return $this->setProperty('mimeTypes', $types);
     }
 
@@ -333,6 +334,12 @@ class UppyWidget extends Widget
         return Storage::disk($this->property('disk'));
     }
 
+    /**
+     * Wrap value inside array if is not array.
+     *
+     * @param mixed $value
+     * @return array
+     */
     private function wrap($value): array
     {
         if (! is_array($value)) {
