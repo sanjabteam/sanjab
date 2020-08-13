@@ -128,7 +128,8 @@ class MenuItem extends PropertiesHolder
     {
         $badge = $this->property('badge');
         if (is_callable($badge)) {
-            $this->setProperty('badge', $badge());
+            $badge = $badge();
+            $this->setProperty('badge', $badge);
         }
 
         return $badge;
