@@ -23,6 +23,8 @@ class DashboardProperties extends PropertiesHolder
     /**
      * create new Menu item.
      *
+     * @param  string  $route
+     *
      * @return static
      */
     public static function create($route = '/')
@@ -38,7 +40,8 @@ class DashboardProperties extends PropertiesHolder
     /**
      * Badge to show beside menu.
      *
-     * @param callable $callback
+     * @param  callable  $badgeCallback
+     *
      * @return $this
      */
     public function badge(callable $badgeCallback)
