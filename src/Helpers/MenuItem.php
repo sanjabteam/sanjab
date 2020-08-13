@@ -109,7 +109,7 @@ class MenuItem extends PropertiesHolder
     /**
      * Add multiple child.
      *
-     * @param array|MenuItem[]  $items
+     * @param array|MenuItem[]  $childItems
      * @return $this
      */
     public function addChildren(array $childItems)

@@ -21,6 +21,8 @@ class PermissionItem extends PropertiesHolder
     /**
      * create new Menu item.
      *
+     * @param  null  $groupName
+     *
      * @return static
      */
     public static function create($groupName = null)
