@@ -32,8 +32,6 @@ class ChartData extends PropertiesHolder
      */
     public function color($color)
     {
-        $this->setProperty('backgroundColor', $color);
-
-        return $this;
+        return $this->setProperty('backgroundColor', $color);
     }
 }

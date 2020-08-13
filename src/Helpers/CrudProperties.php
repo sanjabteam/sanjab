@@ -89,8 +89,6 @@ class CrudProperties extends PropertiesHolder
      */
     public function badge(callable $badgeCallback)
     {
-        $this->setProperty('badge', $badgeCallback);
-
-        return $this;
+        return $this->setProperty('badge', $badgeCallback);
     }
 }
