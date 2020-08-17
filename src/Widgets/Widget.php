@@ -563,4 +563,18 @@ abstract class Widget extends PropertiesHolder
     {
         return clone $this;
     }
+
+    public function noEdit()
+    {
+        $this->onEdit(false);
+
+        return $this;
+    }
+
+    public function ajaxy()
+    {
+        $this->ajax(true);
+
+        return $this;
+    }
 }
