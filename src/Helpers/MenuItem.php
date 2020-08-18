@@ -109,7 +109,7 @@ class MenuItem extends PropertiesHolder
     /**
      * Add multiple child.
      *
-     * @param array|MenuItem[]  $items
+     * @param array|MenuItem[]  $childItems
      * @return $this
      */
     public function addChildren(array $childItems)
@@ -126,11 +126,13 @@ class MenuItem extends PropertiesHolder
      */
     public function getBadgeValue()
     {
-        if (is_callable($this->property('badge'))) {
-            $this->setProperty('badge', $this->property('badge')());
+        $badge = $this->property('badge');
+        if (is_callable($badge)) {
+            $badge = $badge();
+            $this->setProperty('badge', $badge);
         }
 
-        return $this->property('badge');
+        return $badge;
     }
 
     /**

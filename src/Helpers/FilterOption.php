@@ -23,4 +23,18 @@ class FilterOption extends PropertiesHolder
 
         return $out;
     }
+
+    /**
+     * Add a basic where clause to the query.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function where($key, $value)
+    {
+        return $this->query(function ($query) use ($key, $value) {
+            $query->where($key, $value);
+        });
+    }
 }

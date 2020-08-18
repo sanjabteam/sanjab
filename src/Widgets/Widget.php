@@ -563,4 +563,34 @@ abstract class Widget extends PropertiesHolder
     {
         return clone $this;
     }
+
+    /**
+     * Disable show on list.
+     *
+     * @return $this
+     */
+    public function noIndex()
+    {
+        return $this->onIndex(false);
+    }
+
+    /**
+     * Disable show on create form.
+     *
+     * @return $this
+     */
+    public function noCreate()
+    {
+        return $this->onCreate(false);
+    }
+
+    /**
+     * Disable show on edit form.
+     *
+     * @return $this
+     */
+    public function noEdit()
+    {
+        return $this->onEdit(false);
+    }
 }

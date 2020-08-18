@@ -64,6 +64,8 @@ class CrudProperties extends PropertiesHolder
     /**
      * create new Menu item.
      *
+     * @param  null  $route
+     *
      * @return static
      */
     public static function create($route = null)
@@ -81,13 +83,12 @@ class CrudProperties extends PropertiesHolder
     /**
      * Badge to show beside menu.
      *
-     * @param callable $callback
+     * @param  callable  $badgeCallback
+     *
      * @return $this
      */
     public function badge(callable $badgeCallback)
     {
-        $this->setProperty('badge', $badgeCallback);
-
-        return $this;
+        return $this->setProperty('badge', $badgeCallback);
     }
 }

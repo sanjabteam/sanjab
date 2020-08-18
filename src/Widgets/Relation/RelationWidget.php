@@ -236,4 +236,14 @@ abstract class RelationWidget extends Widget
 
         return $this->cachedOptions;
     }
+
+    /**
+     * Enable ajax.
+     *
+     * @return $this
+     */
+    public function ajaxy()
+    {
+        return $this->ajax(true);
+    }
 }
