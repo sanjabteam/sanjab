@@ -29,8 +29,8 @@ class SearchResult extends PropertiesHolder
     public static function create($title = null, $url = null)
     {
         $out = new static;
-        $out->setIt('title', $title);
-        $out->setIt('url', $url);
+        $out->setProperty('title', $title);
+        $out->setProperty('url', $url);
 
         return $out;
     }
