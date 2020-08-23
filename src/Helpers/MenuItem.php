@@ -143,11 +143,6 @@ class MenuItem extends PropertiesHolder
      */
     public static function create($url = null)
     {
-        $out = new static;
-        if ($url) {
-            $out->url($url);
-        }
-
-        return $out;
+        return (new static)->setIt('url', $url);
     }
 }

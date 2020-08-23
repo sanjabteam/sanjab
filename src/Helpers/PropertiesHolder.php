@@ -35,6 +35,15 @@ class PropertiesHolder implements Arrayable, JsonSerializable
         $this->properties = array_merge($this->properties, $properties);
     }
 
+    public function setIt($prop, $value)
+    {
+        if ($value) {
+            $this->$prop($value);
+        }
+
+        return $this;
+    }
+
     public function __call($method, $arguments)
     {
         if (count($arguments) == 1) {

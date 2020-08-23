@@ -27,12 +27,7 @@ class PermissionItem extends PropertiesHolder
      */
     public static function create($groupName = null)
     {
-        $out = new static;
-        if ($groupName) {
-            $out->groupName($groupName);
-        }
-
-        return $out;
+        return (new static)->setIt('groupName', $groupName);
     }
 
     /**
