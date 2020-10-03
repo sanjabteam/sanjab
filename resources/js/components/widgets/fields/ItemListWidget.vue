@@ -98,7 +98,8 @@
                 this.$emit("input", this.items);
                 setTimeout(() => $(".bmd-form-group input").trigger('change'), 250);
             },
-            removeOption(index) {var self = this;
+            removeOption(index) {
+                var self = this;
                 if (this.deleteConfirm) {
                     Swal.fire({
                         title: self.deleteConfirm,

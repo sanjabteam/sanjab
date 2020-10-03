@@ -62,18 +62,18 @@ class Install extends Command
             $this->info('UserController created.');
         }
 
-        if (file_exists(app_path('User.php'))) {
+        if (file_exists(app_path('Models/User.php'))) {
             $this->line('Adding SanjabUser trait to User Model.');
-            $userModelContent = file_get_contents(app_path('User.php'));
-            $userModelContent = str_replace('use Notifiable;', 'use Notifiable, SanjabUser;', $userModelContent);
+            $userModelContent = file_get_contents(app_path('Models/User.php'));
+            $userModelContent = str_replace('use HasFactory, Notifiable;', 'use HasFactory, Notifiable, SanjabUser;', $userModelContent);
             if (strpos($userModelContent, 'Sanjab\Models\SanjabUser') === false) {
                 $userModelContent = str_replace(
-                    'use Illuminate\\Foundation\\Auth\\User as Authenticatable;',
-                    "use Illuminate\\Foundation\\Auth\\User as Authenticatable;\nuse Sanjab\\Models\\SanjabUser;",
+                    'use Illuminate\\Notifications\\Notifiable;',
+                    "use Illuminate\\Notifications\\Notifiable;\nuse Sanjab\\Models\\SanjabUser;",
                     $userModelContent
                 );
             }
-            file_put_contents(app_path('User.php'), $userModelContent);
+            file_put_contents(app_path('Models/User.php'), $userModelContent);
             $this->line('SanjabUser trait added to User.');
         }
 

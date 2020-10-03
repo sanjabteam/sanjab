@@ -62,9 +62,9 @@ class MakeCrud extends GeneratorCommand
         $stub = parent::buildClass($name);
         $className = str_ireplace('controller', '', class_basename($name));
         if (empty($this->option('model'))) {
-            $stub = str_replace('DummyModel', '\\'.$this->rootNamespace().$className, $stub);
+            $stub = str_replace('DummyModel', '\\'.$this->rootNamespace().'Models\\'.$className, $stub);
         } else {
-            $stub = str_replace('DummyModel', '\\'.$this->rootNamespace().$this->option('model'), $stub);
+            $stub = str_replace('DummyModel', '\\'.$this->rootNamespace().'Models\\'.$this->option('model'), $stub);
         }
         $stub = str_replace('DummyRoute', mb_strtolower(str_plural($className)), $stub);
         $stub = str_replace('DummyTitles', str_plural($className), $stub);

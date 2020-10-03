@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Crud;
 
-use App\User;
+use App\Models\User;
 use Sanjab\Widgets\IdWidget;
 use Sanjab\Widgets\TextWidget;
 use Sanjab\Helpers\MaterialIcons;
