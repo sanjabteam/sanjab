@@ -21,7 +21,7 @@
 
 Sanjab is a [Laravel](http://laravel.com/) package that helping Laravel developers create an admin panel for projects quickly.
 
-- [Screebshots](#screebshots)
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Code](#code)
@@ -34,7 +34,7 @@ Sanjab is a [Laravel](http://laravel.com/) package that helping Laravel develope
 
 ---
 
-## Screebshots
+## Screenshots
 ![CRUD List](./images/screenshots/crud.jpg)
 ![CRUD Form](./images/screenshots/crud_form.jpg)
 ![Login](./images/screenshots/login.jpg)
@@ -47,7 +47,7 @@ Sanjab is a [Laravel](http://laravel.com/) package that helping Laravel develope
 * Eloquent relation & policy support.
 * Multiple [input types](https://sanjabteam.github.io/widgets.html) and [cards](https://sanjabteam.github.io/cards.html).
 * [Setting](https://sanjabteam.github.io/setting.html) support with no pain.
-* Extendible. [Create a custom field](https://sanjabteam.github.io/widgets.html#extending-widgets) or completely custom controller based on [vue.js](https://vuejs.org/).
+* Extendable. [Create a custom field](https://sanjabteam.github.io/widgets.html#extending-widgets) or completely custom controller based on [vue.js](https://vuejs.org/).
 * Dynamic Role/Permission support based on [bouncer](https://github.com/JosephSilber/bouncer).
 * Customizable CRUD buttons and bulk actions support in few lines of code.
 * Multilingual inputs support based on [laravel translatable](https://github.com/Astrotomic/laravel-translatable).
@@ -55,7 +55,7 @@ Sanjab is a [Laravel](http://laravel.com/) package that helping Laravel develope
 * Beautiful Material UI based on [Material Dashboard](https://www.creative-tim.com/product/material-dashboard).
 
 ## Getting Started
-First, you should install sanjab on your Laravel project. Read installation guide here [Here](https://sanjabteam.github.io/install.html).
+First, you should install Sanjab on your Laravel project. Read installation guide here [Here](https://sanjabteam.github.io/install.html).
 
 ## Code
 Sanjab has an elegant syntax.
