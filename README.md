@@ -1,7 +1,7 @@
 <div align="center">
     <img src="./images/logo.svg" width="200" height="200">
 </div>
-<h1 align="center">Sanjab Laravel admin package</h1>
+<h1 align="center">Sanjab</h1>
 <h2 align="center">Admin panel package for Laravel</h2>
 
 <div align="center">
@@ -17,6 +17,8 @@
 
 </div>
 
+> I do not recommend to using this package anymore. Recommended package: [litstack](https://github.com/litstack/litstack)
+
 Sanjab is a [Laravel](http://laravel.com/) package that helping Laravel developers create an admin panel for projects quickly.
 
 - [Screebshots](#screebshots)
@@ -25,7 +27,6 @@ Sanjab is a [Laravel](http://laravel.com/) package that helping Laravel develope
 - [Code](#code)
 - [Documentation](#documentation)
 - [Community & Support](#community--support)
-- [Contributing](#contributing)
 - [Acknowledgements](#acknowledgements)
 - [Changelog](#changelog)
 - [License](#license)
@@ -77,9 +78,6 @@ You can find more information about Sanjab in [documentation](https://sanjabteam
 Join us on [Discord](https://discord.gg/kwuTZQd).
 
 To ask a question read [Support Guide](./.github/SUPPORT.md).
-
-## Contributing
-Contributions are welcome! Please read [Contributing Guide](./.github/CONTRIBUTING.md) for more informations.
 
 ## Acknowledgements
 

@@ -115,6 +115,7 @@ Sanjab follows [PSR2](https://github.com/php-fig/fig-standards/blob/master/accep
 * Keep your commits as small as possible and use informative git commit messages.
 * Do not touch version in `package.json`.
 * Class phpdoc definition and description must be in a column like a table.
+
 ❌ Bad:
 ```php
 /**
