@@ -42,7 +42,7 @@ class TestCase extends OrchestraTestCase
         file_put_contents(
             __DIR__.'/App/Controllers/UserController.php',
             str_replace(
-                ['App\Http\Controllers\Admin\Crud', 'App\User'],
+                ['App\Http\Controllers\Admin\Crud', 'App\Models\User'],
                 ['Sanjab\Tests\App\Controllers', User::class],
                 file_get_contents(app_path('Http/Controllers/Admin/Crud/UserController.php'))
             )

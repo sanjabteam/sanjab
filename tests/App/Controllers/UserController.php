@@ -6,6 +6,7 @@ use Sanjab\Tests\App\Models\User;
 use Sanjab\Widgets\IdWidget;
 use Sanjab\Widgets\TextWidget;
 use Sanjab\Helpers\MaterialIcons;
+use Silber\Bouncer\Database\Role;
 use Sanjab\Helpers\CrudProperties;
 use Sanjab\Widgets\PasswordWidget;
 use Sanjab\Controllers\CrudController;
@@ -42,12 +43,14 @@ class UserController extends CrudController
         $this->widgets[] = PasswordWidget::create('password_confirmation', trans('sanjab::sanjab.password_confirmation'))
                 ->onStore(false);
 
-        $this->widgets[] = BelongsToManyWidget::create('roles', trans('sanjab::sanjab.roles'))
-                ->format('%title')
-                ->query(function (Builder $query) use ($type) {
-                    if ($type != 'show') {
-                        $query->where('name', '!=', 'super_admin');
-                    }
-                });
+        if ($type == 'show' || (Role::count() > 1 || (Role::count() == 1 && Role::first()->name != 'super_admin'))) {
+            $this->widgets[] = BelongsToManyWidget::create('roles', trans('sanjab::sanjab.roles'))
+                    ->format('%title')
+                    ->query(function (Builder $query) use ($type) {
+                        if ($type != 'show') {
+                            $query->where('name', '!=', 'super_admin');
+                        }
+                    });
+        }
     }
 }

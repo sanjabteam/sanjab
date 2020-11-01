@@ -30,7 +30,7 @@
         <div class="wrapper wrapper-full-page">
             <div class="page-header login-page header-filter"
                 filter-color="black" style="background-image:
-                url('@if($sanjabImage){{ $sanjabImage['image'] }}@else{{ 'https://source.unsplash.com/daily' }}@endif'); background-size:
+                url('@if ($sanjabImage){{ $sanjabImage['image'] }}@else{{ 'https://source.unsplash.com/daily' }}@endif'); background-size:
                 cover; background-position: center center;align-items: center;"
                 data-color="orange">
                 <div class="container" style="height: auto;">
@@ -123,7 +123,7 @@
                                             </label>
                                         </div>
 
-                                        @if(config('sanjab.login.recaptcha'))
+                                        @if (config('sanjab.login.recaptcha'))
                                             <br>
                                             <div class="form-group">
                                                 <div class="g-recaptcha" data-sitekey="{{ config('sanjab.recaptcha.site_key') }}"></div>
@@ -135,7 +135,7 @@
                                     </div>
                                 </div>
                             </form>
-                            @if($sanjabImage && isset($sanjabImage['author']))<a class="image-author" href="{{ isset($sanjabImage['link']) ? $sanjabImage['link'] : '#' }}" title="@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])" target="_blank">@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])</a>@endif
+                            @if ($sanjabImage && isset($sanjabImage['author']))<a class="image-author" href="{{ isset($sanjabImage['link']) ? $sanjabImage['link'] : '#' }}" title="@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])" target="_blank">@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])</a>@endif
                         </div>
                     </div>
                 </div>
@@ -152,7 +152,7 @@
         @yield('before_scripts')
         <script src="{{ route('sanjab.helpers.translation.js', ['locale'=> App::getLocale()]) }}"></script>
         <script src="{{ sanjab_mix('js/sanjab.js') }}"></script>
-        @if(config('sanjab.login.recaptcha'))
+        @if (config('sanjab.login.recaptcha'))
             <script src="https://www.google.com/recaptcha/api.js?hl={{ App::getLocale() }}" async defer></script>
         @endif
         @yield('footer')

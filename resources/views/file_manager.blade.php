@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/vendor/sanjab/thirdparty/elfinder/css/elfinder.min.css" />
     <link rel="stylesheet" href="/vendor/sanjab/thirdparty/elfinder/css/theme-light.min.css" />
     <style>
-        @if($popup)
+        @if ($popup)
         .ui-resizable-handle {
             display: none !important;
         }
@@ -28,7 +28,7 @@
     <script src="/vendor/sanjab/thirdparty/elfinder/js/extras/editors.default.min.js"></script>
     <script src="/vendor/sanjab/thirdparty/elfinder/js/extras/quicklook.googledocs.min.js"></script>
 
-    @if(file_exists(public_path("vendor/sanjab/thirdparty/elfinder/js/i18n/elfinder.".App::getLocale().".js")))
+    @if (file_exists(public_path("vendor/sanjab/thirdparty/elfinder/js/i18n/elfinder.".App::getLocale().".js")))
         <script src="/vendor/sanjab/thirdparty/elfinder/js/i18n/elfinder.{{ App::getLocale() }}.js"></script>
     @endif
     <script>
@@ -39,11 +39,11 @@
                 customHeaders: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                @if(file_exists(public_path("vendor/sanjab/thirdparty/elfinder/js/i18n/elfinder.".App::getLocale().".js")))
+                @if (file_exists(public_path("vendor/sanjab/thirdparty/elfinder/js/i18n/elfinder.".App::getLocale().".js")))
                     lang : @json(App::getLocale()),
                 @endif
-                @if($popup)
-                    @if(request('multiple') == 'true')
+                @if ($popup)
+                    @if (request('multiple') == 'true')
                         commandsOptions: {
                             getfile: { multiple: true }
                         },
@@ -52,14 +52,14 @@
                         if (! Array.isArray(files)) {
                             files = [files];
                         }
-                        @if(request('max'))
+                        @if (request('max'))
                             if (files.length > {{ request('max') }}) {
                                 sanjabError(sanjabTrans('the_maximum_number_of_files_is_:count', {'count': @json(request('max'))}));
                                 return;
                             }
                         @endif
                         for (var i in files) {
-                            @if(request('maxsize'))
+                            @if (request('maxsize'))
                                 if (parseInt(parseInt(files[i].size)/1000) + 1 > {{ request('maxsize') }}) {
                                     sanjabError(sanjabTrans('the_maximum_size_of_files_is_:size', {'size': @json(request('maxsize'))}));
                                     return;

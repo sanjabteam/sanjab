@@ -1,14 +1,14 @@
-@if($data['style'] == 'unordered')
+@if ($data['style'] == 'unordered')
 <ul>
 @else
 <ol>
 @endif
 
-@foreach($data['items'] as $item)
+@foreach ($data['items'] as $item)
     <li>{{ $item }}</li>
 @endforeach
 
-@if($data['style'] == 'unordered')
+@if ($data['style'] == 'unordered')
 </ol>
 @else
 </ol>

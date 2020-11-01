@@ -11,7 +11,7 @@
                 </div>
                 <div class="card-body sanjab-icons-list">
                     <div class="row">
-                        @foreach($icons as $iconConstant => $icon)
+                        @foreach ($icons as $iconConstant => $icon)
                             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                                 <div class="card bg-secondary m-1">
                                     <div class="card-header text-center">

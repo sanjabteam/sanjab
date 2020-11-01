@@ -70,7 +70,7 @@ trait TagRelation
                 static::saved(function ($post) {
                     $tags = [];
                     foreach ($post->getCachedTags() as $tag) {
-                        $tags[] = ($this->tagModel ?? 'App\Tag')::where($this->tagName ?? 'name', $tag)->firstOrCreate([$this->tagName ?? 'name' => $tag])->id;
+                        $tags[] = ($this->tagModel ?? 'App\Models\Tag')::where($this->tagName ?? 'name', $tag)->firstOrCreate([$this->tagName ?? 'name' => $tag])->id;
                     }
                     $post->tagModels()->sync($tags);
                 });

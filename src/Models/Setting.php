@@ -18,6 +18,7 @@ class Setting extends Model
         'value',
     ];
 
+    protected $translationModel = SettingTranslation::class;
     public $translatedAttributes = [
         'translated_value',
     ];

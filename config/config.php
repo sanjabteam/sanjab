@@ -35,7 +35,7 @@ return [
     */
     'login' => [
         /**
-         * Field inside \App\User model to use as username.
+         * Field inside \App\Models\User model to use as username.
          */
         'username'  => 'email',
 

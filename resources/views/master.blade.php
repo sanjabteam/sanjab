@@ -8,19 +8,19 @@
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' />
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="Powered By" content="Sanjab - http://sanjabteam.github.io/">
-        <title>@if(! empty($__env->yieldContent('title'))) @yield('title') - @endif{{ config('app.name') }}</title>
+        <title>@if (! empty($__env->yieldContent('title'))) @yield('title') - @endif{{ config('app.name') }}</title>
 
         <link rel="stylesheet" href="{{ sanjab_mix('css/sanjab.css') }}">
 
         @yield('header')
     </head>
 
-    <body class="@if(!Route::is('sanjab.unsupported-browser') && time() - Session::get('sanjab_hide_screen_saver') > 3600) screen-saver @endif">
+    <body class="@if (!Route::is('sanjab.unsupported-browser') && time() - Session::get('sanjab_hide_screen_saver') > 3600) screen-saver @endif">
         <div class="wrapper">
-            @if(!isset($simple) || !$simple)
+            @if (!isset($simple) || !$simple)
                 <div class="sidebar"
                     data-background-color="black"
-                    data-image="@if($sanjabImage){{ $sanjabImage['image'] }}@else{{ 'https://source.unsplash.com/daily' }}@endif">
+                    data-image="@if ($sanjabImage){{ $sanjabImage['image'] }}@else{{ 'https://source.unsplash.com/daily' }}@endif">
                     <div class="logo">
                         <a href="{{ url('/') }}" target="_blank" class="simple-text logo-normal">
                             {{ config('app.name') }}
@@ -28,8 +28,8 @@
                     </div>
                     <div class="screen-saver-content">
                         <div>
-                            <h1>@if(time() - Session::get('sanjab_hide_screen_saver') > 7200) @lang('sanjab::sanjab.welcome_back') @endif</h1>
-                            @if($sanjabImage && isset($sanjabImage['author']))<a class="image-author" href="{{ isset($sanjabImage['link']) ? $sanjabImage['link'] : '#' }}" title="@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])" target="_blank">@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])</a>@endif
+                            <h1>@if (time() - Session::get('sanjab_hide_screen_saver') > 7200) @lang('sanjab::sanjab.welcome_back') @endif</h1>
+                            @if ($sanjabImage && isset($sanjabImage['author']))<a class="image-author" href="{{ isset($sanjabImage['link']) ? $sanjabImage['link'] : '#' }}" title="@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])" target="_blank">@lang('sanjab::sanjab.photo_by_:author', ['author' => $sanjabImage['author']])</a>@endif
                         </div>
                     </div>
                     <div class="sidebar-wrapper">
@@ -38,10 +38,10 @@
                             <navbar-menu :items='@json($sanjabNotificationItems)' :mobile="true"></navbar-menu>
                         </div>
                         <ul class="nav">
-                            @foreach($sanjabMenuItems as $menuKey => $menuItem)
-                                @if($menuItem->hasChildren())
+                            @foreach ($sanjabMenuItems as $menuKey => $menuItem)
+                                @if ($menuItem->hasChildren())
                                     @if (count($menuItem->getChildren()) > 0)
-                                        <li class="nav-item @if($menuItem->isActive()) active @endif">
+                                        <li class="nav-item @if ($menuItem->isActive()) active @endif">
                                             <a class="nav-link" data-toggle="collapse" href="#sanjabMenuItem{{ $menuKey }}" aria-expanded="{{ $menuItem->isActive() ? 'true' : 'false' }}">
                                                 <i class="material-icons">{{ $menuItem->icon }}</i>
                                                 <p>
@@ -49,14 +49,14 @@
                                                     <b class="caret"></b>
                                                 </p>
                                             </a>
-                                            <div class="collapse @if($menuItem->isActive()) show @endif" id="sanjabMenuItem{{ $menuKey }}">
+                                            <div class="collapse @if ($menuItem->isActive()) show @endif" id="sanjabMenuItem{{ $menuKey }}">
                                                 <ul class="nav">
-                                                    @foreach($menuItem->getChildren() as $childMenu)
-                                                        <li class="nav-item @if($childMenu->isActive()) active @endif">
+                                                    @foreach ($menuItem->getChildren() as $childMenu)
+                                                        <li class="nav-item @if ($childMenu->isActive()) active @endif">
                                                             <a class="nav-link" href="{{ $childMenu->url }}">
                                                                 <i class="material-icons">{{ $childMenu->icon }}</i>
                                                                 <span class="sidebar-normal">{{ $childMenu->title }}</span>
-                                                                @if(! empty($childMenu->getBadgeValue()))
+                                                                @if (! empty($childMenu->getBadgeValue()))
                                                                     <span class="badge badge-{{ $childMenu->badgeVariant }}">{{ $childMenu->getBadgeValue() }}</span>
                                                                 @endif
                                                             </a>
@@ -67,11 +67,11 @@
                                         </li>
                                     @endif
                                 @else
-                                    <li class="nav-item @if($menuItem->isActive()) active @endif">
-                                        <a class="nav-link" href="{{  $menuItem->url }}" @if($menuItem->target) target="{{ $menuItem->target }}" @endif>
+                                    <li class="nav-item @if ($menuItem->isActive()) active @endif">
+                                        <a class="nav-link" href="{{  $menuItem->url }}" @if ($menuItem->target) target="{{ $menuItem->target }}" @endif>
                                             <i class="material-icons">{{ $menuItem->icon }}</i>
                                             <p>{{ $menuItem->title }}</p>
-                                            @if(! empty($menuItem->getBadgeValue()))
+                                            @if (! empty($menuItem->getBadgeValue()))
                                                 <span class="badge badge-{{ $menuItem->badgeVariant }}">{{ $menuItem->getBadgeValue() }}</span>
                                             @endif
                                         </a>
@@ -82,8 +82,8 @@
                     </div>
                 </div>
             @endif
-            <div class="@if(!isset($simple) || !$simple) main-panel @endif">
-                @if(!isset($simple) || !$simple)
+            <div class="@if (!isset($simple) || !$simple) main-panel @endif">
+                @if (!isset($simple) || !$simple)
                     <!-- Navbar -->
                     <nav class="navbar navbar-expand-lg navbar-transparent
                         navbar-absolute fixed-top">
@@ -117,14 +117,14 @@
                         @yield('content')
                     </div>
                 </div>
-                @if(!isset($simple) || !$simple)
+                @if (!isset($simple) || !$simple)
                     <footer class="footer">
                         <div class="container-fluid">
                             <nav class="float-left">
                                 <ul>
-                                    @if(is_array(config('sanjab.theme.footer_links')))
-                                        @foreach(config('sanjab.theme.footer_links') as $footerLink)
-                                            @if(is_array($footerLink))
+                                    @if (is_array(config('sanjab.theme.footer_links')))
+                                        @foreach (config('sanjab.theme.footer_links') as $footerLink)
+                                            @if (is_array($footerLink))
                                                 <li>
                                                     <a href="{{ $footerLink['link'] ?? '' }}" target="_blank">
                                                         {{ $footerLink['title'] ?? '' }}
@@ -157,7 +157,7 @@
         @yield('before_scripts')
         <script src="{{ route('sanjab.helpers.translation.js', ['locale' => App::getLocale()]) }}"></script>
         <script src="{{ sanjab_mix('js/sanjab.js') }}"></script>
-        @if(Session::has('sanjab_success'))
+        @if (Session::has('sanjab_success'))
             <script>
                 $(document).ready(function () {
                     sanjabToast(@json(Session::get('sanjab_success')));
