@@ -138,9 +138,6 @@ Sanjab follows [PSR2](https://github.com/php-fig/fig-standards/blob/master/accep
  */
  ```
 
-### Questions about source code
-If you have any questions about Sanjab source code join us on [Discord](https://discord.gg/kwuTZQd).
-
 ### Making Pull Request
 First, make sure your git branch is up to date with the Sanjab repository.
 ```bash

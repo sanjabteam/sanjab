@@ -1,3 +1,8 @@
+## This package is for personal usage and not maintained anymore
+
+> I do not recommend to using this package anymore. Recommended package: [litstack](https://github.com/litstack/litstack)
+
+
 <div align="center">
     <img src="./images/logo.svg" width="200" height="200">
 </div>
@@ -13,20 +18,18 @@
 [![Total Downloads](https://poser.pugx.org/sanjabteam/sanjab/downloads)](https://packagist.org/packages/sanjabteam/sanjab)
 [![Latest Stable Version](https://poser.pugx.org/sanjabteam/sanjab/v/stable)](https://packagist.org/packages/sanjabteam/sanjab)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
-[![Discord](https://img.shields.io/discord/695222831562358854)](https://discord.gg/kwuTZQd)
 
 </div>
 
-> I do not recommend to using this package anymore. Recommended package: [litstack](https://github.com/litstack/litstack)
 
 Sanjab is a [Laravel](http://laravel.com/) package that helping Laravel developers create an admin panel for projects quickly.
 
+- [This package is for personal usage and not maintained anymore](#this-package-is-for-personal-usage-and-not-maintained-anymore)
 - [Screenshots](#screenshots)
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Code](#code)
 - [Documentation](#documentation)
-- [Community & Support](#community--support)
 - [Acknowledgements](#acknowledgements)
 - [Changelog](#changelog)
 - [License](#license)
@@ -73,9 +76,6 @@ Also autocomplete is supported for your favorite IDE.
 
 ## Documentation
 You can find more information about Sanjab in [documentation](https://sanjabteam.github.io/).
-
-## Community & Support
-Join us on [Discord](https://discord.gg/kwuTZQd).
 
 To ask a question read [Support Guide](./.github/SUPPORT.md).
 
