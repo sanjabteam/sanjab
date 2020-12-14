@@ -51,7 +51,26 @@ class BelongsToPickerWidget extends RelationWidget
 
     protected function modifyResponse(stdClass $response, Model $item)
     {
-        $response->{ $this->property('name') } = optional($item->{ $this->property('name') })->{ $this->ownerKey };
+        if ($this->property('ajax') && isset($this->controllerProperties['type']) && in_array($this->controllerProperties['type'], ['index', 'show'])) {
+            $name = $this->property('name');
+            $format = $this->property('format');
+            $matches = [[], []];
+            if (is_string($format)) {
+                preg_match_all('/%([A-Za-z0-9_]+)/', $format, $matches);
+            }
+            $text = null;
+            if (is_callable($format)) {
+                $text = $format($item);
+            } else {
+                $text = $format;
+                foreach ($matches[1] as $match) {
+                    $text = str_replace('%'.$match, optional($item->$name)->{ $match }, $text);
+                }
+            }
+            $response->{ $this->property('name') } = $text;
+        } else {
+            $response->{ $this->property('name') } = optional($item->{ $this->property('name') })->{ $this->ownerKey };
+        }
     }
 
     public function getController()
@@ -68,9 +87,7 @@ class BelongsToPickerWidget extends RelationWidget
 
     public function getOptions()
     {
-        if ($this->property('ajax') &&
-            (! in_array($this->controllerProperties['type'], ['index', 'show']) || $this->property('searchWidget') == true)
-        ) {
+        if ($this->property('ajax')) {
             return [];
         }
 
