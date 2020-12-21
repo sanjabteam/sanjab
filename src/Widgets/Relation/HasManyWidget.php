@@ -5,7 +5,7 @@ namespace Sanjab\Widgets\Relation;
 use Illuminate\Http\Request;
 use Sanjab\Traits\SubWidgets;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 /**
  * Input list of items with custom widgets.
@@ -37,10 +37,14 @@ class HasManyWidget extends RelationWidget
         $this->values = [];
 
         $name = $this->name;
+        $relatedItems = $item->$name;
+        if ($relatedItems instanceof Model) {
+            $relatedItems = collect([$relatedItems]);
+        }
         if (is_array($request->input($name))) {
             foreach ($request->input($name) as $key => $requestValue) {
-                if (isset($requestValue['__id']) && ($item->$name instanceof Collection) && isset($item->$name[$requestValue['__id']])) {
-                    $this->values[$key] = $item->$name[$requestValue['__id']];
+                if (isset($requestValue['__id']) && ($relatedItems instanceof Collection) && isset($relatedItems[$requestValue['__id']])) {
+                    $this->values[$key] = $relatedItems[$requestValue['__id']];
                 } else {
                     $this->values[$key] = new $this->relatedModel;
                 }
@@ -57,16 +61,21 @@ class HasManyWidget extends RelationWidget
 
     protected function postStore(Request $request, Model $item)
     {
+        $name = $this->name;
         foreach ($this->values as $key => $requestValues) {
             $widgetRequest = $this->widgetRequest($request, $key);
             foreach ($this->widgets as $widget) {
                 $widget->doStore($widgetRequest, $this->values[$key]);
             }
+        }
+        $item->$name()->saveMany($this->values);
+        foreach ($this->values as $key => $requestValues) {
+            $widgetRequest = $this->widgetRequest($request, $key);
             foreach ($this->widgets as $widget) {
                 $widget->doPostStore($widgetRequest, $this->values[$key]);
             }
         }
-        $name = $this->name;
+        $item->$name()->saveMany($this->values);
         $item->$name()->whereNotIn(
             'id',
             array_values(array_filter(
@@ -78,7 +87,6 @@ class HasManyWidget extends RelationWidget
                 }
             ))
         )->delete();
-        $item->$name()->saveMany($this->values);
     }
 
     public function postInit()

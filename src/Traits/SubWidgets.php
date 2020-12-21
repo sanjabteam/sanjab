@@ -7,7 +7,7 @@ use Sanjab\Widgets\Widget;
 use Illuminate\Http\Request;
 use Sanjab\Models\TempModel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 /**
  * Handle helper for Widgets that containing child widgets inside.
@@ -144,14 +144,18 @@ trait SubWidgets
     protected function getValues(Request $request, Model $item = null)
     {
         $values = [];
+        $relatedItems = $item->{ $this->name };
+        if ($relatedItems instanceof Model) {
+            $relatedItems = collect([$relatedItems]);
+        }
         if (is_array($request->input($this->name))) {
             foreach ($request->input($this->name) as $key => $requestValue) {
                 if (isset($requestValue['__id']) &&
                     $item &&
-                    (is_array($item->{ $this->name }) || $item->{ $this->name } instanceof Collection)
-                    && isset($item->{ $this->name }[$requestValue['__id']])
+                    (is_array($relatedItems) || $relatedItems instanceof Collection)
+                    && isset($relatedItems[$requestValue['__id']])
                 ) {
-                    $values[$key] = $item->{ $this->name }[$requestValue['__id']];
+                    $values[$key] = $relatedItems[$requestValue['__id']];
                 } else {
                     $values[$key] = [];
                 }
