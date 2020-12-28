@@ -35,7 +35,7 @@ trait TagRelation
      */
     public function tagModels()
     {
-        return $this->belongsToMany($this->tagModel ?? 'App\Tag', $this->tagPivotTable ?? null, $this->tagForeignPivotKey ?? null);
+        return $this->belongsToMany($this->tagModel ?? 'App\Models\Tag', $this->tagPivotTable ?? null, $this->tagForeignPivotKey ?? null);
     }
 
     /**

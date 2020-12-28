@@ -76,6 +76,11 @@ return [
     'save' => 'ذخیره',
     'save_and_edit_this' => 'ذخیره و اصلاح همین',
     'save_and_add_more' => 'ذخیره و افزودن بیشتر',
+    'clear' => 'پاک کردن',
+    'select_all' => 'انتخاب همه',
+    'no_items_selected' => 'بدون مورد انتخاب شده',
+    '1_item_selected' => '1 مورد انتخاب شده',
+    ':n_items_selected' => ':n مورد انتخاب شده',
 
     'are_you_sure' => 'آیا مطمئن هستید؟',
     'are_you_sure_you_want_to_delete?' => 'آیا برای حذف مطمئن هستید؟',

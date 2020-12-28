@@ -55,7 +55,15 @@
 
             <!-- Bulk actions -->
             <b-collapse id="bulk_actions_collapse" v-model="bulkActionsVisible">
-                 <b-button-group>
+                <div>
+                    <small v-if="selectedBulk.length == 0">{{ sanjabTrans('no_items_selected') }}</small>
+                    <small v-else-if="selectedBulk.length == 1">{{ sanjabTrans('1_item_selected') }}</small>
+                    <small v-else>{{ sanjabTrans(':n_items_selected', {'n': selectedBulk.length}) }}</small>
+                    <b-button variant="danger" size="sm" :title="sanjabTrans('clear')" @click="clearSelectedBulk()" v-b-tooltip>
+                        <i class="material-icons">clear</i>
+                    </b-button>
+                </div>
+                <b-button-group>
                     <b-button v-for="(action) in bulkActions" :key="action.index" :disabled="selectedBulk.filter((bulkItem) => bulkItem.__can[action.index]).length != selectedBulk.length" @click="onActionClick(action, selectedBulk)" :variant="action.variant" href="javascript:void(0);" :target="action.target" :title="action.title" v-b-tooltip>
                         <i class="material-icons">{{ action.icon }}</i>
                         {{ action.title }}
@@ -91,6 +99,14 @@
                 </template>
                 <template #emptyfiltered>
                     <center>{{ sanjabTrans('no_records_found') }}</center>
+                </template>
+                <template v-slot:head(bulk)>
+                    <b-button v-if="itemsCache.length > 0 && itemsCache.filter((item) => selectedBulk.map((bulkItem) => bulkItem.id).includes(item.id)).length == itemsCache.length" variant="outline-danger" size="sm" :title="sanjabTrans('clear')" @click="clearSelectedBulk()" v-b-tooltip>
+                        <i class="material-icons">clear</i>
+                    </b-button>
+                    <b-button v-else variant="outline-success" size="sm" :title="sanjabTrans('select_all')" @click="bulkSelectAll()" v-b-tooltip>
+                        <i class="material-icons">check</i>
+                    </b-button>
                 </template>
                 <template v-slot:cell(bulk)="row">
                     <b-form-checkbox :id="'bulk_select_'+ row.index" v-model="selectedBulk" :value="row.item" />
@@ -386,6 +402,18 @@
                     }
                 }
                 return [{value: null, text: '---'}].concat(widget.searchTypes.map((stype) => {return {text: stype.title, value: stype.type}}));
+            },
+            clearSelectedBulk() {
+                this.selectedBulk = [];
+                this.$root.$emit('bv::hide::tooltip');
+            },
+            bulkSelectAll() {
+                for (let i in this.itemsCache) {
+                    if (this.selectedBulk.map((item) => item.id).includes(this.itemsCache[i].id) == false) {
+                        this.selectedBulk.push(this.itemsCache[i]);
+                    }
+                }
+                this.$root.$emit('bv::hide::tooltip');
             }
         },
         computed: {

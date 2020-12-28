@@ -76,6 +76,11 @@ return [
     'save' => 'Save',
     'save_and_edit_this' => 'Save & Edit this',
     'save_and_add_more' => 'Save & Add more',
+    'clear' => 'Clear',
+    'select_all' => 'Select All',
+    'no_items_selected' => 'No Items Selected',
+    '1_item_selected' => '1 Item Selected',
+    ':n_items_selected' => ':n Items Selected',
 
     'are_you_sure' => 'Are you sure?',
     'are_you_sure_you_want_to_delete?' => 'Are you sure you want to delete?',
