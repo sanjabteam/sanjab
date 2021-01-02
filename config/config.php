@@ -130,7 +130,7 @@ return [
         | Just create a manifest like default one and change this address.
         |
         */
-        'images' => 'https://sanjabteam.github.io/unsplash/images.json'
+        'images' => 'https://sanjabteam.github.io/unsplash/images.json',
     ],
 
     /*
