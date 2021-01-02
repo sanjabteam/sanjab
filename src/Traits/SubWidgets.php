@@ -144,14 +144,17 @@ trait SubWidgets
     protected function getValues(Request $request, Model $item = null)
     {
         $values = [];
-        $relatedItems = $item->{ $this->name };
+        $relatedItems = [];
+        if ($item) {
+            $relatedItems = $item->{ $this->name };
+        }
+
         if ($relatedItems instanceof Model) {
             $relatedItems = collect([$relatedItems]);
         }
         if (is_array($request->input($this->name))) {
             foreach ($request->input($this->name) as $key => $requestValue) {
                 if (isset($requestValue['__id']) &&
-                    $item &&
                     (is_array($relatedItems) || $relatedItems instanceof Collection)
                     && isset($relatedItems[$requestValue['__id']])
                 ) {

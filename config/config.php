@@ -120,6 +120,17 @@ return [
             ['title' => 'CREATIVE TIM', 'link' => 'https://www.creative-tim.com/'],
             ['title' => 'SANJAB', 'link' => 'https://sanjabteam.github.io/'],
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Background images manifest.
+        |--------------------------------------------------------------------------
+        |
+        | You can use custom background images for your website.
+        | Just create a manifest like default one and change this address.
+        |
+        */
+        'images' => 'https://sanjabteam.github.io/unsplash/images.json'
     ],
 
     /*

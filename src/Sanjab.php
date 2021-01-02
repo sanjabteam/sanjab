@@ -292,7 +292,7 @@ class Sanjab
         return Cache::remember('sanjab_background_details', now()->addHours(6), function () {
             $curl = curl_init();
             curl_setopt_array($curl, [
-                CURLOPT_URL => 'https://sanjabteam.github.io/unsplash/images.json',
+                CURLOPT_URL => config('sanjab.theme.images', 'https://sanjabteam.github.io/unsplash/images.json'),
                 CURLOPT_TIMEOUT => 30,
                 CURLOPT_RETURNTRANSFER => true,
             ]);
