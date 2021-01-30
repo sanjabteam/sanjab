@@ -332,7 +332,13 @@ class Sanjab
                 $tusServer = static::createTusServer($matches[1]);
                 foreach ($tusServer->getCache()->keys() as $cacheKey) {
                     $fileMeta = $tusServer->getCache()->get($cacheKey, true);
-                    if (empty($fileMeta['expires_at']) || Carbon::parse($fileMeta['expires_at'])->lt(now('GMT')->subHours(24)) && $tusServer->getCache()->delete($cacheKey) && is_writable($fileMeta['file_path'])) {
+                    if (
+                        (isset($fileMeta['expires_at']) && isset($fileMeta['file_path'])) &&
+                        (
+                            empty($fileMeta['expires_at']) ||
+                            Carbon::parse($fileMeta['expires_at'])->lt(now('GMT')->subHours(24)) && $tusServer->getCache()->delete($cacheKey) && is_writable($fileMeta['file_path'])
+                        )
+                    ) {
                         unlink($fileMeta['file_path']);
                     }
                 }
