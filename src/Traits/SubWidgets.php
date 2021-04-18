@@ -25,7 +25,8 @@ trait SubWidgets
 
     public function postInit()
     {
-        foreach ($this->widgets as $widget) {
+        foreach ($this->widgets as &$widget) {
+            $widget->controllerProperties = $this->controllerProperties;
             $widget->postInit();
         }
     }
