@@ -81,7 +81,6 @@ class BelongsToManyWithPivotWidget extends BelongsToManyPickerWidget
         }
     }
 
-
     protected function preStore(Request $request, Model $item)
     {
         $this->values = [];
