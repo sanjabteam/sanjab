@@ -63,7 +63,7 @@ class BelongsToManyWithPivotWidget extends BelongsToManyPickerWidget
     public function postInit()
     {
         parent::postInit();
-        $relationWidget= SelectWidget::create($this->property('name').'_select', $this->property('title'))
+        $relationWidget = SelectWidget::create($this->property('name').'_select', $this->property('title'))
                         ->optionsLabelKey('label')
                         ->relationKey('relatedKey')
                         ->withNull(null)
