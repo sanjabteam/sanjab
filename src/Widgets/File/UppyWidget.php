@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Storage;
  * @method $this    min(integer $val)                   min number of files.
  * @method $this    maxSize(integer $val)               max size of file.
  * @method $this    disk(string $val)                   disk to upload.
- * @method $this    directory(string $val)              directory to save to.
+ * @method $this    directory(string $val)              directory to save to. Use `__id__` for model id placeholder.
  * @method $this    fileRules(string $val)              file validation rules.
  * @method $this    fileStoreCallBack(callable $val)    callback to store file. parameters(\Illuminate\Http\UploadedFile $file) and returns relative file path.
  * @method $this    width(integer $val)                 width to resize images only.
@@ -130,6 +130,34 @@ class UppyWidget extends Widget
             $values = array_first($values);
         }
         $item->$name = $values;
+    }
+
+    public function postStore(Request $request, Model $item)
+    {
+        $name = $this->property('name');
+        $files = $item->$name;
+        if (! is_array($files)) {
+            $files = [$files];
+        }
+
+        $filesToDelete = [];
+        foreach ($files as &$file) {
+            if (str_contains($file, '__id__') && $this->getDisk()->exists($file)) {
+                $filesToDelete[] = $file;
+                $this->getDisk()->copy($file, str_replace('__id__', $item->id, $file));
+                $file = str_replace('__id__', $item->id, $file);
+            }
+        }
+
+        if (! $this->property('multiple')) {
+            $files = array_first($files);
+        }
+        $item->$name = $files;
+        $item->save();
+
+        foreach ($filesToDelete as $file) {
+            $this->getDisk()->delete($file);
+        }
     }
 
     protected function modifyResponse(stdClass $response, Model $item)
