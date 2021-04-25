@@ -12,7 +12,7 @@
     const Uppy = require("@uppy/core");
     const Dashboard = require("@uppy/dashboard");
     const Webcam = require("@uppy/webcam");
-    const Url = require('@uppy/url');
+    const ImageEditor = require("@uppy/image-editor");
     const Tus = require("@uppy/tus");
     const UppyLocales = {
         "ar": require('@uppy/locales/src/ar_SA'),
@@ -71,12 +71,20 @@
             withoutUi: {
                 type: Boolean,
                 default: false
-            }
+            },
+            imageEditor: {
+                type: Boolean,
+                default: false
+            },
+            cropperOptions: {
+                type: Object,
+                default: () => {}
+            },
         },
         mounted() {
             var self = this;
             this.uppy = Uppy({
-                autoProceed: true,
+                autoProceed: !self.imageEditor,
                 locale: (UppyLocales[document.documentElement.lang] != undefined) ? UppyLocales[document.documentElement.lang] : UppyLocales['en'],
                 restrictions: {
                     maxFileSize: this.maxSize * 1024,
@@ -94,6 +102,10 @@
                     showProgressDetails: true,
                     width: '100%',
                     browserBackButtonClose: true
+                })
+                .use(ImageEditor, {
+                    target: Dashboard,
+                    cropperOptions: this.cropperOptions,
                 })
                 .use(Tus, {
                     endpoint: sanjabUrl("helpers/uppy/upload"),

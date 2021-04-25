@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Storage;
  * @method $this    width(integer $val)                 width to resize images only.
  * @method $this    height(integer $val)                height to resize images only.
  * @method $this    extension(string $val)              change all image extensions to this.
+ * @method $this    imageEditor(bool $val)              Is image editor for this widget enabled or not
+ * @method $this    cropperOptions(array $val)          Array of cropper.js options for image editor
  */
 class UppyWidget extends Widget
 {
@@ -79,6 +81,7 @@ class UppyWidget extends Widget
         $this->min(0);
         $this->max(10);
         $this->maxSize(4096);
+        $this->imageEditor(false);
 
         $this->fileStoreCallBack(function (UploadedFile $file) {
             $extension = mb_strtolower($file->getClientOriginalExtension());
