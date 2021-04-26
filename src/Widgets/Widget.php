@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @method $this customPostStore(callable $val)         post store with custom method -  parameters : ($request, $item).
  * @method $this customModifyResponse(callable $val)    custom item response modifyer -  parameters : ($response, $item).
  * @method $this customModifyRequest(callable $val)     custom request modify -  parameters : ($request, $item).
- * @method $this value(mixed $val)                      default value for input.
+ * @method $this defaultValue(mixed $val)               default value for input.
  * @method $this name(string $val)                      field name.
  * @method $this title(string $val)                     field title.
  * @method $this description(string $val)               field description.
@@ -538,6 +538,18 @@ abstract class Widget extends PropertiesHolder
     public function nullable()
     {
         $this->rules('nullable');
+
+        return $this;
+    }
+
+    /**
+     * Set default value.
+     *
+     * @return $this
+     */
+    public function value($value)
+    {
+        $this->setProperty('defaultValue', $value);
 
         return $this;
     }

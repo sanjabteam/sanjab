@@ -140,7 +140,11 @@ class UppyWidget extends Widget
         $name = $this->property('name');
         $files = $item->$name;
         if (! is_array($files)) {
-            $files = [$files];
+            if (empty($files)) {
+                $files = [];
+            } else {
+                $files = [$files];
+            }
         }
 
         $filesToDelete = [];

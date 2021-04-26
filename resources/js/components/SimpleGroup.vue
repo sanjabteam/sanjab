@@ -43,6 +43,8 @@
         mounted () {
             if (this.value) {
                 this.mutableValue = this.value;
+            } else if (this.widget.defaultValue !== undefined && this.widget.defaultValue !== null) {
+                this.mutableValue = this.widget.defaultValue;
             }
         },
         watch: {
