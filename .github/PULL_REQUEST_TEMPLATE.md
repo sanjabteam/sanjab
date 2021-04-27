@@ -24,7 +24,6 @@ What types of changes does your code?
 - [ ] I have added tests that prove my fix is effective or that my feature works.
 - [ ] I have tested code style with "phpcs" locally and test passed.
 - [ ] I have tested unit tests with "phpunit" locally and they passed.
-- [ ] I have no assets compiled for development (large size files) in my commits.<!-- githooks does this automatically -->
-- [ ] I have compiled assets with `npm run prod`.<!-- githooks does this automatically -->
+- [ ] I have no assets compiled (large size files) in my commits.
 - [ ] My changes need documentation updates. <!-- Not obligatory -->
 - [ ] I have created pull request for documentation also. <!-- Not obligatory -->

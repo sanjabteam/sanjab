@@ -10,7 +10,6 @@ I'm really glad you're reading this, thanks for taking the time to contribute!
   - [Testing](#testing)
   - [Code Style](#code-style)
   - [Coding conventions](#coding-conventions)
-  - [Questions about source code](#questions-about-source-code)
   - [Making Pull Request](#making-pull-request)
 
 ## Code of Conduct
@@ -80,21 +79,17 @@ http://yousite.test/admin
 ```bash
 cd ../../sanjab
 ```
-14. **Important Step:** Set [git hooks](https://git-scm.com/docs/githooks) path.
-```bash
-git config core.hooksPath .githooks
-```
-15. Create a new git branch.
-16. Install composer and npm packages.
+14. Create a new git branch.
+15. Install composer and npm packages.
 ```bash
 composer install
 npm install
 ```
-17. Start compiling.
+16. Start compiling.
 ```bash
 npm run watch
 ```
-18. Hooray! you are ready to contribute sanjab.
+17. Hooray! you are ready to contribute Sanjab.
 
 ### Testing
 All tests are based on [PHPUnit](https://github.com/sebastianbergmann/phpunit). make sure your code does not break sanjab functionality.
@@ -111,7 +106,7 @@ Sanjab follows [PSR2](https://github.com/php-fig/fig-standards/blob/master/accep
 ### Coding conventions
 
 * Write clean and understandable code. [Read this](https://gist.github.com/wojteklu/73c6914cc446146b8b533c0988cf8d29).
-* Never put compiled assets for development in git commits. Highly recommended to use githooks to prevent this happen.
+* Never put compiled assets for development in git commits.
 * Keep your commits as small as possible and use informative git commit messages.
 * Do not touch version in `package.json`.
 * Class phpdoc definition and description must be in a column like a table.
