@@ -44,7 +44,7 @@
         methods: {
             setMarkerPosition(event) {
                 this.$refs.mapMarker.setLatLng(event.latlng);
-            }
+            },
         },
         watch: {
             value:{
@@ -56,6 +56,7 @@
                             if (this.$refs.mapMarker) {
                                 this.$refs.mapMarker.setLatLng(new LatLng(newValue.lat, newValue.lng));
                             }
+                            this.center = new LatLng(newValue.lat, newValue.lng);
                         }
                     }
                 }
