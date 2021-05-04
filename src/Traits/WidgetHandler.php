@@ -239,6 +239,13 @@ trait WidgetHandler
                 $attributes = array_merge($attributes, $widget->validationAttributes($request, $type, $item));
             }
         }
+
+        foreach ($rules as $key => $rule) {
+            if (empty($rule)) {
+                unset($rules[$key]);
+            }
+        }
+
         $messages = array_dot($messages);
         $attributes = array_dot($attributes);
         $validator = \Validator::make($request->all(), $rules, $messages, $attributes);

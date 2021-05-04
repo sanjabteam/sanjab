@@ -48,7 +48,9 @@ trait SubWidgets
             foreach ($this->widgets as $widget) {
                 $widgetRequest = $this->widgetRequest($request, $key);
                 foreach ($widget->validationRules($widgetRequest, $type, $item) as $ruleKey => $widgetRules) {
-                    $rules[$this->name.'.'.$key.'.'.$ruleKey] = $widgetRules;
+                    if (! empty($widgetRules)) {
+                        $rules[$this->name.'.'.$key.'.'.$ruleKey] = $widgetRules;
+                    }
                 }
             }
         }
