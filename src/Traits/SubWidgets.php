@@ -33,13 +33,7 @@ trait SubWidgets
 
     public function validationRules(Request $request, string $type, Model $item = null): array
     {
-        $rules = [
-            $this->name => array_merge($this->property('rules.'.$type, []), ['array']),
-        ];
-
-        if (! empty($this->property('max'))) {
-            $rules[$this->name][] = 'max:'.$this->property('max');
-        }
+        $rules = [];
 
         $values = $this->getValues($request, $item);
 
@@ -53,6 +47,12 @@ trait SubWidgets
                     }
                 }
             }
+        }
+
+        $rules[$this->name] = array_merge($this->property('rules.'.$type, []), ['array']);
+
+        if (! empty($this->property('max'))) {
+            $rules[$this->name][] = 'max:'.$this->property('max');
         }
 
         return $rules;
