@@ -1,6 +1,9 @@
 ## This package is for personal usage and not maintained anymore
 
-> I do not recommend to using this package anymore. Recommended packages: [filament](https://github.com/laravel-filament/filament), [litstack](https://github.com/litstack/litstack)
+> I do not recommend to using this package anymore. Recommended packages: 
+[filament](https://github.com/laravel-filament/filament), 
+[litstack](https://github.com/litstack/litstack),
+[easypanel](https://github.com/rezaamini-ir/laravel-easypanel)
 
 
 <div align="center">
